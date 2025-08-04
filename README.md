@@ -13,6 +13,8 @@ Website thương mại điện tử chuyên bán các sản phẩm đặc sản 
 - **🌐 Website Chính:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/](https://nguyenngocbinh.github.io/DACSANTAYBAC/)
 - **👨‍💼 Admin Panel:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html)
 
+**Admin Login:** admin / admin123
+
 ## ✨ Tính Năng
 - 🛒 Giỏ hàng thông minh
 - 📱 Responsive design
