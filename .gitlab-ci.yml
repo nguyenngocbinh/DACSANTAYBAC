@@ -132,7 +132,11 @@ deploy_to_github:
     - echo "Adding GitHub remote..."
     - git remote add github https://$GITHUB_TOKEN@github.com/nguyenngocbinh/DACSANTAYBAC.git
     - echo "Pushing production build to GitHub..."
-    - git push github main --force || (echo "Push failed"; exit 1)
+    - |
+      git push github main --force || (
+        echo "Push failed";
+        exit 1
+      )
     - echo "✅ Successfully deployed production build to GitHub!"
     - echo "🌐 Website: https://nguyenngocbinh.github.io/DACSANTAYBAC/"
     - echo "👨‍💼 Admin Panel: https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html"
