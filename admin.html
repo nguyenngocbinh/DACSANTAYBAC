@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌿 Admin Panel - Đặc Sản Tây Bắc</title>
+    <title>🌿 Admin Panel - Đặc Sản Tây Bắc (Enhanced)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -68,7 +68,7 @@
             font-weight: 600;
         }
         
-        .form-group input {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e1e8ed;
@@ -77,7 +77,7 @@
             transition: border-color 0.3s;
         }
         
-        .form-group input:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
             border-color: #27ae60;
         }
@@ -112,6 +112,15 @@
         
         .btn-primary:hover {
             background: #0056b3;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
         }
         
         /* Dashboard */
@@ -177,7 +186,7 @@
         
         .section-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
@@ -198,7 +207,7 @@
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
         }
         
@@ -229,6 +238,36 @@
         
         .product-emoji {
             font-size: 2rem;
+        }
+        
+        .product-image-section {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .product-image-preview {
+            width: 80px;
+            height: 80px;
+            background: #e9ecef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+            transition: transform 0.2s;
+        }
+        
+        .product-image-preview:hover {
+            transform: scale(1.1);
+        }
+        
+        .image-url-display {
+            font-size: 0.8rem;
+            color: #666;
+            word-break: break-all;
+            max-height: 40px;
+            overflow: hidden;
         }
         
         .product-info {
@@ -282,7 +321,15 @@
         }
         
         .product-actions {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-actions-full {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 0.5rem;
         }
         
@@ -292,7 +339,6 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            flex: 1;
         }
         
         .btn-edit {
@@ -313,6 +359,98 @@
             background: #e0a800;
         }
         
+        .btn-image {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        .btn-image:hover {
+            background: #5a32a3;
+        }
+        
+        /* Edit Modal */
+        .edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+        
+        .edit-modal.active {
+            display: flex;
+        }
+        
+        .edit-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .edit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .edit-header h3 {
+            color: #27ae60;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        .emoji-picker {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 1rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+        }
+        
+        .emoji-option {
+            padding: 0.5rem;
+            border: none;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: background 0.2s;
+        }
+        
+        .emoji-option:hover {
+            background: #e9ecef;
+        }
+        
+        .emoji-option.selected {
+            background: #27ae60;
+            color: white;
+        }
+        
         /* Status Messages */
         .status-message {
             position: fixed;
@@ -322,9 +460,10 @@
             border-radius: 8px;
             color: white;
             font-weight: bold;
-            z-index: 1001;
+            z-index: 1002;
             transform: translateX(400px);
             transition: transform 0.3s;
+            max-width: 300px;
         }
         
         .status-message.show {
@@ -351,6 +490,14 @@
             
             .search-filter {
                 flex-direction: column;
+            }
+            
+            .product-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-actions-full {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -410,14 +557,14 @@
                     <p id="modifiedProducts">0</p>
                 </div>
                 <div class="stat-card">
+                    <i class="fas fa-image"></i>
+                    <h3>Đã Sửa Ảnh</h3>
+                    <p id="modifiedImages">0</p>
+                </div>
+                <div class="stat-card">
                     <i class="fas fa-chart-line"></i>
                     <h3>Giá Trung Bình</h3>
                     <p id="averagePrice">0₫</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-tags"></i>
-                    <h3>Danh Mục</h3>
-                    <p>4 loại</p>
                 </div>
             </div>
 
@@ -436,7 +583,7 @@
                         <option value="Đồ uống">🍵 Đồ uống</option>
                         <option value="Tinh dầu">💧 Tinh dầu</option>
                     </select>
-                    <button class="btn btn-primary" onclick="resetAllPrices()" style="width: auto; padding: 10px 20px;">
+                    <button class="btn btn-warning" onclick="resetAllData()" style="width: auto; padding: 10px 20px;">
                         <i class="fas fa-undo"></i> Reset Tất Cả
                     </button>
                 </div>
@@ -444,6 +591,66 @@
                 <div id="productsGrid" class="products-grid">
                     <!-- Products will be generated by JavaScript -->
                 </div>
+            </div>
+        </div>
+        
+        <!-- Edit Product Modal -->
+        <div id="editModal" class="edit-modal">
+            <div class="edit-content">
+                <div class="edit-header">
+                    <h3 id="editTitle">Chỉnh Sửa Sản Phẩm</h3>
+                    <button class="close-btn" onclick="closeEditModal()">&times;</button>
+                </div>
+                
+                <form id="editForm">
+                    <div class="form-group">
+                        <label>📦 Tên sản phẩm:</label>
+                        <input type="text" id="editName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🏷️ Danh mục:</label>
+                        <select id="editCategory" required>
+                            <option value="Dược liệu">🌿 Dược liệu</option>
+                            <option value="Thực phẩm">🍯 Thực phẩm</option>
+                            <option value="Đồ uống">🍵 Đồ uống</option>
+                            <option value="Tinh dầu">💧 Tinh dầu</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>💰 Giá sản phẩm (VNĐ):</label>
+                        <input type="number" id="editPrice" required min="1000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📝 Mô tả:</label>
+                        <textarea id="editDescription" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>😊 Chọn emoji:</label>
+                        <div class="emoji-picker" id="emojiPicker">
+                            <!-- Emojis will be generated by JavaScript -->
+                        </div>
+                        <input type="hidden" id="editEmoji" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🖼️ URL ảnh (tùy chọn):</label>
+                        <input type="url" id="editImageUrl" placeholder="https://example.com/image.jpg">
+                        <small style="color: #666;">Để trống nếu chỉ sử dụng emoji</small>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn" style="flex: 1;">
+                            <i class="fas fa-save"></i> Lưu Thay Đổi
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="closeEditModal()" style="flex: 1;">
+                            <i class="fas fa-times"></i> Hủy
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -454,40 +661,51 @@
     <script>
         // Products data
         const products = [
-            { id: 1, name: "Tam thất khô", price: 120000, category: "Dược liệu", emoji: "🌿", description: "Tam thất khô chất lượng cao từ núi rừng Tây Bắc" },
-            { id: 2, name: "Mật ong rừng", price: 250000, category: "Thực phẩm", emoji: "🍯", description: "Mật ong rừng nguyên chất, không pha trộn" },
-            { id: 3, name: "Hạt dẻ nướng", price: 80000, category: "Thực phẩm", emoji: "🌰", description: "Hạt dẻ nướng thơm ngon, giòn tan" },
-            { id: 4, name: "Chè shan tuyết", price: 300000, category: "Đồ uống", emoji: "🍵", description: "Chè shan tuyết cổ thù, hương vị đặc biệt" },
-            { id: 5, name: "Nấm linh chi", price: 180000, category: "Dược liệu", emoji: "🍄", description: "Nấm linh chi rừng, bổ dương tăng sức khỏe" },
-            { id: 6, name: "Sâm Ngọc Linh", price: 450000, category: "Dược liệu", emoji: "🌱", description: "Sâm Ngọc Linh quý hiếm từ đỉnh núi cao" },
-            { id: 7, name: "Mèo vạc mật", price: 95000, category: "Thực phẩm", emoji: "🥜", description: "Hạt mèo vạc mật thơm ngon, bùi béo" },
-            { id: 8, name: "Trà hoa vàng", price: 85000, category: "Đồ uống", emoji: "🌼", description: "Trà hoa vàng thanh mát, giải nhiệt" },
-            { id: 9, name: "Mật ong cao su", price: 320000, category: "Thực phẩm", emoji: "🍯", description: "Mật ong cao su nguyên chất, vị ngọt đậm đà" },
-            { id: 10, name: "Củ mài táo mèo", price: 75000, category: "Dược liệu", emoji: "🥔", description: "Củ mài táo mèo chữa đau dạ dày" },
-            { id: 11, name: "Tinh dầu sả", price: 110000, category: "Tinh dầu", emoji: "💧", description: "Tinh dầu sả nguyên chất, đuổi muỗi hiệu quả" },
-            { id: 12, name: "Nấm rơm rừng", price: 65000, category: "Thực phẩm", emoji: "🍄", description: "Nấm rơm rừng tươi ngon, giàu dinh dưỡng" },
-            { id: 13, name: "Chè tâm sen", price: 140000, category: "Đồ uống", emoji: "🍵", description: "Chè tâm sen thanh đạm, dễ uống" },
-            { id: 14, name: "Tinh dầu bạc hà", price: 90000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu bạc hà mát lạnh, thơm dịu" },
-            { id: 15, name: "Nấm đông cô", price: 220000, category: "Thực phẩm", emoji: "🍄", description: "Nấm đông cô khô cao cấp, thơm ngon" },
-            { id: 16, name: "Đậu cô ve", price: 55000, category: "Thực phẩm", emoji: "🫘", description: "Đậu cô ve rang giòn, bổ dưỡng" },
-            { id: 17, name: "Trà ướp hoa sen", price: 160000, category: "Đồ uống", emoji: "🪷", description: "Trà ướp hoa sen thơm nức, cao cấp" },
-            { id: 18, name: "Tinh dầu quế", price: 130000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu quế ấm áp, kháng khuẩn tốt" },
-            { id: 19, name: "Mộc nhĩ rừng", price: 45000, category: "Thực phẩm", emoji: "🍄", description: "Mộc nhĩ rừng tự nhiên, giòn ngon" },
-            { id: 20, name: "Chè búp non", price: 185000, category: "Đồ uống", emoji: "🍃", description: "Chè búp non cao cấp, vị thanh ngọt" },
-            { id: 21, name: "Tinh dầu tràm", price: 100000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu tràm chữa cảm lạnh hiệu quả" }
+            { id: 1, name: "Tam thất khô", price: 120000, category: "Dược liệu", emoji: "🌿", description: "Tam thất khô chất lượng cao từ núi rừng Tây Bắc", imageUrl: "" },
+            { id: 2, name: "Mật ong rừng", price: 250000, category: "Thực phẩm", emoji: "🍯", description: "Mật ong rừng nguyên chất, không pha trộn", imageUrl: "" },
+            { id: 3, name: "Hạt dẻ nướng", price: 80000, category: "Thực phẩm", emoji: "🌰", description: "Hạt dẻ nướng thơm ngon, giòn tan", imageUrl: "" },
+            { id: 4, name: "Chè shan tuyết", price: 300000, category: "Đồ uống", emoji: "🍵", description: "Chè shan tuyết cổ thù, hương vị đặc biệt", imageUrl: "" },
+            { id: 5, name: "Nấm linh chi", price: 180000, category: "Dược liệu", emoji: "🍄", description: "Nấm linh chi rừng, bổ dương tăng sức khỏe", imageUrl: "" },
+            { id: 6, name: "Sâm Ngọc Linh", price: 450000, category: "Dược liệu", emoji: "🌱", description: "Sâm Ngọc Linh quý hiếm từ đỉnh núi cao", imageUrl: "" },
+            { id: 7, name: "Mèo vạc mật", price: 95000, category: "Thực phẩm", emoji: "🥜", description: "Hạt mèo vạc mật thơm ngon, bùi béo", imageUrl: "" },
+            { id: 8, name: "Trà hoa vàng", price: 85000, category: "Đồ uống", emoji: "🌼", description: "Trà hoa vàng thanh mát, giải nhiệt", imageUrl: "" },
+            { id: 9, name: "Mật ong cao su", price: 320000, category: "Thực phẩm", emoji: "🍯", description: "Mật ong cao su nguyên chất, vị ngọt đậm đà", imageUrl: "" },
+            { id: 10, name: "Củ mài táo mèo", price: 75000, category: "Dược liệu", emoji: "🥔", description: "Củ mài táo mèo chữa đau dạ dày", imageUrl: "" },
+            { id: 11, name: "Tinh dầu sả", price: 110000, category: "Tinh dầu", emoji: "💧", description: "Tinh dầu sả nguyên chất, đuổi muỗi hiệu quả", imageUrl: "" },
+            { id: 12, name: "Nấm rơm rừng", price: 65000, category: "Thực phẩm", emoji: "🍄", description: "Nấm rơm rừng tươi ngon, giàu dinh dưỡng", imageUrl: "" },
+            { id: 13, name: "Chè tâm sen", price: 140000, category: "Đồ uống", emoji: "🍵", description: "Chè tâm sen thanh đạm, dễ uống", imageUrl: "" },
+            { id: 14, name: "Tinh dầu bạc hà", price: 90000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu bạc hà mát lạnh, thơm dịu", imageUrl: "" },
+            { id: 15, name: "Nấm đông cô", price: 220000, category: "Thực phẩm", emoji: "🍄", description: "Nấm đông cô khô cao cấp, thơm ngon", imageUrl: "" },
+            { id: 16, name: "Đậu cô ve", price: 55000, category: "Thực phẩm", emoji: "🫘", description: "Đậu cô ve rang giòn, bổ dưỡng", imageUrl: "" },
+            { id: 17, name: "Trà ướp hoa sen", price: 160000, category: "Đồ uống", emoji: "🪷", description: "Trà ướp hoa sen thơm nức, cao cấp", imageUrl: "" },
+            { id: 18, name: "Tinh dầu quế", price: 130000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu quế ấm áp, kháng khuẩn tốt", imageUrl: "" },
+            { id: 19, name: "Mộc nhĩ rừng", price: 45000, category: "Thực phẩm", emoji: "🍄", description: "Mộc nhĩ rừng tự nhiên, giòn ngon", imageUrl: "" },
+            { id: 20, name: "Chè búp non", price: 185000, category: "Đồ uống", emoji: "🍃", description: "Chè búp non cao cấp, vị thanh ngọt", imageUrl: "" },
+            { id: 21, name: "Tinh dầu tràm", price: 100000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu tràm chữa cảm lạnh hiệu quả", imageUrl: "" }
+        ];
+
+        // Available emojis for products
+        const availableEmojis = [
+            '🌿', '🍯', '🌰', '🍵', '🍄', '🌱', '🥜', '🌼', '🥔', '💧', '🫘', '🪷', '🍃',
+            '🌸', '🌺', '🌻', '🌷', '🌹', '🥀', '🌾', '🌿', '🍀', '🍁', '🍂', '🍃',
+            '🥥', '🥑', '🍊', '🍋', '🍌', '🍍', '🥭', '🍎', '🍏', '🍐', '🍑', '🍒',
+            '🍓', '🫐', '🍇', '🍈', '🍉', '🍅', '🫒', '🌶️', '🫑', '🥒', '🥬', '🥦',
+            '🍆', '🥕', '🌽', '🫘', '🥔', '🍠', '🫜', '🍛', '🍜', '🍝', '🍞', '🥨'
         ];
 
         let currentProducts = [...products];
         let isLoggedIn = false;
+        let currentEditingId = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Admin Panel Loading...');
+            console.log('🚀 Enhanced Admin Panel Loading...');
             initializeAdmin();
         });
 
         function initializeAdmin() {
             setupEventListeners();
+            generateEmojiPicker();
             checkLoginStatus();
         }
 
@@ -496,6 +714,36 @@
             if (loginForm) {
                 loginForm.addEventListener('submit', handleLogin);
             }
+            
+            const editForm = document.getElementById('editForm');
+            if (editForm) {
+                editForm.addEventListener('submit', handleEditSubmit);
+            }
+        }
+
+        function generateEmojiPicker() {
+            const emojiPicker = document.getElementById('emojiPicker');
+            emojiPicker.innerHTML = '';
+            
+            availableEmojis.forEach(emoji => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'emoji-option';
+                button.textContent = emoji;
+                button.onclick = () => selectEmoji(emoji, button);
+                emojiPicker.appendChild(button);
+            });
+        }
+
+        function selectEmoji(emoji, button) {
+            // Remove previous selection
+            document.querySelectorAll('.emoji-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Select current emoji
+            button.classList.add('selected');
+            document.getElementById('editEmoji').value = emoji;
         }
 
         function checkLoginStatus() {
@@ -555,18 +803,32 @@
             
             currentProducts.forEach(product => {
                 const currentPrice = getCurrentPrice(product.id);
-                const hasChanged = currentPrice !== product.price;
+                const currentData = getCurrentProductData(product.id);
+                const hasChangedPrice = currentPrice !== product.price;
+                const hasChangedImage = currentData.emoji !== product.emoji || currentData.imageUrl !== product.imageUrl;
+                const hasChangedInfo = currentData.name !== product.name || currentData.description !== product.description;
+                
+                const displayEmoji = currentData.emoji || product.emoji;
+                const displayImageUrl = currentData.imageUrl || product.imageUrl;
                 
                 const productCard = `
-                    <div class="product-card" data-category="${product.category}" data-name="${product.name.toLowerCase()}">
+                    <div class="product-card" data-category="${currentData.category || product.category}" data-name="${(currentData.name || product.name).toLowerCase()}">
                         <div class="product-header">
-                            <h4>${product.name}</h4>
-                            <span class="product-emoji">${product.emoji}</span>
+                            <h4>${currentData.name || product.name}</h4>
+                            <span class="product-emoji">${displayEmoji}</span>
+                        </div>
+                        
+                        <div class="product-image-section">
+                            <div class="product-image-preview">
+                                ${displayImageUrl ? `<img src="${displayImageUrl}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <span style="display: none; font-size: 2.5rem;">${displayEmoji}</span>` : displayEmoji}
+                            </div>
+                            ${displayImageUrl ? `<div class="image-url-display">${displayImageUrl}</div>` : '<div class="image-url-display">Chỉ sử dụng emoji</div>'}
                         </div>
                         
                         <div class="product-info">
-                            <p><strong>Danh mục:</strong> ${product.category}</p>
-                            <p><strong>Mô tả:</strong> ${product.description}</p>
+                            <p><strong>Danh mục:</strong> ${currentData.category || product.category}</p>
+                            <p><strong>Mô tả:</strong> ${currentData.description || product.description}</p>
                         </div>
                         
                         <div class="price-section">
@@ -574,18 +836,23 @@
                                 <span class="original-price">Giá gốc: ${formatPrice(product.price)}</span>
                                 <span class="current-price">Hiện tại: ${formatPrice(currentPrice)}</span>
                             </div>
-                            ${hasChanged ? '<small style="color: #28a745; font-weight: bold;">✨ Đã thay đổi</small>' : ''}
+                            ${hasChangedPrice ? '<small style="color: #28a745; font-weight: bold;">💰 Giá đã thay đổi</small>' : ''}
+                            ${hasChangedImage ? '<small style="color: #6f42c1; font-weight: bold;">🖼️ Ảnh đã thay đổi</small>' : ''}
+                            ${hasChangedInfo ? '<small style="color: #fd7e14; font-weight: bold;">📝 Thông tin đã thay đổi</small>' : ''}
                         </div>
                         
                         <div class="price-edit">
                             <input type="number" class="price-input" id="price${product.id}" placeholder="${currentPrice}" value="${currentPrice}">
                             <button class="btn-sm btn-edit" onclick="updatePrice(${product.id})">
-                                <i class="fas fa-save"></i> Cập nhật
+                                <i class="fas fa-save"></i>
                             </button>
                         </div>
                         
                         <div class="product-actions">
-                            <button class="btn-sm btn-reset" onclick="resetPrice(${product.id})">
+                            <button class="btn-sm btn-edit" onclick="openEditModal(${product.id})">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </button>
+                            <button class="btn-sm btn-reset" onclick="resetProduct(${product.id})">
                                 <i class="fas fa-undo"></i> Reset
                             </button>
                         </div>
@@ -603,6 +870,15 @@
             }
             const product = products.find(p => p.id === productId);
             return product ? product.price : 0;
+        }
+
+        function getCurrentProductData(productId) {
+            const savedData = localStorage.getItem(`product_${productId}_data`);
+            if (savedData) {
+                return JSON.parse(savedData);
+            }
+            const product = products.find(p => p.id === productId);
+            return product ? { ...product } : {};
         }
 
         function updatePrice(productId) {
@@ -623,23 +899,85 @@
             updateStatistics();
         }
 
-        function resetPrice(productId) {
-            localStorage.removeItem(`product_${productId}_price`);
-            
+        function openEditModal(productId) {
+            currentEditingId = productId;
             const product = products.find(p => p.id === productId);
-            showStatusMessage(`🔄 Đã khôi phục giá gốc ${product.name}`, 'success');
+            const currentData = getCurrentProductData(productId);
             
+            document.getElementById('editTitle').textContent = `Chỉnh sửa: ${product.name}`;
+            document.getElementById('editName').value = currentData.name || product.name;
+            document.getElementById('editCategory').value = currentData.category || product.category;
+            document.getElementById('editPrice').value = getCurrentPrice(productId);
+            document.getElementById('editDescription').value = currentData.description || product.description;
+            document.getElementById('editEmoji').value = currentData.emoji || product.emoji;
+            document.getElementById('editImageUrl').value = currentData.imageUrl || product.imageUrl || '';
+            
+            // Select current emoji in picker
+            document.querySelectorAll('.emoji-option').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.textContent === (currentData.emoji || product.emoji)) {
+                    btn.classList.add('selected');
+                }
+            });
+            
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            currentEditingId = null;
+        }
+
+        function handleEditSubmit(e) {
+            e.preventDefault();
+            
+            if (!currentEditingId) return;
+            
+            const newData = {
+                name: document.getElementById('editName').value,
+                category: document.getElementById('editCategory').value,
+                description: document.getElementById('editDescription').value,
+                emoji: document.getElementById('editEmoji').value,
+                imageUrl: document.getElementById('editImageUrl').value
+            };
+            
+            const newPrice = parseInt(document.getElementById('editPrice').value);
+            
+            // Save product data
+            localStorage.setItem(`product_${currentEditingId}_data`, JSON.stringify(newData));
+            
+            // Save price
+            localStorage.setItem(`product_${currentEditingId}_price`, newPrice);
+            
+            const originalProduct = products.find(p => p.id === currentEditingId);
+            showStatusMessage(`✅ Đã cập nhật thông tin ${originalProduct.name}`, 'success');
+            
+            closeEditModal();
             loadProducts();
             updateStatistics();
         }
 
-        function resetAllPrices() {
-            if (confirm('Bạn có chắc muốn khôi phục tất cả giá về ban đầu?')) {
+        function resetProduct(productId) {
+            if (confirm('Bạn có chắc muốn khôi phục sản phẩm này về trạng thái ban đầu?')) {
+                localStorage.removeItem(`product_${productId}_price`);
+                localStorage.removeItem(`product_${productId}_data`);
+                
+                const product = products.find(p => p.id === productId);
+                showStatusMessage(`🔄 Đã khôi phục "${product.name}" về trạng thái ban đầu`, 'success');
+                
+                loadProducts();
+                updateStatistics();
+            }
+        }
+
+        function resetAllData() {
+            if (confirm('Bạn có chắc muốn khôi phục TẤT CẢ sản phẩm về trạng thái ban đầu?')) {
                 products.forEach(product => {
                     localStorage.removeItem(`product_${product.id}_price`);
+                    localStorage.removeItem(`product_${product.id}_data`);
                 });
                 
-                showStatusMessage('🔄 Đã khôi phục tất cả giá về ban đầu!', 'success');
+                showStatusMessage('🔄 Đã khôi phục tất cả sản phẩm về trạng thái ban đầu!', 'success');
                 loadProducts();
                 updateStatistics();
             }
@@ -667,18 +1005,30 @@
         }
 
         function updateStatistics() {
-            let modifiedCount = 0;
+            let modifiedPrices = 0;
+            let modifiedImages = 0;
             let totalPrice = 0;
             
             products.forEach(product => {
                 const currentPrice = getCurrentPrice(product.id);
+                const currentData = getCurrentProductData(product.id);
+                
                 totalPrice += currentPrice;
+                
                 if (currentPrice !== product.price) {
-                    modifiedCount++;
+                    modifiedPrices++;
+                }
+                
+                if (currentData.emoji !== product.emoji || 
+                    currentData.imageUrl !== product.imageUrl ||
+                    currentData.name !== product.name ||
+                    currentData.description !== product.description) {
+                    modifiedImages++;
                 }
             });
             
-            document.getElementById('modifiedProducts').textContent = modifiedCount;
+            document.getElementById('modifiedProducts').textContent = modifiedPrices;
+            document.getElementById('modifiedImages').textContent = modifiedImages;
             document.getElementById('averagePrice').textContent = formatPrice(Math.round(totalPrice / products.length));
         }
 
@@ -693,10 +1043,10 @@
             
             setTimeout(() => {
                 statusEl.classList.remove('show');
-            }, 3000);
+            }, 4000);
         }
 
-        console.log('✅ Admin Panel Ready!');
+        console.log('✅ Enhanced Admin Panel with Image Management Ready!');
     </script>
 </body>
 </html>
