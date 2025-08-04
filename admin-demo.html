@@ -1,0 +1,267 @@
+<!-- Admin Panel Step-by-Step Tutorial -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Demo Admin Panel - Chỉnh Sửa Giá Nhanh</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .demo-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .step {
+            border-left: 4px solid #27ae60;
+            padding-left: 1rem;
+            margin: 2rem 0;
+        }
+        .step h3 {
+            color: #27ae60;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+        }
+        .button-demo {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .button-demo:hover {
+            transform: translateY(-2px);
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .feature-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        .price-demo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #e8f5e8;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🚀 Demo: Chỉnh Sửa Giá Sản Phẩm Siêu Nhanh</h1>
+        
+        <div class="success">
+            <h3>✅ Admin Panel Đã Sẵn Sàng!</h3>
+            <p><strong>URL:</strong> <a href="https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html" target="_blank">https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html</a></p>
+            <p><strong>Login:</strong> admin / admin123</p>
+        </div>
+
+        <div class="step">
+            <h3>🔐 Bước 1: Đăng Nhập</h3>
+            <p>Click vào link admin panel và đăng nhập:</p>
+            <div class="code-block">
+Username: admin
+Password: admin123
+            </div>
+            <a href="https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html" target="_blank" class="button-demo">🚀 Mở Admin Panel</a>
+        </div>
+
+        <div class="step">
+            <h3>📊 Bước 2: Xem Dashboard</h3>
+            <p>Sau khi đăng nhập, bạn sẽ thấy dashboard với:</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📦 Tổng Sản Phẩm</h4>
+                    <p>21 sản phẩm đặc sản Tây Bắc</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💰 Sản Phẩm Đã Sửa Giá</h4>
+                    <p>Số lượng giá đã thay đổi</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Giá Trung Bình</h4>
+                    <p>Tính toán tự động</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏷️ Danh Mục</h4>
+                    <p>4 danh mục chính</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🔍 Bước 3: Tìm Sản Phẩm</h3>
+            <p>Sử dụng các công cụ tìm kiếm:</p>
+            <ul>
+                <li><strong>Tìm kiếm:</strong> Nhập tên sản phẩm (vd: "tam thất")</li>
+                <li><strong>Lọc danh mục:</strong> Dược liệu, Thực phẩm, Đồ uống, Tinh dầu</li>
+                <li><strong>Xem tất cả:</strong> Bảng hiển thị đầy đủ thông tin</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>✏️ Bước 4: Chỉnh Sửa Giá</h3>
+            <p>Click nút <strong>✏️ Edit</strong> bên cạnh sản phẩm cần sửa:</p>
+            
+            <div class="price-demo">
+                <div>
+                    <strong>Tam thất khô</strong><br>
+                    <span style="color: #666;">Giá gốc: 120,000₫</span><br>
+                    <span style="color: #27ae60; font-weight: bold;">Giá hiện tại: 120,000₫</span>
+                </div>
+                <div style="margin-left: auto;">
+                    <button style="background: #17a2b8; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer;">✏️</button>
+                    <button style="background: #ffc107; color: #212529; border: none; padding: 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">↶</button>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>⚡ Demo Live:</strong> Khi click Edit, modal sẽ mở với form nhập giá mới!
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>💾 Bước 5: Lưu & Cập Nhật</h3>
+            <p>Sau khi nhập giá mới:</p>
+            <ol>
+                <li>Click <strong>"Cập Nhật Giá"</strong></li>
+                <li>Hệ thống tự động lưu vào localStorage</li>
+                <li>Website chính cập nhật ngay lập tức</li>
+                <li>Thông báo xác nhận xuất hiện</li>
+            </ol>
+            
+            <div class="success">
+                <strong>✅ Thành công!</strong> Giá đã được cập nhật từ 120,000₫ thành 150,000₫
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🔄 Bước 6: Kiểm Tra Kết Quả</h3>
+            <p>Mở website chính để xem thay đổi:</p>
+            <a href="https://nguyenngocbinh.github.io/DACSANTAYBAC/" target="_blank" class="button-demo">🌐 Xem Website</a>
+            
+            <div class="warning">
+                <strong>💡 Mẹo:</strong> Refresh trang (F5) để thấy giá mới nếu cần!
+            </div>
+        </div>
+
+        <div class="demo-container">
+            <h2>🛠️ Tính Năng Nâng Cao</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📥 Backup Data</h4>
+                    <p>Tải xuống file JSON chứa tất cả giá hiện tại</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📤 Restore Data</h4>
+                    <p>Khôi phục từ file backup đã lưu</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔄 Reset All</h4>
+                    <p>Khôi phục tất cả về giá gốc</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Thống Kê Real-time</h4>
+                    <p>Dashboard cập nhật tự động</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-container">
+            <h2>⚡ So Sánh Tốc Độ</h2>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #f8f9fa;">
+                        <th style="padding: 1rem; border: 1px solid #ddd;">Phương Pháp</th>
+                        <th style="padding: 1rem; border: 1px solid #ddd;">Thời Gian</th>
+                        <th style="padding: 1rem; border: 1px solid #ddd;">Độ Khó</th>
+                        <th style="padding: 1rem; border: 1px solid #ddd;">Kỹ Năng Cần</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>🚀 Admin Panel</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; color: #27ae60;"><strong>30 giây</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">⭐</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Không cần</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">💻 Edit Code</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">5-10 phút</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">⭐⭐⭐</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Biết code</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">🔄 Git Workflow</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">10-15 phút</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Git + Code</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="success">
+            <h3>🎯 Kết Luận</h3>
+            <p><strong>Admin Panel là cách nhanh nhất và dễ nhất</strong> để quản lý giá sản phẩm hàng ngày!</p>
+            <ul>
+                <li>✅ Không cần biết lập trình</li>
+                <li>✅ Thay đổi real-time</li>
+                <li>✅ Giao diện thân thiện</li>
+                <li>✅ Backup/restore dễ dàng</li>
+                <li>✅ Thống kê trực quan</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html" target="_blank" class="button-demo" style="font-size: 1.2rem; padding: 15px 30px;">
+                🚀 Thử Ngay Admin Panel
+            </a>
+        </div>
+    </div>
+</body>
+</html>
