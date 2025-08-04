@@ -137,8 +137,14 @@ Thay thế hàm `checkout()` trong `script.js` để tích hợp:
 - PayPal
 - Stripe
 
-## 📞 Hỗ Trợ
+## 📞 Hỗ Trợ & Liên Hệ
 
+### 🔗 Thông tin liên hệ:
+- **📱 Điện thoại & Zalo**: 0988040027
+- **📘 Facebook**: Hải béo
+- **📧 Email**: info@dacsantaybac.com
+
+### 🛠️ Hỗ trợ kỹ thuật:
 Để được hỗ trợ hoặc báo lỗi, vui lòng:
 1. Mở Developer Tools (F12) để xem console errors
 2. Kiểm tra file paths và tên files
