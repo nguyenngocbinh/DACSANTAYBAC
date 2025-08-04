@@ -1,11 +1,17 @@
 # 🌿 Website Đặc Sản Tây Bắc
 
-## 📋 Giới Thiệu
-Website bán hàng chuyên các sản phẩm đặc sản Tây Bắc và dược liệu tự nhiên.
+[![Website](https://img.shields.io/badge/Website-Live-green)](https://nguyenngocbinh.github.io/DACSANTAYBAC/)
+[![Admin](https://img.shields.io/badge/Admin-Panel-blue)](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 🚀 Demo
-- **Website:** [Live Demo](https://nguyenngocbinh.github.io/web_ban_hang/)
-- **Admin Panel:** [Admin Login](https://nguyenngocbinh.github.io/web_ban_hang/admin.html)
+## 🎯 Giới Thiệu
+
+Website thương mại điện tử chuyên bán các sản phẩm đặc sản Tây Bắc và dược liệu tự nhiên. Được xây dựng với HTML5, CSS3, và JavaScript thuần, tối ưu cho SEO và tốc độ.
+
+## 🚀 Demo Trực Tiếp
+
+- **🌐 Website Chính:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/](https://nguyenngocbinh.github.io/DACSANTAYBAC/)
+- **👨‍💼 Admin Panel:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html)
 
 ## ✨ Tính Năng
 - 🛒 Giỏ hàng thông minh
