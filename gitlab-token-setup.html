@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 GitLab Token Setup - Step by Step</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+        
+        .header h1 {
+            color: #fc6d26;
+            margin-bottom: 1rem;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #fc6d26;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+        
+        .step h3 {
+            color: #fc6d26;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #fc6d26;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .copy-btn:hover {
+            background: #219a52;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #fc6d26;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin: 10px 0;
+        }
+        
+        .btn:hover {
+            background: #e55a1c;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .screenshot-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin: 1rem 0;
+            color: #6c757d;
+        }
+        
+        .token-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #fc6d26;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 1rem 0;
+        }
+        
+        .checklist {
+            background: #e8f5e8;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .checklist ul {
+            margin: 0;
+        }
+        
+        .checklist li {
+            margin: 0.5rem 0;
+        }
+        
+        .urgent {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 GitLab Personal Access Token Setup</h1>
+            <p>Thiết lập xác thực GitLab để backup mã nguồn an toàn</p>
+        </div>
+
+        <div class="urgent">
+            🚨 <strong>QUAN TRỌNG:</strong> GitLab không còn hỗ trợ password authentication. Bạn PHẢI tạo Personal Access Token để tiếp tục sử dụng GitLab!
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">1</span>Truy Cập Trang Tạo Token</h3>
+            <p>Click vào link bên dưới để mở trang tạo Personal Access Token:</p>
+            <a href="https://gitlab.com/-/profile/personal_access_tokens" target="_blank" class="btn">
+                🚀 Mở GitLab Token Settings
+            </a>
+            <div class="warning">
+                ⚠️ <strong>Lưu ý:</strong> Bạn cần đăng nhập vào GitLab trước khi truy cập link trên.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">2</span>Điền Thông Tin Token</h3>
+            <p>Tại trang Personal Access Tokens, điền các thông tin sau:</p>
+            
+            <div class="checklist">
+                <strong>📝 Thông tin cần điền:</strong>
+                <ul>
+                    <li><strong>Token name:</strong> <code>DACSANTAYBAC-deploy</code></li>
+                    <li><strong>Expiration date:</strong> <code>2025-12-31</code> (hoặc để trống)</li>
+                    <li><strong>Select scopes:</strong> ✅ Chọn các quyền sau:</li>
+                    <ul>
+                        <li>✅ <strong>read_repository</strong> - Đọc repository</li>
+                        <li>✅ <strong>write_repository</strong> - Ghi repository</li>
+                    </ul>
+                </ul>
+            </div>
+            
+            <div class="screenshot-placeholder">
+                📸 Screenshot sẽ hiển thị form với các trường trên
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">3</span>Tạo và Copy Token</h3>
+            <p>Sau khi điền đầy đủ thông tin:</p>
+            <ol>
+                <li>Click nút <code>Create personal access token</code></li>
+                <li>Token sẽ được tạo và hiển thị</li>
+                <li><strong>Copy token ngay lập tức</strong> (chỉ hiển thị 1 lần duy nhất!)</li>
+            </ol>
+            
+            <div class="warning">
+                🚨 <strong>CỰC KỲ QUAN TRỌNG:</strong> Token chỉ hiển thị 1 lần duy nhất! Nếu không copy ngay, bạn sẽ phải tạo lại token mới.
+            </div>
+            
+            <p><strong>Paste token vào đây để test (chỉ để kiểm tra):</strong></p>
+            <input type="text" class="token-input" placeholder="glpat-xxxxxxxxxxxxxxxxxxxx" id="tokenInput">
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">4</span>Cấu Hình Git Remote</h3>
+            <p>Sau khi có token, mở PowerShell/Terminal và chạy lệnh sau:</p>
+            
+            <div class="code-block">git remote set-url gitlab https://nguyenngocbinh:YOUR_TOKEN_HERE@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
+                <button class="copy-btn" onclick="copyToClipboard('git remote set-url gitlab https://nguyenngocbinh:YOUR_TOKEN_HERE@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git')">Copy</button>
+            </div>
+            
+            <div class="warning">
+                ⚠️ <strong>Thay thế:</strong> <code>YOUR_TOKEN_HERE</code> bằng token thực mà bạn vừa copy.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">5</span>Test Kết Nối</h3>
+            <p>Test xem GitLab đã hoạt động chưa:</p>
+            
+            <div class="code-block">git push gitlab main
+                <button class="copy-btn" onclick="copyToClipboard('git push gitlab main')">Copy</button>
+            </div>
+            
+            <div class="success">
+                ✅ <strong>Thành công:</strong> Nếu không có lỗi, GitLab đã sẵn sàng!
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">6</span>Sử Dụng Dual Sync</h3>
+            <p>Sau khi setup token thành công, bạn có thể sử dụng script dual sync:</p>
+            
+            <div class="code-block">powershell -ExecutionPolicy Bypass -File dual-sync.ps1
+                <button class="copy-btn" onclick="copyToClipboard('powershell -ExecutionPolicy Bypass -File dual-sync.ps1')">Copy</button>
+            </div>
+            
+            <p>Hoặc manual sync:</p>
+            <div class="code-block">git add .
+git commit -m "Sync với GitLab"
+git push gitlab main    # Private backup
+git push origin main     # Public production
+                <button class="copy-btn" onclick="copyToClipboard('git add .\ngit commit -m &quot;Sync với GitLab&quot;\ngit push gitlab main\ngit push origin main')">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🆘 Khắc Phục Sự Cố</h2>
+        
+        <div class="step">
+            <h3>❌ "Access denied" hoặc "Authentication failed"</h3>
+            <ul>
+                <li>Kiểm tra token có đúng không</li>
+                <li>Kiểm tra scopes đã chọn đủ không</li>
+                <li>Token có còn hiệu lực không (chưa expired)</li>
+                <li>Thử tạo token mới</li>
+            </ul>
+        </div>
+        
+        <div class="step">
+            <h3>❌ "Repository not found"</h3>
+            <p>Chạy lệnh để tạo repository trên GitLab:</p>
+            <div class="code-block">git remote set-url gitlab https://nguyenngocbinh:TOKEN@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
+                <button class="copy-btn" onclick="copyCommand('gitlab-remote')">Copy</button>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>✅ Alternative: SSH Key</h3>
+            <p>Nếu muốn sử dụng SSH thay vì token:</p>
+            <div class="code-block">ssh-keygen -t ed25519 -C "your.email@example.com"
+cat ~/.ssh/id_ed25519.pub
+git remote set-url gitlab git@gitlab.com:nguyenngocbinh/DACSANTAYBAC.git
+                <button class="copy-btn" onclick="copyCommand('ssh-setup')">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🎯 Tóm Tắt</h2>
+        <div class="checklist">
+            <strong>✅ Checklist hoàn thành:</strong>
+            <ul>
+                <li>☐ Truy cập GitLab Personal Access Tokens</li>
+                <li>☐ Tạo token với scopes: read_repository, write_repository</li>
+                <li>☐ Copy token (chỉ hiển thị 1 lần!)</li>
+                <li>☐ Chạy: <code>git remote set-url gitlab https://nguyenngocbinh:TOKEN@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git</code></li>
+                <li>☐ Test: <code>git push gitlab main</code></li>
+                <li>☐ Sử dụng dual-sync.ps1 để sync cả 2 repos</li>
+            </ul>
+        </div>
+        
+        <div class="success">
+            🎉 <strong>Kết quả:</strong> Dual repository strategy hoạt động hoàn hảo với GitLab private backup và GitHub public production!
+        </div>
+    </div>
+
+    <script>
+        const commands = {
+            'gitlab-remote': 'git remote set-url gitlab https://nguyenngocbinh:TOKEN@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git',
+            'ssh-setup': 'ssh-keygen -t ed25519 -C "your.email@example.com"\ncat ~/.ssh/id_ed25519.pub\ngit remote set-url gitlab git@gitlab.com:nguyenngocbinh/DACSANTAYBAC.git'
+        };
+        
+        function copyCommand(commandKey) {
+            const text = commands[commandKey];
+            if (text) {
+                copyToClipboard(text);
+            }
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#27ae60';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+                alert('Copy failed. Please copy manually.');
+            });
+        }
+        
+        document.getElementById('tokenInput').addEventListener('input', function() {
+            const token = this.value.trim();
+            if (token.length > 10) {
+                const command = 'git remote set-url gitlab https://nguyenngocbinh:' + token + '@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git';
+                console.log('Generated command:', command);
+            }
+        });
+    </script>
+</body>
+</html>

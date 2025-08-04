@@ -1,0 +1,184 @@
+# GitLab CI/CD Pipeline for DACSANTAYBAC
+# Auto deploy processed code to GitHub Pages
+
+stages:
+  - build
+  - deploy
+
+variables:
+  GITHUB_REPO: "https://github.com/nguyenngocbinh/DACSANTAYBAC.git"
+  GITHUB_PAGES_BRANCH: "main"
+
+# Build stage - Process and minify code
+build_production:
+  stage: build
+  image: node:18-alpine
+  before_script:
+    - apk add --no-cache git
+    - git config --global user.name "GitLab CI"
+    - git config --global user.email "ci@gitlab.com"
+  script:
+    # Create production directory
+    - mkdir -p production
+    - cp -r * production/ || true
+    - cd production
+    
+    # Remove development files from production
+    - rm -f .gitlab-ci.yml
+    - rm -f test-ci-local.ps1
+    - rm -f gitlab-token-setup.html
+    - rm -f GITLAB_AUTH_FIX.md
+    - rm -f GITLAB_CI_SETUP.md
+    - rm -rf production
+    - rm -rf .git
+    
+    # Create production .gitignore
+    - |
+      cat > .gitignore << 'EOF'
+      # Production deployment - clean build
+      node_modules/
+      *.log
+      .env
+      .DS_Store
+      Thumbs.db
+      production/
+      test-ci-local.ps1
+      gitlab-token-setup.html
+      GITLAB_AUTH_FIX.md
+      GITLAB_CI_SETUP.md
+      EOF
+    
+    # Minify JavaScript files if they exist
+    - |
+      if [ -f "js/script.js" ]; then
+        echo "Minifying script.js..."
+        # Simple minification - remove comments and extra spaces
+        sed 's|//.*||g; s|/\*.*\*/||g; s/[[:space:]]\+/ /g' js/script.js > js/script.min.js
+        
+        # Obfuscate admin credentials
+        ADMIN_B64=$(echo -n "admin" | base64)
+        PASS_B64=$(echo -n "admin123" | base64)
+        sed -i "s/\"admin\"/atob('$ADMIN_B64')/g" js/script.min.js
+        sed -i "s/\"admin123\"/atob('$PASS_B64')/g" js/script.min.js
+        
+        echo "✅ script.min.js created"
+      fi
+    
+    - |
+      if [ -f "js/admin.js" ]; then
+        echo "Minifying admin.js..."
+        sed 's|//.*||g; s|/\*.*\*/||g; s/[[:space:]]\+/ /g' js/admin.js > js/admin.min.js
+        
+        # Obfuscate admin credentials
+        ADMIN_B64=$(echo -n "admin" | base64)
+        PASS_B64=$(echo -n "admin123" | base64)
+        sed -i "s/\"admin\"/atob('$ADMIN_B64')/g" js/admin.min.js
+        sed -i "s/\"admin123\"/atob('$PASS_B64')/g" js/admin.min.js
+        
+        echo "✅ admin.min.js created"
+      fi
+    
+    # Update HTML files to use minified versions
+    - |
+      if [ -f "index.html" ]; then
+        sed -i 's|js/script\.js|js/script.min.js|g' index.html
+        echo "✅ index.html updated to use minified JS"
+      fi
+    
+    - |
+      if [ -f "admin.html" ]; then
+        sed -i 's|js/script\.js|js/script.min.js|g' admin.html
+        sed -i 's|js/admin\.js|js/admin.min.js|g' admin.html
+        echo "✅ admin.html updated to use minified JS"
+      fi
+    
+    # Create deployment info
+    - |
+      cat > DEPLOYMENT_INFO.txt << EOF
+      🚀 DACSANTAYBAC - Production Deployment
+      =====================================
+      
+      📅 Build Date: $(date)
+      🔧 Built by: GitLab CI/CD
+      📦 Build ID: $CI_PIPELINE_ID
+      🌿 Source Branch: $CI_COMMIT_REF_NAME
+      📝 Commit: $CI_COMMIT_SHORT_SHA
+      
+      🔒 Security Features:
+      - Admin credentials obfuscated with Base64
+      - Development files removed
+      - Source code minified
+      - Clean production build
+      
+      🌐 Live Website: https://nguyenngocbinh.github.io/DACSANTAYBAC/
+      👨‍💼 Admin Panel: https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html
+      
+      Repository Strategy:
+      📚 GitLab (Private): Full source code with comments
+      🌍 GitHub (Public): Minified production code
+      EOF
+    
+    - echo "✅ Production build completed"
+    - ls -la
+    
+  artifacts:
+    paths:
+      - production/
+    expire_in: 1 hour
+  only:
+    - main
+    - master
+
+# Deploy stage - Push to GitHub
+deploy_to_github:
+  stage: deploy
+  image: alpine/git:latest
+  dependencies:
+    - build_production
+  before_script:
+    - apk add --no-cache openssh-client
+    - git config --global user.name "GitLab CI Deploy Bot"
+    - git config --global user.email "deploy-bot@gitlab.com"
+  script:
+    - cd production
+    
+    # Initialize git repository
+    - git init
+    - git add .
+    - git commit -m "🚀 Production deployment from GitLab CI - Pipeline #$CI_PIPELINE_ID"
+    
+    # Add GitHub remote with token
+    - git remote add github https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/nguyenngocbinh/DACSANTAYBAC.git
+    
+    # Force push to GitHub (production deployment)
+    - git push github main --force
+    
+    - echo "✅ Successfully deployed to GitHub Pages!"
+    - echo "🌐 Website will be live at: https://nguyenngocbinh.github.io/DACSANTAYBAC/"
+    
+  only:
+    - main
+    - master
+
+# Optional: Manual deployment job
+manual_deploy:
+  stage: deploy
+  image: alpine/git:latest
+  dependencies:
+    - build_production
+  before_script:
+    - apk add --no-cache openssh-client
+    - git config --global user.name "GitLab CI Manual Deploy"
+    - git config --global user.email "manual-deploy@gitlab.com"
+  script:
+    - cd production
+    - git init
+    - git add .
+    - git commit -m "🔧 Manual production deployment - Pipeline #$CI_PIPELINE_ID"
+    - git remote add github https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/nguyenngocbinh/DACSANTAYBAC.git
+    - git push github main --force
+    - echo "✅ Manual deployment completed!"
+  when: manual
+  only:
+    - main
+    - master
