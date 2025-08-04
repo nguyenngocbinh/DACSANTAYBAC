@@ -1,0 +1,35 @@
+{
+  "name": "web-ban-hang-dac-san-tay-bac",
+  "version": "1.0.0",
+  "description": "Website bán hàng chuyên đặc sản Tây Bắc và thảo dược thiên nhiên",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --host=localhost --open=/",
+    "dev": "live-server --port=3000 --host=localhost --open=/ --watch=css,js,index.html"
+  },
+  "keywords": [
+    "đặc-sản",
+    "tây-bắc",
+    "thảo-dược",
+    "tam-thất",
+    "hà-thủ-ô",
+    "sâm-ngọc-linh",
+    "website-bán-hàng",
+    "ecommerce"
+  ],
+  "author": "Nguyen Ngoc Binh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nguyenngocbinh/web_ban_hang.git"
+  },
+  "homepage": "https://nguyenngocbinh.github.io/web_ban_hang",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
