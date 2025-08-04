@@ -1,0 +1,630 @@
+/* Admin Panel Styles */
+.admin-body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    color: #333;
+}
+
+/* Admin Modal */
+.admin-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-modal.active {
+    display: flex;
+}
+
+.admin-modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Admin Header */
+.admin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.admin-header h2,
+.admin-header h3 {
+    color: #27ae60;
+    margin-bottom: 0.5rem;
+}
+
+.admin-header i {
+    margin-right: 0.5rem;
+}
+
+.admin-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.admin-close:hover {
+    color: #e74c3c;
+}
+
+/* Admin Form */
+.admin-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.admin-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus {
+    outline: none;
+    border-color: #27ae60;
+}
+
+.readonly-input {
+    background-color: #f8f9fa !important;
+    cursor: not-allowed;
+}
+
+.admin-form small {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.admin-note {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #e8f5e8;
+    border-radius: 8px;
+}
+
+.admin-note small {
+    color: #27ae60;
+}
+
+/* Admin Buttons */
+.admin-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.admin-btn-primary {
+    background: #27ae60;
+    color: white;
+    width: 100%;
+    justify-content: center;
+}
+
+.admin-btn-primary:hover {
+    background: #229954;
+}
+
+.admin-btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.admin-btn-secondary:hover {
+    background: #5a6268;
+}
+
+.admin-btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.admin-btn-success:hover {
+    background: #218838;
+}
+
+.admin-btn-warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.admin-btn-warning:hover {
+    background: #e0a800;
+}
+
+.admin-btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.admin-btn-danger:hover {
+    background: #c82333;
+}
+
+.admin-btn-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.admin-btn-info:hover {
+    background: #138496;
+}
+
+.admin-btn-outline {
+    background: transparent;
+    color: #27ae60;
+    border: 2px solid #27ae60;
+}
+
+.admin-btn-outline:hover {
+    background: #27ae60;
+    color: white;
+}
+
+/* Admin Dashboard */
+.admin-dashboard {
+    display: none;
+    min-height: 100vh;
+}
+
+.admin-dashboard.active {
+    display: block;
+}
+
+/* Admin Navbar */
+.admin-navbar {
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.admin-nav-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.admin-nav-brand i {
+    margin-right: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.admin-nav-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Admin Main */
+.admin-main {
+    padding: 2rem;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Statistics Cards */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stat-info h3 {
+    font-size: 2rem;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.stat-info p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Admin Actions */
+.admin-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Admin Section */
+.admin-section {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-header h3 {
+    color: #2c3e50;
+    margin: 0;
+}
+
+.section-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-search,
+.admin-select {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    min-width: 200px;
+}
+
+.admin-search:focus,
+.admin-select:focus {
+    outline: none;
+    border-color: #27ae60;
+}
+
+/* Admin Table */
+.admin-table-container {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.admin-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+    position: sticky;
+    top: 0;
+}
+
+.admin-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.product-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.product-category {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.category-herbal {
+    background: #d4edda;
+    color: #155724;
+}
+
+.category-food {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.category-drink {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.category-oil {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.price-original {
+    color: #666;
+    text-decoration: line-through;
+}
+
+.price-current {
+    font-weight: 600;
+    color: #27ae60;
+}
+
+.price-changed {
+    color: #e67e22 !important;
+}
+
+.change-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+}
+
+.change-up {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.change-down {
+    background: #d4edda;
+    color: #155724;
+}
+
+.change-none {
+    background: #e2e3e5;
+    color: #6c757d;
+}
+
+.action-btn {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0 0.25rem;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+}
+
+.btn-edit {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #138496;
+}
+
+.btn-reset {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-reset:hover {
+    background: #e0a800;
+}
+
+/* Admin Form Actions */
+.admin-form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+/* Admin Notification */
+.admin-notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: #27ae60;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    animation: slideInRight 0.3s ease;
+}
+
+.admin-notification.show {
+    display: flex;
+}
+
+.admin-notification.error {
+    background: #dc3545;
+}
+
+.admin-notification.warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.admin-notification.info {
+    background: #17a2b8;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .admin-nav-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .admin-main {
+        padding: 1rem;
+    }
+    
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .admin-actions {
+        flex-direction: column;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .section-actions {
+        flex-direction: column;
+    }
+    
+    .admin-search,
+    .admin-select {
+        min-width: auto;
+    }
+    
+    .admin-modal-content {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .admin-form-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-table {
+        font-size: 0.8rem;
+    }
+    
+    .admin-table th,
+    .admin-table td {
+        padding: 0.5rem;
+    }
+    
+    .stat-card {
+        padding: 1.5rem;
+        flex-direction: column;
+        text-align: center;
+    }
+}

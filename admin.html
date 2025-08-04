@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Đặc Sản Tây Bắc</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Login Modal -->
+    <div id="loginModal" class="admin-modal active">
+        <div class="admin-modal-content">
+            <div class="admin-header">
+                <h2><i class="fas fa-shield-alt"></i> Admin Login</h2>
+                <p>Đăng nhập để quản lý sản phẩm</p>
+            </div>
+            <form id="adminLoginForm" class="admin-form">
+                <div class="form-group">
+                    <label>Tên đăng nhập:</label>
+                    <input type="text" id="adminUsername" placeholder="Nhập tên đăng nhập" required>
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu:</label>
+                    <input type="password" id="adminPassword" placeholder="Nhập mật khẩu" required>
+                </div>
+                <button type="submit" class="admin-btn admin-btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
+                <div class="admin-note">
+                    <small><i class="fas fa-info-circle"></i> Tài khoản mặc định: admin / admin123</small>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard">
+        <!-- Header -->
+        <header class="admin-navbar">
+            <div class="admin-nav-brand">
+                <i class="fas fa-leaf"></i>
+                <span>Admin - Đặc Sản Tây Bắc</span>
+            </div>
+            <div class="admin-nav-actions">
+                <a href="index.html" class="admin-btn admin-btn-outline" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Xem Website
+                </a>
+                <button onclick="logout()" class="admin-btn admin-btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-container">
+                <!-- Statistics Cards -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalProducts">21</h3>
+                            <p>Tổng sản phẩm</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgPrice">2.1M</h3>
+                            <p>Giá trung bình</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="modifiedCount">0</h3>
+                            <p>Đã chỉnh sửa</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="admin-actions">
+                    <button onclick="resetPrices()" class="admin-btn admin-btn-warning">
+                        <i class="fas fa-undo"></i> Reset giá gốc
+                    </button>
+                    <button onclick="exportData()" class="admin-btn admin-btn-info">
+                        <i class="fas fa-download"></i> Xuất dữ liệu
+                    </button>
+                    <button onclick="refreshStats()" class="admin-btn admin-btn-success">
+                        <i class="fas fa-sync-alt"></i> Làm mới
+                    </button>
+                </div>
+
+                <!-- Products Table -->
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-list"></i> Quản lý sản phẩm</h3>
+                        <div class="section-actions">
+                            <input type="text" id="searchProduct" placeholder="Tìm kiếm sản phẩm..." class="admin-search">
+                            <select id="categoryFilter" class="admin-select">
+                                <option value="">Tất cả danh mục</option>
+                                <option value="herbal">Thảo dược</option>
+                                <option value="food">Thực phẩm</option>
+                                <option value="drink">Đồ uống</option>
+                                <option value="oil">Tinh dầu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-table-container">
+                        <table class="admin-table" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th>Giá gốc</th>
+                                    <th>Giá hiện tại</th>
+                                    <th>Thay đổi</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Products will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Price Modal -->
+    <div id="editPriceModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-header">
+                <h3><i class="fas fa-tag"></i> Chỉnh sửa giá</h3>
+                <button onclick="closeEditModal()" class="admin-close">&times;</button>
+            </div>
+            <form id="editPriceForm" class="admin-form">
+                <input type="hidden" id="editProductId">
+                <div class="form-group">
+                    <label>Tên sản phẩm:</label>
+                    <input type="text" id="editProductName" readonly class="readonly-input">
+                </div>
+                <div class="form-group">
+                    <label>Giá gốc:</label>
+                    <input type="text" id="editOriginalPrice" readonly class="readonly-input">
+                </div>
+                <div class="form-group">
+                    <label>Giá mới:</label>
+                    <input type="number" id="editNewPrice" placeholder="Nhập giá mới" required>
+                    <small>Đơn vị: VND</small>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú:</label>
+                    <textarea id="editNote" placeholder="Lý do thay đổi giá (tùy chọn)" rows="3"></textarea>
+                </div>
+                <div class="admin-form-actions">
+                    <button type="button" onclick="closeEditModal()" class="admin-btn admin-btn-secondary">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                    <button type="submit" class="admin-btn admin-btn-success">
+                        <i class="fas fa-save"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="adminNotification" class="admin-notification">
+        <span id="notificationMessage"></span>
+        <button onclick="closeNotification()" class="notification-close">&times;</button>
+    </div>
+
+    <script src="js/script.min.js"></script>
+    <script src="js/admin.min.js"></script>
+</body>
+</html>
+

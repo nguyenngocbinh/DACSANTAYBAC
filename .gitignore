@@ -4,6 +4,17 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Original source files (keep only obfuscated versions on GitHub)
+js/script.js
+js/admin.js
+
+# Development and build tools
+obfuscate.js
+
+# Admin credentials and sensitive files
+admin-config.json
+credentials.json
+
 # Runtime data
 pids
 *.pid

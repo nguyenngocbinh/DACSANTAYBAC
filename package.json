@@ -5,7 +5,10 @@
   "main": "index.html",
   "scripts": {
     "start": "live-server --port=3000 --host=localhost --open=/",
-    "dev": "live-server --port=3000 --host=localhost --open=/ --watch=css,js,index.html"
+    "dev": "live-server --port=3000 --host=localhost --open=/ --watch=css,js,index.html",
+    "build": "node build.js",
+    "obfuscate": "node obfuscate.js",
+    "deploy": "npm run build && git add . && git commit -m 'Build for production' && git push"
   },
   "keywords": [
     "đặc-sản",
