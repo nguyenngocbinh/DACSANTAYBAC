@@ -18,12 +18,11 @@ build_production:
     - git config --global user.name "GitLab CI"
     - git config --global user.email "ci@gitlab.com"
   script:
-    # Create production directory
+    - echo "Creating production directory..."
     - mkdir -p production
     - cp -r * production/ || true
     - cd production
-    
-    # Remove development files from production
+    - echo "Removing development files from production..."
     - rm -f .gitlab-ci.yml
     - rm -f test-ci-local.ps1
     - rm -f gitlab-token-setup.html
@@ -31,8 +30,7 @@ build_production:
     - rm -f GITLAB_CI_SETUP.md
     - rm -rf production
     - rm -rf .git
-    
-    # Create production .gitignore
+    - echo "Creating production .gitignore..."
     - |
       cat > .gitignore << 'EOF'
       # Production deployment - clean build
@@ -47,52 +45,40 @@ build_production:
       GITLAB_AUTH_FIX.md
       GITLAB_CI_SETUP.md
       EOF
-    
-    # Minify JavaScript files if they exist
+    - echo "Processing JavaScript files..."
     - |
       if [ -f "js/script.js" ]; then
         echo "Minifying script.js..."
-        # Simple minification - remove comments and extra spaces
         sed 's|//.*||g; s|/\*.*\*/||g; s/[[:space:]]\+/ /g' js/script.js > js/script.min.js
-        
-        # Obfuscate admin credentials
         ADMIN_B64=$(echo -n "admin" | base64)
         PASS_B64=$(echo -n "admin123" | base64)
         sed -i "s/\"admin\"/atob('$ADMIN_B64')/g" js/script.min.js
         sed -i "s/\"admin123\"/atob('$PASS_B64')/g" js/script.min.js
-        
         echo "✅ script.min.js created"
       fi
-    
     - |
       if [ -f "js/admin.js" ]; then
         echo "Minifying admin.js..."
         sed 's|//.*||g; s|/\*.*\*/||g; s/[[:space:]]\+/ /g' js/admin.js > js/admin.min.js
-        
-        # Obfuscate admin credentials
         ADMIN_B64=$(echo -n "admin" | base64)
         PASS_B64=$(echo -n "admin123" | base64)
         sed -i "s/\"admin\"/atob('$ADMIN_B64')/g" js/admin.min.js
         sed -i "s/\"admin123\"/atob('$PASS_B64')/g" js/admin.min.js
-        
         echo "✅ admin.min.js created"
       fi
-    
-    # Update HTML files to use minified versions
+    - echo "Updating HTML files to use minified versions..."
     - |
       if [ -f "index.html" ]; then
         sed -i 's|js/script\.js|js/script.min.js|g' index.html
         echo "✅ index.html updated to use minified JS"
       fi
-    
     - |
       if [ -f "admin.html" ]; then
         sed -i 's|js/script\.js|js/script.min.js|g' admin.html
         sed -i 's|js/admin\.js|js/admin.min.js|g' admin.html
         echo "✅ admin.html updated to use minified JS"
       fi
-    
-    # Create deployment info
+    - echo "Creating deployment info..."
     - |
       cat > DEPLOYMENT_INFO.txt << EOF
       🚀 DACSANTAYBAC - Production Deployment
@@ -117,10 +103,8 @@ build_production:
       📚 GitLab (Private): Full source code with comments
       🌍 GitHub (Public): Minified production code
       EOF
-    
     - echo "✅ Production build completed"
     - ls -la
-    
   artifacts:
     paths:
       - production/
@@ -141,21 +125,16 @@ deploy_to_github:
     - git config --global user.email "deploy-bot@gitlab.com"
   script:
     - cd production
-    
-    # Initialize git repository
+    - echo "Initializing git repository..."
     - git init
     - git add .
     - git commit -m "🚀 Production deployment from GitLab CI - Pipeline #$CI_PIPELINE_ID"
-    
-    # Add GitHub remote with token
+    - echo "Adding GitHub remote..."
     - git remote add github https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/nguyenngocbinh/DACSANTAYBAC.git
-    
-    # Force push to GitHub (production deployment)
+    - echo "Pushing to GitHub..."
     - git push github main --force
-    
     - echo "✅ Successfully deployed to GitHub Pages!"
     - echo "🌐 Website will be live at: https://nguyenngocbinh.github.io/DACSANTAYBAC/"
-    
   only:
     - main
     - master
