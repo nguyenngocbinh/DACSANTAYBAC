@@ -50,10 +50,10 @@ fs.writeFileSync('index.html', indexContent);
 console.log('   ✅ Updated index.html');
 
 // Update admin.html
-let adminContent = fs.readFileSync('admin.html', 'utf8');
+let adminContent = fs.readFileSync('admin/admin.html', 'utf8');
 adminContent = adminContent.replace('js/admin.js', 'js/admin.min.js');
-fs.writeFileSync('admin.html', adminContent);
-console.log('   ✅ Updated admin.html');
+fs.writeFileSync('admin/admin.html', adminContent);
+console.log('   ✅ Updated admin/admin.html');
 
 // Step 3: Create production README
 console.log('\n3️⃣ Creating production README...');
@@ -64,8 +64,8 @@ const productionReadme = `# 🌿 Website Đặc Sản Tây Bắc
 Website bán hàng chuyên các sản phẩm đặc sản Tây Bắc và dược liệu tự nhiên.
 
 ## 🚀 Demo
-- **Website:** [Live Demo](https://nguyenngocbinh.github.io/web_ban_hang/)
-- **Admin Panel:** [Admin Login](https://nguyenngocbinh.github.io/web_ban_hang/admin.html)
+- **Website:** [Live Demo](https://nguyenngocbinh.github.io/DACSANTAYBAC/)
+- **Admin Panel:** [Admin Login](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html)
 
 ## ✨ Tính Năng
 - 🛒 Giỏ hàng thông minh

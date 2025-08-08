@@ -18,27 +18,30 @@ class AdminPanel {
     loadProducts() {
         // Products data (from main script.js)
         this.originalProducts = [
-            { id: 1, name: "Tam thất khô", category: "herbal", price: 120000, originalPrice: 120000, image: "images/tam-that-kho.jpg", description: "Tam thất khô cao cấp từ Tây Bắc", unit: "100g" },
-            { id: 2, name: "Hà thủ ô", category: "herbal", price: 80000, originalPrice: 80000, image: "images/ha-thu-o.jpg", description: "Hà thủ ô tự nhiên", unit: "100g" },
-            { id: 3, name: "Mật ong rừng U Minh", category: "food", price: 150000, originalPrice: 150000, image: "images/mat-ong-rung.jpg", description: "Mật ong rừng nguyên chất", unit: "500ml" },
-            { id: 4, name: "Thảo quả", category: "herbal", price: 95000, originalPrice: 95000, image: "images/thao-qua.jpg", description: "Thảo quả khô Tây Bắc", unit: "100g" },
-            { id: 5, name: "Đông trùng hạ thảo", category: "herbal", price: 350000, originalPrice: 350000, image: "images/dong-trung-ha-thao.jpg", description: "Đông trùng hạ thảo tự nhiên", unit: "10g" },
-            { id: 6, name: "Nấm linh chi đỏ", category: "herbal", price: 200000, originalPrice: 200000, image: "images/nam-linh-chi.jpg", description: "Nấm linh chi đỏ Tây Bắc", unit: "100g" },
-            { id: 7, name: "Sâm ngọc linh", category: "herbal", price: 180000, originalPrice: 180000, image: "images/sam-ngoc-linh.jpg", description: "Sâm ngọc linh cao cấp", unit: "50g" },
-            { id: 8, name: "Trà shan tuyết cổ thụ", category: "drink", price: 250000, originalPrice: 250000, image: "images/tra-shan-tuyet.jpg", description: "Trà shan tuyết từ cây cổ thụ", unit: "100g" },
-            { id: 9, name: "Dầu tràm Huế", category: "oil", price: 45000, originalPrice: 45000, image: "images/dau-tram-hue.jpg", description: "Dầu tràm nguyên chất Huế", unit: "10ml" },
-            { id: 10, name: "Mắc khén", category: "food", price: 70000, originalPrice: 70000, image: "images/mac-khen.jpg", description: "Mắc khén thơm đặc trưng Tây Bắc", unit: "50g" },
-            { id: 11, name: "Cao hổ cốt", category: "herbal", price: 290000, originalPrice: 290000, image: "images/cao-ho-cot.jpg", description: "Cao hổ cốt bổ xương khớp", unit: "100g" },
-            { id: 12, name: "Thịt trâu gác bếp", category: "food", price: 320000, originalPrice: 320000, image: "images/thit-trau-gac-bep.jpg", description: "Thịt trâu gác bếp truyền thống", unit: "200g" },
-            { id: 13, name: "Rượu cần Tây Bắc", category: "drink", price: 180000, originalPrice: 180000, image: "images/ruou-can.jpg", description: "Rượu cần truyền thống dân tộc", unit: "500ml" },
-            { id: 14, name: "Bánh chưng lá dong", category: "food", price: 45000, originalPrice: 45000, image: "images/banh-chung-la-dong.jpg", description: "Bánh chưng lá dong thơm ngon", unit: "cái" },
-            { id: 15, name: "Tinh dầu sả chanh", category: "oil", price: 85000, originalPrice: 85000, image: "images/tinh-dau-sa-chanh.jpg", description: "Tinh dầu sả chanh thiên nhiên", unit: "10ml" },
-            { id: 16, name: "Nấm đông cô", category: "food", price: 120000, originalPrice: 120000, image: "images/nam-dong-co.jpg", description: "Nấm đông cô khô cao cấp", unit: "100g" },
-            { id: 17, name: "Bột nghệ Hà Giang", category: "herbal", price: 35000, originalPrice: 35000, image: "images/bot-nghe.jpg", description: "Bột nghệ nguyên chất Hà Giang", unit: "100g" },
-            { id: 18, name: "Măng khô", category: "food", price: 60000, originalPrice: 60000, image: "images/mang-kho.jpg", description: "Măng khô thơm ngon tự nhiên", unit: "200g" },
-            { id: 19, name: "Trà hoa cúc", category: "drink", price: 55000, originalPrice: 55000, image: "images/tra-hoa-cuc.jpg", description: "Trá hoa cúc thanh mát", unit: "50g" },
-            { id: 20, name: "Dầu dừa nguyên chất", category: "oil", price: 95000, originalPrice: 95000, image: "images/dau-dua.jpg", description: "Dầu dừa ép lạnh nguyên chất", unit: "200ml" },
-            { id: 21, name: "Cao sao vàng", category: "herbal", price: 75000, originalPrice: 75000, image: "images/cao-sao-vang.jpg", description: "Cao sao vàng trị ho khản tiếng", unit: "lọ" }
+            { id: 1, name: "Tam thất Bắc thái lát", category: "herbal", price: 1300000, originalPrice: 1300000, image: "images/tam that bac thai lat 1tr3 1kg.jpg", description: "Tam thất Bắc Thái Lat cao cấp từ Tây Bắc", unit: "1kg" },
+            { id: 2, name: "Hà thủ ô", category: "herbal", price: 80000, originalPrice: 80000, image: "🍃", description: "Hà thủ ô tự nhiên", unit: "100g" },
+            { id: 3, name: "Mật ong rừng U Minh", category: "food", price: 150000, originalPrice: 150000, image: "🍯", description: "Mật ong rừng nguyên chất", unit: "500ml" },
+            { id: 4, name: "Thảo quả", category: "herbal", price: 95000, originalPrice: 95000, image: "�", description: "Thảo quả khô Tây Bắc", unit: "100g" },
+            { id: 5, name: "Đông trùng hạ thảo", category: "herbal", price: 350000, originalPrice: 350000, image: "�", description: "Đông trùng hạ thảo tự nhiên", unit: "10g" },
+            { id: 6, name: "Nấm linh chi đỏ", category: "herbal", price: 200000, originalPrice: 200000, image: "�", description: "Nấm linh chi đỏ Tây Bắc", unit: "100g" },
+            { id: 7, name: "Sâm Ngọc Linh", price: 5500000, originalPrice: 5500000, category: "herbal", image: "🌿", description: "Sâm Ngọc Linh chính gốc, quý hiếm và tốt cho sức khỏe" },
+            { id: 8, name: "Tam Thất Hoang", price: 3800000, originalPrice: 3800000, category: "herbal", image: "🌱", description: "Tam thất hoang tự nhiên, giá trị dinh dưỡng cao" },
+            { id: 9, name: "Mắc Ca Khô", price: 320000, originalPrice: 320000, category: "food", image: "images/mac ca kho 320k 1 kg.jpg", description: "Mắc ca khô tự nhiên, giàu dinh dưỡng và chất béo tốt", unit: "1kg" },
+            { id: 10, name: "Quả Sim Rừng", price: 280000, originalPrice: 280000, category: "food", image: "🫐", description: "Quả sim rừng tươi, hương vị đặc trưng vùng cao" },
+            { id: 11, name: "Nấm Lim Xanh", price: 2200000, originalPrice: 2200000, category: "herbal", image: "�", description: "Nấm lim xanh rừng quý hiếm, tăng cường miễn dịch" },
+            { id: 12, name: "Thịt Trâu Khô", price: 750000, originalPrice: 750000, category: "food", image: "🥩", description: "Thịt trâu khô thơm ngon, không chất bảo quản" },
+            { id: 13, name: "Thịt Lợn Khô", price: 620000, originalPrice: 620000, category: "food", image: "🥩", description: "Thịt lợn khô truyền thống, đậm đà hương vị" },
+            { id: 14, name: "Thịt Bò Khô", price: 890000, originalPrice: 890000, category: "food", image: "🥩", description: "Thịt bò khô cao cấp, giàu protein" },
+            { id: 15, name: "Hạt Kỳ Tử Đỏ", price: 380000, originalPrice: 380000, category: "herbal", image: "🔴", description: "Hạt kỳ tử đỏ Ninh Hạ, tốt cho mắt và gan" },
+            { id: 16, name: "Nhung Hươu Ngâm Mật Ong", price: 4200000, originalPrice: 4200000, category: "herbal", image: "🦌", description: "Nhung hươu ngâm mật ong tự nhiên, bổ dương tráng thận" },
+            { id: 17, name: "Sâm Cau", price: 130000, originalPrice: 130000, category: "herbal", image: "images/sam cau 130k 1kg.jpg", description: "Sâm cau rừng tự nhiên, tăng cường sinh lực", unit: "1kg" },
+            { id: 18, name: "Tinh Dầu Quế Nguyên Chất", price: 375000, originalPrice: 375000, category: "oil", image: "images/tinh dau que nguyen chat 375k 1 chai.jpg", description: "Tinh dầu quế nguyên chất, kháng khuẩn tự nhiên", unit: "1 chai" },
+            { id: 19, name: "Tinh Dầu Xả", price: 350000, originalPrice: 350000, category: "oil", image: "🧴", description: "Tinh dầu xả thơm mát, đuổi muỗi hiệu quả" },
+            { id: 20, name: "Ngô Tím Cay", price: 180000, originalPrice: 180000, category: "food", image: "🌽", description: "Ngô tím cay đặc sản Tây Bắc, vị ngọt tự nhiên" },
+            { id: 21, name: "Trinh Nữ Hoàng Cung", price: 2800000, originalPrice: 2800000, category: "herbal", image: "�", description: "Trinh nữ hoàng cung quý hiếm, dư양 nhan sắc phụ nữ" },
+            { id: 22, name: "La Lam Đường Hoặc", price: 450000, originalPrice: 450000, category: "herbal", image: "images/la lam duong hoac 450k 1kg.jpg", description: "La lam đường hoặc tự nhiên từ vùng cao Tây Bắc", unit: "1kg" },
+            { id: 23, name: "Măng Rói", price: 185000, originalPrice: 185000, category: "food", image: "images/mang roi 185k 1kg.jpg", description: "Măng rói khô đặc sản Tây Bắc, vị ngọt tự nhiên", unit: "1kg" },
+            { id: 24, name: "Sâm Tố Nữ", price: 650000, originalPrice: 650000, category: "herbal", image: "images/sam to nua 650k 1 kg.jpg", description: "Sâm tố nữ quý hiếm, tốt cho phụ nữ", unit: "1kg" }
         ];
 
         // Load saved products from localStorage
@@ -426,6 +429,329 @@ class AdminPanel {
             notification.classList.remove('show');
         }
     }
+
+    // Excel Export/Import Functions
+    exportToExcel() {
+        const exportData = this.products.map(product => ({
+            'ID': product.id,
+            'Tên sản phẩm': product.name,
+            'Danh mục': product.category,
+            'Giá gốc': product.originalPrice,
+            'Giá hiện tại': product.price,
+            'Hình ảnh': product.image,
+            'Mô tả': product.description,
+            'Đơn vị': product.unit || ''
+        }));
+
+        // Create CSV content
+        const headers = Object.keys(exportData[0]);
+        const csvContent = [
+            headers.join(','),
+            ...exportData.map(row => 
+                headers.map(header => {
+                    let cell = row[header] || '';
+                    // Escape commas and quotes
+                    if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"'))) {
+                        cell = `"${cell.replace(/"/g, '""')}"`;
+                    }
+                    return cell;
+                }).join(',')
+            )
+        ].join('\n');
+
+        // Download file
+        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `dacsantaybac_products_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showNotification('Đã xuất file Excel (CSV) thành công!', 'success');
+    }
+
+    downloadTemplate() {
+        const templateData = [
+            {
+                'ID': 1,
+                'Tên sản phẩm': 'Tam thất khô',
+                'Danh mục': 'herbal',
+                'Giá gốc': 120000,
+                'Giá hiện tại': 120000,
+                'Hình ảnh': '🌿',
+                'Mô tả': 'Tam thất khô cao cấp từ Tây Bắc',
+                'Đơn vị': '100g'
+            },
+            {
+                'ID': 2,
+                'Tên sản phẩm': 'Mật ong rừng',
+                'Danh mục': 'food',
+                'Giá gốc': 250000,
+                'Giá hiện tại': 250000,
+                'Hình ảnh': 'images/mat-ong-rung.jpg',
+                'Mô tả': 'Mật ong rừng nguyên chất',
+                'Đơn vị': '500ml'
+            }
+        ];
+
+        const headers = Object.keys(templateData[0]);
+        const csvContent = [
+            headers.join(','),
+            ...templateData.map(row => 
+                headers.map(header => {
+                    let cell = row[header] || '';
+                    if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"'))) {
+                        cell = `"${cell.replace(/"/g, '""')}"`;
+                    }
+                    return cell;
+                }).join(',')
+            )
+        ].join('\n');
+
+        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'template_dacsantaybac_products.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showNotification('Đã tải file mẫu Excel (CSV)!', 'info');
+    }
+
+    openImportModal() {
+        // Create import modal if not exists
+        if (!document.getElementById('importModal')) {
+            this.createImportModal();
+        }
+        document.getElementById('importModal').style.display = 'flex';
+    }
+
+    createImportModal() {
+        const modal = document.createElement('div');
+        modal.id = 'importModal';
+        modal.className = 'admin-modal';
+        modal.innerHTML = `
+            <div class="admin-modal-content" style="width: 500px;">
+                <div class="admin-modal-header">
+                    <h3><i class="fas fa-file-upload"></i> Import Dữ Liệu Excel/CSV</h3>
+                    <button class="admin-close" onclick="adminPanel.closeImportModal()">×</button>
+                </div>
+                
+                <div class="admin-modal-body">
+                    <div style="margin-bottom: 1rem;">
+                        <label for="importFile">Chọn file CSV (.csv):</label>
+                        <input type="file" id="importFile" accept=".csv" style="width: 100%; padding: 8px; margin-top: 5px;">
+                        <small style="color: #666; margin-top: 5px; display: block;">
+                            File phải có cấu trúc: ID, Tên sản phẩm, Danh mục, Giá gốc, Giá hiện tại, Hình ảnh, Mô tả, Đơn vị
+                        </small>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            <input type="checkbox" id="overwriteData" style="width: auto; margin-right: 10px;">
+                            Ghi đè dữ liệu hiện tại (nếu không chọn sẽ chỉ cập nhật các sản phẩm có sẵn)
+                        </label>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-success" onclick="adminPanel.processImportFile()" style="flex: 1;">
+                            <i class="fas fa-upload"></i> Import Dữ Liệu
+                        </button>
+                        <button class="btn btn-secondary" onclick="adminPanel.closeImportModal()" style="flex: 1;">
+                            <i class="fas fa-times"></i> Hủy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    closeImportModal() {
+        const modal = document.getElementById('importModal');
+        if (modal) {
+            modal.style.display = 'none';
+            const fileInput = document.getElementById('importFile');
+            if (fileInput) fileInput.value = '';
+            const checkbox = document.getElementById('overwriteData');
+            if (checkbox) checkbox.checked = false;
+        }
+    }
+
+    processImportFile() {
+        const fileInput = document.getElementById('importFile');
+        const file = fileInput.files[0];
+        
+        if (!file) {
+            this.showNotification('Vui lòng chọn file để import!', 'error');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const csv = e.target.result;
+                const lines = csv.split('\n');
+                
+                if (lines.length < 2) {
+                    this.showNotification('File không có dữ liệu!', 'error');
+                    return;
+                }
+                
+                // Parse CSV
+                const headers = lines[0].split(',').map(h => h.trim().replace(/["\uFEFF]/g, ''));
+                const requiredColumns = ['ID', 'Tên sản phẩm', 'Danh mục', 'Giá gốc', 'Giá hiện tại'];
+                const missingColumns = requiredColumns.filter(col => !headers.includes(col));
+                
+                if (missingColumns.length > 0) {
+                    this.showNotification(`File thiếu các cột bắt buộc: ${missingColumns.join(', ')}`, 'error');
+                    return;
+                }
+                
+                const data = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const values = this.parseCSVLine(line);
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index] || '';
+                    });
+                    data.push(row);
+                }
+                
+                this.importProducts(data);
+                
+            } catch (error) {
+                console.error('Error reading file:', error);
+                this.showNotification('Lỗi đọc file! Vui lòng kiểm tra format file.', 'error');
+            }
+        };
+        
+        reader.readAsText(file, 'UTF-8');
+    }
+
+    parseCSVLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            const nextChar = line[i + 1];
+            
+            if (char === '"') {
+                if (inQuotes && nextChar === '"') {
+                    current += '"';
+                    i++; // Skip next quote
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                result.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        
+        result.push(current.trim());
+        return result;
+    }
+
+    importProducts(importData) {
+        const overwrite = document.getElementById('overwriteData').checked;
+        let imported = 0;
+        let updated = 0;
+        let errors = 0;
+        
+        importData.forEach(row => {
+            try {
+                const id = parseInt(row['ID']);
+                const name = row['Tên sản phẩm']?.toString().trim();
+                const category = row['Danh mục']?.toString().trim();
+                const originalPrice = parseInt(row['Giá gốc']);
+                const currentPrice = parseInt(row['Giá hiện tại']);
+                const image = row['Hình ảnh']?.toString().trim() || '';
+                const description = row['Mô tả']?.toString().trim() || '';
+                const unit = row['Đơn vị']?.toString().trim() || '';
+                
+                // Validate data
+                if (!id || !name || !category || isNaN(originalPrice) || isNaN(currentPrice)) {
+                    errors++;
+                    return;
+                }
+                
+                // Check valid category
+                const validCategories = ['herbal', 'food', 'oil', 'drink'];
+                if (!validCategories.includes(category)) {
+                    errors++;
+                    return;
+                }
+                
+                const existingIndex = this.products.findIndex(p => p.id === id);
+                
+                if (existingIndex >= 0) {
+                    // Update existing product
+                    if (overwrite) {
+                        this.products[existingIndex] = {
+                            id: id,
+                            name: name,
+                            category: category,
+                            price: currentPrice,
+                            originalPrice: originalPrice,
+                            image: image,
+                            description: description,
+                            unit: unit
+                        };
+                    } else {
+                        // Only update price
+                        this.products[existingIndex].price = currentPrice;
+                    }
+                    updated++;
+                } else if (overwrite) {
+                    // Add new product
+                    const newProduct = {
+                        id: id,
+                        name: name,
+                        category: category,
+                        price: currentPrice,
+                        originalPrice: originalPrice,
+                        image: image,
+                        description: description,
+                        unit: unit
+                    };
+                    
+                    this.products.push(newProduct);
+                    imported++;
+                }
+                
+            } catch (error) {
+                console.error('Error processing row:', row, error);
+                errors++;
+            }
+        });
+        
+        // Save and refresh
+        this.saveProducts();
+        this.renderProducts();
+        this.updateStats();
+        this.closeImportModal();
+        
+        let message = `Import hoàn thành! `;
+        if (imported > 0) message += `Thêm mới: ${imported} sản phẩm. `;
+        if (updated > 0) message += `Cập nhật: ${updated} sản phẩm. `;
+        if (errors > 0) message += `Lỗi: ${errors} dòng.`;
+        
+        this.showNotification(message, imported > 0 || updated > 0 ? 'success' : 'warning');
+    }
 }
 
 // Initialize admin panel when DOM is loaded
@@ -437,5 +763,23 @@ document.addEventListener('DOMContentLoaded', () => {
 window.closeNotification = () => {
     if (window.adminPanel) {
         window.adminPanel.closeNotification();
+    }
+};
+
+window.exportToExcel = () => {
+    if (window.adminPanel) {
+        window.adminPanel.exportToExcel();
+    }
+};
+
+window.downloadTemplate = () => {
+    if (window.adminPanel) {
+        window.adminPanel.downloadTemplate();
+    }
+};
+
+window.openImportModal = () => {
+    if (window.adminPanel) {
+        window.adminPanel.openImportModal();
     }
 };

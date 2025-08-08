@@ -1,6 +1,6 @@
 // Sample products data - Đặc sản Tây Bắc
 let products = [
-    { id: 1, name: "Tam thất khô", category: "herbal", price: 120000, originalPrice: 120000, image: "🌿", description: "Tam thất khô cao cấp từ Tây Bắc", unit: "100g" },
+    { id: 1, name: "Tam thất Bắc Thái Lat", category: "herbal", price: 1300000, originalPrice: 1300000, image: "images/tam that bac thai lat 1tr3 1kg.jpg", description: "Tam thất Bắc Thái Lat cao cấp từ Tây Bắc", unit: "1kg" },
     { id: 2, name: "Hà thủ ô", category: "herbal", price: 80000, originalPrice: 80000, image: "🍃", description: "Hà thủ ô tự nhiên", unit: "100g" },
     { id: 3, name: "Mật ong rừng U Minh", category: "food", price: 150000, originalPrice: 150000, image: "🍯", description: "Mật ong rừng nguyên chất", unit: "500ml" },
     { id: 4, name: "Thảo quả", category: "herbal", price: 95000, originalPrice: 95000, image: "�", description: "Thảo quả khô Tây Bắc", unit: "100g" },
@@ -24,11 +24,13 @@ let products = [
     },
     {
         id: 9,
-        name: "Quả Trâu Cổ Khô",
+        name: "Mắc Ca Khô",
         price: 320000,
+        originalPrice: 320000,
         category: "food",
-        image: "🫐",
-        description: "Quả trâu cổ khô tự nhiên, giàu vitamin và chất chống oxy hóa"
+        image: "images/mac ca kho 320k 1 kg.jpg",
+        description: "Mắc ca khô tự nhiên, giàu dinh dưỡng và chất béo tốt",
+        unit: "1kg"
     },
     {
         id: 10,
@@ -89,18 +91,22 @@ let products = [
     {
         id: 17,
         name: "Sâm Cau",
-        price: 1600000,
+        price: 130000,
+        originalPrice: 130000,
         category: "herbal",
-        image: "�",
-        description: "Sâm cau rừng tự nhiên, tăng cường sinh lực"
+        image: "images/sam cau 130k 1kg.jpg",
+        description: "Sâm cau rừng tự nhiên, tăng cường sinh lực",
+        unit: "1kg"
     },
     {
         id: 18,
-        name: "Tinh Dầu Quế",
-        price: 420000,
+        name: "Tinh Dầu Quế Nguyên Chất",
+        price: 375000,
+        originalPrice: 375000,
         category: "oil",
-        image: "🧴",
-        description: "Tinh dầu quế nguyên chất, kháng khuẩn tự nhiên"
+        image: "images/tinh dau que nguyen chat 375k 1 chai.jpg",
+        description: "Tinh dầu quế nguyên chất, kháng khuẩn tự nhiên",
+        unit: "1 chai"
     },
     {
         id: 19,
@@ -125,6 +131,36 @@ let products = [
         category: "herbal",
         image: "�",
         description: "Trinh nữ hoàng cung quý hiếm, dư양 nhan sắc phụ nữ"
+    },
+    {
+        id: 22,
+        name: "La Lam Đường Hoặc",
+        price: 450000,
+        originalPrice: 450000,
+        category: "herbal", 
+        image: "images/la lam duong hoac 450k 1kg.jpg",
+        description: "La lam đường hoặc tự nhiên từ vùng cao Tây Bắc",
+        unit: "1kg"
+    },
+    {
+        id: 23,
+        name: "Măng Rói",
+        price: 185000,
+        originalPrice: 185000,
+        category: "food",
+        image: "images/mang roi 185k 1kg.jpg", 
+        description: "Măng rói khô đặc sản Tây Bắc, vị ngọt tự nhiên",
+        unit: "1kg"
+    },
+    {
+        id: 24,
+        name: "Sâm Tố Nữ",
+        price: 650000,
+        originalPrice: 650000,
+        category: "herbal",
+        image: "images/sam to nua 650k 1 kg.jpg",
+        description: "Sâm tố nữ quý hiếm, tốt cho phụ nữ",
+        unit: "1kg"
     }
 ];
 

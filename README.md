@@ -1,7 +1,7 @@
 # 🌿 Website Đặc Sản Tây Bắc
 
 [![Website](https://img.shields.io/badge/Website-Live-green)](https://nguyenngocbinh.github.io/DACSANTAYBAC/)
-[![Admin](https://img.shields.io/badge/Admin-Panel-blue)](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html)
+[![Admin](https://img.shields.io/badge/Admin-Panel-blue)](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## 🎯 Giới Thiệu
@@ -11,7 +11,7 @@ Website thương mại điện tử chuyên bán các sản phẩm đặc sản 
 ## 🚀 Demo Trực Tiếp
 
 - **🌐 Website Chính:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/](https://nguyenngocbinh.github.io/DACSANTAYBAC/)
-- **👨‍💼 Admin Panel:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html)
+- **👨‍💼 Admin Panel:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html)
 
 **Admin Login:** admin / admin123
 
@@ -42,6 +42,33 @@ Website thương mại điện tử chuyên bán các sản phẩm đặc sản 
 
 ## 📄 License
 MIT License - Sử dụng tự do cho mục đích cá nhân và thương mại.
+
+## 📁 Cấu trúc dự án
+```
+├── index.html              # Trang chủ website
+├── css/                   # File CSS
+├── js/                    # File JavaScript  
+├── images/                # Hình ảnh
+├── admin/                 # Admin panel và tools
+│   ├── admin.html         # Trang quản trị chính
+│   ├── password-changer.html
+│   └── gitlab-token-setup.html
+├── docs/                  # Tài liệu và hướng dẫn (đã tối ưu)
+│   ├── ADMIN_GUIDE.md     # Hướng dẫn admin
+│   ├── QUICK_EDIT_GUIDE.md # Chỉnh sửa nhanh
+│   ├── PASSWORD_CHANGE_GUIDE.md
+│   ├── DEPLOY_GUIDE.md    # Deploy an toàn
+│   └── GITLAB_SETUP_COMPLETE.md # Setup CI/CD
+└── tools/                 # Build tools và scripts
+    ├── build.js
+    ├── obfuscate.js
+    └── test-ci-local.ps1
+```
+
+## 🔗 Liên kết nhanh
+- [📚 Tài liệu hướng dẫn](docs/)
+- [👨‍💼 Admin Panel](admin/)
+- [🛠️ Build Tools](tools/)
 
 ---
 *🌟 Đặc sản Tây Bắc - Tinh hoa từ núi rừng Việt Nam*

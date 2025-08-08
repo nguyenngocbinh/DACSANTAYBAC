@@ -114,6 +114,35 @@
             background: #0056b3;
         }
         
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+        }
+        
+        .btn-info:hover {
+            background: #117a8b;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
         .btn-warning {
             background: #ffc107;
             color: #212529;
@@ -534,10 +563,19 @@
         <div id="dashboard" class="dashboard">
             <div class="dashboard-header">
                 <h1><i class="fas fa-leaf"></i> Admin Panel - Đặc Sản Tây Bắc</h1>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
                     <a href="https://nguyenngocbinh.github.io/DACSANTAYBAC/" target="_blank" class="btn btn-primary" style="display: inline-block; text-decoration: none; text-align: center; width: auto;">
                         <i class="fas fa-external-link-alt"></i> Xem Website
                     </a>
+                    <button class="btn btn-success" onclick="exportToExcel()" title="Xuất file Excel">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </button>
+                    <button class="btn btn-info" onclick="openImportModal()" title="Import từ file Excel/CSV">
+                        <i class="fas fa-file-upload"></i> Import Excel
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadTemplate()" title="Tải file mẫu Excel">
+                        <i class="fas fa-download"></i> File Mẫu
+                    </button>
                     <button class="btn btn-danger" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i> Đăng Xuất
                     </button>
@@ -655,8 +693,45 @@
         </div>
     </div>
 
+    <!-- Import Excel Modal -->
+    <div id="importModal" class="login-modal" style="display: none;">
+        <div class="login-content" style="width: 500px;">
+            <div class="login-header">
+                <h2><i class="fas fa-file-upload"></i> Import Dữ Liệu Excel/CSV</h2>
+                <button class="close-btn" onclick="closeImportModal()" style="position: absolute; top: 15px; right: 15px;">×</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="importFile">Chọn file Excel (.xlsx) hoặc CSV (.csv):</label>
+                <input type="file" id="importFile" accept=".xlsx,.xls,.csv" class="form-control">
+                <small style="color: #666; margin-top: 5px; display: block;">
+                    File phải có cấu trúc: ID, Tên sản phẩm, Danh mục, Giá gốc, Giá hiện tại, Hình ảnh, Mô tả, Đơn vị
+                </small>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="overwriteData" style="width: auto; margin-right: 10px;">
+                    Ghi đè dữ liệu hiện tại (nếu không chọn sẽ chỉ cập nhật các sản phẩm có sẵn)
+                </label>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-success" onclick="processImportFile()" style="flex: 1;">
+                    <i class="fas fa-upload"></i> Import Dữ Liệu
+                </button>
+                <button class="btn btn-secondary" onclick="closeImportModal()" style="flex: 1;">
+                    <i class="fas fa-times"></i> Hủy
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Status Message -->
     <div id="statusMessage" class="status-message"></div>
+
+    <!-- Include SheetJS for Excel processing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
         // Products data
@@ -1044,6 +1119,261 @@
             setTimeout(() => {
                 statusEl.classList.remove('show');
             }, 4000);
+        }
+
+        // Excel Export/Import Functions
+        function exportToExcel() {
+            const exportData = currentProducts.map(product => {
+                const currentPrice = getCurrentPrice(product.id);
+                const currentData = getCurrentProductData(product.id);
+                
+                return {
+                    'ID': product.id,
+                    'Tên sản phẩm': currentData.name || product.name,
+                    'Danh mục': currentData.category || product.category,
+                    'Giá gốc': product.price,
+                    'Giá hiện tại': currentPrice,
+                    'Hình ảnh': currentData.imageUrl || currentData.emoji || product.emoji,
+                    'Mô tả': currentData.description || product.description,
+                    'Đơn vị': product.unit || ''
+                };
+            });
+
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Sản phẩm");
+            
+            // Auto adjust column width
+            const colWidths = [];
+            const header = Object.keys(exportData[0]);
+            header.forEach((key, i) => {
+                const maxLength = Math.max(
+                    key.length,
+                    ...exportData.map(row => String(row[key] || '').length)
+                );
+                colWidths[i] = { width: Math.min(maxLength + 2, 50) };
+            });
+            ws['!cols'] = colWidths;
+            
+            const fileName = `dacsantaybac_products_${new Date().toISOString().split('T')[0]}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            
+            showStatus('Đã xuất file Excel thành công!', 'success');
+        }
+
+        function downloadTemplate() {
+            const templateData = [
+                {
+                    'ID': 1,
+                    'Tên sản phẩm': 'Tam thất khô',
+                    'Danh mục': 'herbal',
+                    'Giá gốc': 120000,
+                    'Giá hiện tại': 120000,
+                    'Hình ảnh': '🌿',
+                    'Mô tả': 'Tam thất khô cao cấp từ Tây Bắc',
+                    'Đơn vị': '100g'
+                },
+                {
+                    'ID': 2,
+                    'Tên sản phẩm': 'Mật ong rừng',
+                    'Danh mục': 'food',
+                    'Giá gốc': 250000,
+                    'Giá hiện tại': 250000,
+                    'Hình ảnh': 'images/mat-ong-rung.jpg',
+                    'Mô tả': 'Mật ong rừng nguyên chất',
+                    'Đơn vị': '500ml'
+                }
+            ];
+
+            const ws = XLSX.utils.json_to_sheet(templateData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Template");
+            
+            // Add instructions sheet
+            const instructions = [
+                ['HƯỚNG DẪN SỬ DỤNG FILE EXCEL'],
+                [''],
+                ['1. Cột ID: Số thứ tự sản phẩm (bắt buộc)'],
+                ['2. Cột Tên sản phẩm: Tên hiển thị của sản phẩm'],
+                ['3. Cột Danh mục: herbal (dược liệu), food (thực phẩm), oil (tinh dầu), drink (đồ uống)'],
+                ['4. Cột Giá gốc: Giá ban đầu của sản phẩm'],
+                ['5. Cột Giá hiện tại: Giá bán hiện tại'],
+                ['6. Cột Hình ảnh: Link ảnh hoặc emoji (ví dụ: images/abc.jpg hoặc 🌿)'],
+                ['7. Cột Mô tả: Mô tả chi tiết sản phẩm'],
+                ['8. Cột Đơn vị: Đơn vị bán (ví dụ: 100g, 1kg, 500ml)'],
+                [''],
+                ['CHÚ Ý:'],
+                ['- File phải có đúng tên cột như mẫu'],
+                ['- ID phải là số và duy nhất'],
+                ['- Giá phải là số'],
+                ['- Danh mục chỉ chấp nhận: herbal, food, oil, drink']
+            ];
+            
+            const wsInstructions = XLSX.utils.aoa_to_sheet(instructions);
+            XLSX.utils.book_append_sheet(wb, wsInstructions, "Hướng dẫn");
+            
+            XLSX.writeFile(wb, 'template_dacsantaybac_products.xlsx');
+            showStatus('Đã tải file mẫu Excel!', 'info');
+        }
+
+        function openImportModal() {
+            document.getElementById('importModal').style.display = 'flex';
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+            document.getElementById('importFile').value = '';
+            document.getElementById('overwriteData').checked = false;
+        }
+
+        function processImportFile() {
+            const fileInput = document.getElementById('importFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showStatus('Vui lòng chọn file để import!', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    if (jsonData.length === 0) {
+                        showStatus('File không có dữ liệu!', 'error');
+                        return;
+                    }
+                    
+                    // Validate required columns
+                    const requiredColumns = ['ID', 'Tên sản phẩm', 'Danh mục', 'Giá gốc', 'Giá hiện tại'];
+                    const firstRow = jsonData[0];
+                    const missingColumns = requiredColumns.filter(col => !(col in firstRow));
+                    
+                    if (missingColumns.length > 0) {
+                        showStatus(`File thiếu các cột bắt buộc: ${missingColumns.join(', ')}`, 'error');
+                        return;
+                    }
+                    
+                    importProducts(jsonData);
+                    
+                } catch (error) {
+                    console.error('Error reading file:', error);
+                    showStatus('Lỗi đọc file! Vui lòng kiểm tra format file.', 'error');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        function importProducts(importData) {
+            const overwrite = document.getElementById('overwriteData').checked;
+            let imported = 0;
+            let updated = 0;
+            let errors = 0;
+            
+            importData.forEach(row => {
+                try {
+                    const id = parseInt(row['ID']);
+                    const name = row['Tên sản phẩm']?.toString().trim();
+                    const category = row['Danh mục']?.toString().trim();
+                    const originalPrice = parseInt(row['Giá gốc']);
+                    const currentPrice = parseInt(row['Giá hiện tại']);
+                    const image = row['Hình ảnh']?.toString().trim() || '';
+                    const description = row['Mô tả']?.toString().trim() || '';
+                    const unit = row['Đơn vị']?.toString().trim() || '';
+                    
+                    // Validate data
+                    if (!id || !name || !category || isNaN(originalPrice) || isNaN(currentPrice)) {
+                        errors++;
+                        return;
+                    }
+                    
+                    // Check valid category
+                    const validCategories = ['herbal', 'food', 'oil', 'drink'];
+                    if (!validCategories.includes(category)) {
+                        errors++;
+                        return;
+                    }
+                    
+                    const existingIndex = currentProducts.findIndex(p => p.id === id);
+                    
+                    if (existingIndex >= 0) {
+                        // Update existing product
+                        if (overwrite) {
+                            currentProducts[existingIndex] = {
+                                id: id,
+                                name: name,
+                                category: category,
+                                price: originalPrice,
+                                emoji: image.startsWith('images/') ? '📦' : image,
+                                description: description,
+                                unit: unit,
+                                imageUrl: image.startsWith('images/') ? image : ''
+                            };
+                        }
+                        
+                        // Update current price and data
+                        localStorage.setItem(`product_${id}_price`, currentPrice.toString());
+                        localStorage.setItem(`product_${id}_data`, JSON.stringify({
+                            name: name,
+                            category: category,
+                            emoji: image.startsWith('images/') ? '📦' : image,
+                            imageUrl: image.startsWith('images/') ? image : '',
+                            description: description
+                        }));
+                        
+                        updated++;
+                    } else if (overwrite) {
+                        // Add new product
+                        const newProduct = {
+                            id: id,
+                            name: name,
+                            category: category,
+                            price: originalPrice,
+                            emoji: image.startsWith('images/') ? '📦' : image,
+                            description: description,
+                            unit: unit,
+                            imageUrl: image.startsWith('images/') ? image : ''
+                        };
+                        
+                        currentProducts.push(newProduct);
+                        
+                        // Set current price
+                        localStorage.setItem(`product_${id}_price`, currentPrice.toString());
+                        localStorage.setItem(`product_${id}_data`, JSON.stringify({
+                            name: name,
+                            category: category,
+                            emoji: image.startsWith('images/') ? '📦' : image,
+                            imageUrl: image.startsWith('images/') ? image : '',
+                            description: description
+                        }));
+                        
+                        imported++;
+                    }
+                    
+                } catch (error) {
+                    console.error('Error processing row:', row, error);
+                    errors++;
+                }
+            });
+            
+            // Save and refresh
+            localStorage.setItem('products', JSON.stringify(currentProducts));
+            loadProducts();
+            updateStatistics();
+            closeImportModal();
+            
+            let message = `Import hoàn thành! `;
+            if (imported > 0) message += `Thêm mới: ${imported} sản phẩm. `;
+            if (updated > 0) message += `Cập nhật: ${updated} sản phẩm. `;
+            if (errors > 0) message += `Lỗi: ${errors} dòng.`;
+            
+            showStatus(message, imported > 0 || updated > 0 ? 'success' : 'warning');
         }
 
         console.log('✅ Enhanced Admin Panel with Image Management Ready!');

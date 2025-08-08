@@ -23,9 +23,9 @@ Write-Host "3️⃣ Removing development files..." -ForegroundColor Yellow
 $devFiles = @(
     ".gitlab-ci.yml",
     "test-ci-local.ps1",
-    "gitlab-token-setup.html", 
-    "GITLAB_AUTH_FIX.md",
-    "GITLAB_CI_SETUP.md",
+    "admin/gitlab-token-setup.html", 
+    "docs/GITLAB_AUTH_FIX.md",
+    "docs/GITLAB_CI_SETUP.md",
     "*-backup.*"
 )
 
@@ -44,10 +44,10 @@ node_modules/
 .DS_Store
 Thumbs.db
 production/
-test-ci-local.ps1
-gitlab-token-setup.html
-GITLAB_AUTH_FIX.md
-GITLAB_CI_SETUP.md
+tools/test-ci-local.ps1
+admin/gitlab-token-setup.html
+docs/GITLAB_AUTH_FIX.md
+docs/GITLAB_CI_SETUP.md
 "@
 
 Set-Content ".gitignore" $productionGitignore
@@ -98,12 +98,12 @@ if (Test-Path "index.html") {
     Write-Host "   ✅ index.html updated to use minified JS" -ForegroundColor Green
 }
 
-if (Test-Path "admin.html") {
-    $adminHtmlContent = Get-Content "admin.html" -Raw
+if (Test-Path "admin/admin.html") {
+    $adminHtmlContent = Get-Content "admin/admin.html" -Raw
     $adminHtmlContent = $adminHtmlContent -replace 'js/script\.js', 'js/script.min.js'
     $adminHtmlContent = $adminHtmlContent -replace 'js/admin\.js', 'js/admin.min.js'
-    Set-Content "admin.html" $adminHtmlContent
-    Write-Host "   ✅ admin.html updated to use minified JS" -ForegroundColor Green
+    Set-Content "admin/admin.html" $adminHtmlContent
+    Write-Host "   ✅ admin/admin.html updated to use minified JS" -ForegroundColor Green
 }
 
 # Create deployment info
@@ -125,7 +125,7 @@ $deploymentInfo = @"
 - Clean production build
 
 🌐 Live Website: https://nguyenngocbinh.github.io/DACSANTAYBAC/
-👨‍💼 Admin Panel: https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html
+👨‍💼 Admin Panel: https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html
 
 Repository Strategy:
 📚 GitLab (Private): Full source code with comments
