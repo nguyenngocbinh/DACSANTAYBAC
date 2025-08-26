@@ -54,10 +54,31 @@ body {
     color: #333;
     font-weight: 500;
     transition: color 0.3s;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
 }
 
 .nav-menu a:hover {
     color: #27ae60;
+}
+
+.nav-menu .game-link {
+    background: linear-gradient(135deg, #FFD700, #FFA000);
+    color: #333 !important;
+    font-weight: bold;
+    border-radius: 20px;
+    animation: pulse 2s infinite;
+}
+
+.nav-menu .game-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 .cart-icon button {
@@ -112,6 +133,14 @@ body {
     animation: fadeInUp 1s ease 0.2s both;
 }
 
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 1s ease 0.4s both;
+}
+
 .cta-btn {
     background: #e67e22;
     color: white;
@@ -121,12 +150,32 @@ body {
     font-size: 1.1rem;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
-    animation: fadeInUp 1s ease 0.4s both;
 }
 
 .cta-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
+}
+
+.game-btn-hero {
+    background: linear-gradient(135deg, #FFD700, #FFA000);
+    color: #333;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
 }
 
 /* Products Section */

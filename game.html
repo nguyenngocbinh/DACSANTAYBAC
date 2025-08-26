@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chim Tây Bắc - Thu Thập Đặc Sản</title>
+    <link rel="stylesheet" href="css/game.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Game Container -->
+    <div class="game-container">
+        <!-- Game Header -->
+        <div class="game-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Về trang chính
+            </button>
+            <h1><i class="fas fa-mountain"></i> Chim Tây Bắc - Thu Thập Đặc Sản</h1>
+        </div>
+
+        <!-- Game Canvas Container -->
+        <div class="canvas-container">
+            <canvas id="gameCanvas" width="800" height="500"></canvas>
+            
+            <!-- Game UI Overlay -->
+            <div class="game-ui">
+                <div class="score-board">
+                    <div class="score-item">
+                        <i class="fas fa-leaf"></i>
+                        <span>Đặc sản: <span id="specialtyScore">0</span></span>
+                    </div>
+                    <div class="score-item">
+                        <i class="fas fa-trophy"></i>
+                        <span>Điểm cao: <span id="highScore">0</span></span>
+                    </div>
+                </div>
+
+                <!-- Start Screen -->
+                <div id="startScreen" class="game-screen">
+                    <div class="screen-content">
+                        <h2><i class="fas fa-kiwi-bird"></i> Chim Tây Bắc</h2>
+                        <p>Điều khiển chim trong trang phục dân tộc thu thập đặc sản Tây Bắc!</p>
+                        <div class="instructions">
+                            <p><i class="fas fa-mouse-pointer"></i> Nhấn chuột hoặc phím SPACE để bay</p>
+                            <p><i class="fas fa-gem"></i> Thu thập đặc sản để được voucher giảm giá</p>
+                            <p><i class="fas fa-tree"></i> Tránh va chạm với cây cối vùng cao</p>
+                        </div>
+                        <button id="startBtn" class="game-btn">
+                            <i class="fas fa-play"></i> Bắt đầu phiêu lưu
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game Over Screen -->
+                <div id="gameOverScreen" class="game-screen hidden">
+                    <div class="screen-content">
+                        <h2><i class="fas fa-mountain"></i> Kết thúc phiêu lưu</h2>
+                        <div class="final-stats">
+                            <p>Đặc sản thu thập: <span id="finalSpecialty">0</span></p>
+                            <p>Điểm số: <span id="finalScore">0</span></p>
+                        </div>
+                        <div id="voucherReward" class="voucher-reward hidden">
+                            <h3><i class="fas fa-gift"></i> Chúc mừng!</h3>
+                            <p>Bạn đã nhận được voucher giảm giá:</p>
+                            <div class="voucher-code">
+                                <span id="voucherText"></span>
+                                <button onclick="copyVoucher()" title="Sao chép mã">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="game-actions">
+                            <button id="restartBtn" class="game-btn">
+                                <i class="fas fa-redo"></i> Chơi lại
+                            </button>
+                            <button onclick="goToShop()" class="game-btn shop-btn">
+                                <i class="fas fa-shopping-cart"></i> Đi mua sắm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pause Screen -->
+                <div id="pauseScreen" class="game-screen hidden">
+                    <div class="screen-content">
+                        <h2><i class="fas fa-pause"></i> Tạm dừng</h2>
+                        <button id="resumeBtn" class="game-btn">
+                            <i class="fas fa-play"></i> Tiếp tục
+                        </button>
+                        <button id="menuBtn" class="game-btn">
+                            <i class="fas fa-home"></i> Menu chính
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pause Button -->
+                <button id="pauseBtn" class="pause-btn hidden">
+                    <i class="fas fa-pause"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Info -->
+        <div class="game-info">
+            <div class="info-section">
+                <h3><i class="fas fa-star"></i> Voucher Rewards</h3>
+                <div class="reward-tiers">
+                    <div class="tier">10 đặc sản: 5% giảm giá</div>
+                    <div class="tier">25 đặc sản: 10% giảm giá</div>
+                    <div class="tier">50 đặc sản: 15% giảm giá</div>
+                    <div class="tier">100 đặc sản: 20% giảm giá</div>
+                </div>
+            </div>
+            <div class="info-section">
+                <h3><i class="fas fa-gamepad"></i> Cách chơi</h3>
+                <ul>
+                    <li>Điều khiển chim bằng chuột hoặc phím SPACE</li>
+                    <li>Thu thập đặc sản Tây Bắc trên đường bay</li>
+                    <li>Tránh va chạm với cây cối và địa hình</li>
+                    <li>Đạt điểm cao để nhận voucher giảm giá</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Scripts -->
+    <script src="js/game.js"></script>
+</body>
+</html>

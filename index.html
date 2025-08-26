@@ -20,6 +20,7 @@
                         <li><a href="#home">Trang chủ</a></li>
                         <li><a href="#products">Đặc sản</a></li>
                         <li><a href="#about">Giới thiệu</a></li>
+                        <li><a href="game.html" class="game-link"><i class="fas fa-gamepad"></i> Mini Game</a></li>
                         <li><a href="#contact">Liên hệ</a></li>
                     </ul>
                 </nav>
@@ -39,7 +40,12 @@
             <div class="hero-content">
                 <h1>Chào mừng đến với Đặc Sản Tây Bắc</h1>
                 <p>Khám phá kho tàng thảo dược thiên nhiên và đặc sản vùng miền Việt Nam</p>
-                <button class="cta-btn" onclick="scrollToProducts()">Khám phá ngay</button>
+                <div class="hero-actions">
+                    <button class="cta-btn" onclick="scrollToProducts()">Khám phá ngay</button>
+                    <a href="game.html" class="game-btn-hero">
+                        <i class="fas fa-gamepad"></i> Chơi Mini Game
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -197,6 +203,7 @@
     </footer>
 
     <script src="js/script.min.js"></script>
+    <script src="js/voucher-integration.js"></script>
 </body>
 </html>
 
