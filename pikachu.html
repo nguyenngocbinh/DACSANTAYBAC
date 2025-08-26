@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pikachu Đặc Sản Tây Bắc</title>
+    <link rel="stylesheet" href="css/pikachu.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Về trang chủ
+            </button>
+            <h1><i class="fas fa-puzzle-piece"></i> Pikachu Đặc Sản Tây Bắc</h1>
+            <div class="header-info">
+                <div class="score-display">
+                    <i class="fas fa-star"></i>
+                    <span id="score">0</span>
+                </div>
+                <div class="time-display">
+                    <i class="fas fa-clock"></i>
+                    <span id="time">5:00</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Game Board -->
+        <main class="game-main">
+            <div class="game-board-container">
+                <div class="game-board"></div>
+                <div class="path-display"></div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <button class="control-btn pause-btn">
+                    <i class="fas fa-pause"></i> Tạm dừng
+                </button>
+                <button class="control-btn hint-btn">
+                    <i class="fas fa-lightbulb"></i> Gợi ý (<span id="hints">3</span>)
+                </button>
+                <button class="control-btn shuffle-btn">
+                    <i class="fas fa-random"></i> Xáo trộn
+                </button>
+            </div>
+        </main>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="overlay-screen">
+            <div class="screen-content">
+                <h2><i class="fas fa-gamepad"></i> Pikachu Đặc Sản Tây Bắc</h2>
+                <div class="game-description">
+                    <p><i class="fas fa-target"></i> Nối các đặc sản giống nhau để ghi điểm</p>
+                    <p><i class="fas fa-route"></i> Đường nối tối đa 3 khúc cua</p>
+                    <p><i class="fas fa-gift"></i> Thu thập đủ điểm để nhận voucher giảm giá</p>
+                </div>
+                
+                <div class="difficulty-selection">
+                    <h3>Chọn độ khó:</h3>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn" data-difficulty="easy">
+                            <i class="fas fa-leaf"></i> Dễ<br>6×8 - 5 phút
+                        </button>
+                        <button class="difficulty-btn active" data-difficulty="medium">
+                            <i class="fas fa-mountain"></i> Trung bình<br>8×10 - 4 phút
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="hard">
+                            <i class="fas fa-fire"></i> Khó<br>10×12 - 3 phút
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="expert">
+                            <i class="fas fa-crown"></i> Chuyên gia<br>12×14 - 2.5 phút
+                        </button>
+                    </div>
+                </div>
+
+                <button class="start-btn">
+                    <i class="fas fa-play"></i> Bắt đầu chơi
+                </button>
+            </div>
+        </div>
+
+        <!-- Pause Screen -->
+        <div id="pause-screen" class="overlay-screen hidden">
+            <div class="screen-content">
+                <h2><i class="fas fa-pause"></i> Tạm dừng</h2>
+                <div class="pause-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span>Điểm: <strong id="pause-score">0</strong></span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Thời gian: <strong id="pause-time">0</strong></span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-link"></i>
+                        <span>Cặp nối: <strong id="pause-pairs">0</strong></span>
+                    </div>
+                </div>
+                <div class="game-actions">
+                    <button class="game-btn resume-btn">
+                        <i class="fas fa-play"></i> Tiếp tục
+                    </button>
+                    <button class="game-btn restart-btn">
+                        <i class="fas fa-redo"></i> Chơi lại
+                    </button>
+                    <button class="game-btn secondary home-btn">
+                        <i class="fas fa-home"></i> Về trang chủ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="overlay-screen hidden">
+            <div class="screen-content">
+                <h2><i class="fas fa-flag-checkered"></i> Hoàn thành!</h2>
+                <div class="final-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span>Điểm số: <strong id="final-score">0</strong></span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Thời gian: <strong id="final-time">0</strong></span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-link"></i>
+                        <span>Cặp nối: <strong id="final-pairs">0</strong></span>
+                    </div>
+                </div>
+
+                <div id="voucher-container"></div>
+
+                <div class="game-actions">
+                    <button class="game-btn restart-btn">
+                        <i class="fas fa-redo"></i> Chơi lại
+                    </button>
+                    <button class="game-btn shop-btn">
+                        <i class="fas fa-shopping-cart"></i> Đi mua sắm
+                    </button>
+                    <button class="game-btn secondary home-btn">
+                        <i class="fas fa-home"></i> Về trang chủ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <span class="progress-text">
+                <span id="current-pairs">0</span> / <span id="total-pairs">0</span> cặp
+            </span>
+        </div>
+    </div>
+
+    <!-- Game Scripts -->
+    <script>
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+    <script src="js/pikachu.js"></script>
+</body>
+</html>
