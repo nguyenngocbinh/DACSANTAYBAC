@@ -25,6 +25,17 @@ class TayBacBirdGame {
         this.pipeSpeed = 3;
         this.specialtySpeed = 2;
         
+        // Mobile detection and optimization
+        this.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Adjust settings for mobile
+        if (this.isMobile) {
+            this.pipeSpeed = 2.5; // Slower for mobile
+            this.specialtySpeed = 1.8;
+            this.gravity = 0.5; // Slightly less gravity
+        }
+        
         // Timing
         this.lastTime = 0;
         this.pipeTimer = 0;
@@ -47,7 +58,70 @@ class TayBacBirdGame {
         this.setupEventListeners();
         this.updateUI();
         this.createBird();
+        this.handleResize(); // Initial resize
+        
+        // Mobile-specific optimizations
+        if (this.isMobile) {
+            this.optimizeForMobile();
+        }
+        
         this.gameLoop();
+    }
+    
+    optimizeForMobile() {
+        // Reduce particle effects for better performance
+        this.maxParticles = 10; // Instead of default 20
+        
+        // Adjust canvas resolution for mobile
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        const rect = this.canvas.getBoundingClientRect();
+        
+        // Set actual canvas size in memory (scaled up for high DPI)
+        this.canvas.width = rect.width * Math.min(devicePixelRatio, 2);
+        this.canvas.height = rect.height * Math.min(devicePixelRatio, 2);
+        
+        // Scale the drawing context back down
+        this.ctx.scale(Math.min(devicePixelRatio, 2), Math.min(devicePixelRatio, 2));
+        
+        // Set CSS size to original size
+        this.canvas.style.width = rect.width + 'px';
+        this.canvas.style.height = rect.height + 'px';
+        
+        // Show mobile-specific UI hints
+        this.showMobileHints();
+    }
+    
+    showMobileHints() {
+        // Show orientation hint if in portrait mode
+        if (window.innerHeight > window.innerWidth) {
+            const hint = document.createElement('div');
+            hint.className = 'mobile-hint';
+            hint.innerHTML = `
+                <div style="
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0,0,0,0.8);
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                    font-size: 14px;
+                    z-index: 2000;
+                    animation: fadeInOut 4s ease-out;
+                ">
+                    <i class="fas fa-mobile-alt"></i> Xoay ngang để chơi dễ hơn
+                </div>
+            `;
+            
+            document.body.appendChild(hint);
+            
+            setTimeout(() => {
+                if (hint.parentElement) {
+                    hint.parentElement.removeChild(hint);
+                }
+            }, 4000);
+        }
     }
     
     setupEventListeners() {
@@ -62,8 +136,25 @@ class TayBacBirdGame {
         document.getElementById('resumeBtn').addEventListener('click', () => this.resumeGame());
         document.getElementById('menuBtn').addEventListener('click', () => this.backToMenu());
         
-        // Controls
+        // Mouse/Click controls
         this.canvas.addEventListener('click', () => this.jump());
+        
+        // Touch controls for mobile
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent scrolling
+            this.jump();
+        });
+        
+        // Prevent touch scrolling on canvas
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        });
+        
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+        });
+        
+        // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
                 e.preventDefault();
@@ -76,6 +167,54 @@ class TayBacBirdGame {
         
         // Prevent context menu on canvas
         this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+        
+        // Handle window resize for responsive design
+        window.addEventListener('resize', () => this.handleResize());
+        
+        // Handle orientation change on mobile
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => this.handleResize(), 100);
+        });
+        
+        // Prevent zoom on double tap (iOS)
+        this.canvas.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        });
+        
+        let lastTouchEnd = 0;
+        this.canvas.addEventListener('touchend', function(e) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        });
+    }
+    
+    handleResize() {
+        // Get current canvas size
+        const container = document.querySelector('.canvas-container');
+        const rect = container.getBoundingClientRect();
+        
+        // Update canvas size for mobile
+        if (this.isMobile) {
+            const maxWidth = Math.min(window.innerWidth - 20, 500);
+            const maxHeight = Math.min(window.innerHeight - 200, 400);
+            
+            this.canvas.style.width = maxWidth + 'px';
+            this.canvas.style.height = maxHeight + 'px';
+            
+            // Maintain aspect ratio
+            if (window.orientation !== undefined) {
+                // Landscape mode
+                if (Math.abs(window.orientation) === 90) {
+                    this.canvas.style.width = Math.min(window.innerWidth - 20, 600) + 'px';
+                    this.canvas.style.height = Math.min(window.innerHeight - 150, 350) + 'px';
+                }
+            }
+        }
     }
     
     createBird() {
@@ -137,7 +276,10 @@ class TayBacBirdGame {
     jump() {
         if (this.gameState === 'playing') {
             this.bird.velocity = this.jumpStrength;
-            this.createParticles(this.bird.x, this.bird.y, '#FFD700', 5);
+            
+            // Create visual feedback
+            const particleCount = this.isMobile ? 3 : 5; // Less particles on mobile
+            this.createParticles(this.bird.x, this.bird.y, '#FFD700', particleCount);
             
             // Add trail effect
             this.bird.trail.push({
@@ -146,10 +288,44 @@ class TayBacBirdGame {
                 life: 10
             });
             
-            if (this.bird.trail.length > 5) {
+            if (this.bird.trail.length > (this.isMobile ? 3 : 5)) {
                 this.bird.trail.shift();
             }
+            
+            // Visual touch feedback for mobile
+            if (this.isTouch) {
+                this.showTouchFeedback();
+            }
         }
+    }
+    
+    showTouchFeedback() {
+        // Create touch ripple effect
+        const ripple = document.createElement('div');
+        ripple.className = 'touch-ripple';
+        ripple.style.cssText = `
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        `;
+        
+        this.canvas.parentElement.appendChild(ripple);
+        
+        // Remove after animation
+        setTimeout(() => {
+            if (ripple.parentElement) {
+                ripple.parentElement.removeChild(ripple);
+            }
+        }, 600);
     }
     
     update(deltaTime) {
