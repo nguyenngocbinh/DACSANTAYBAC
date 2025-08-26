@@ -36,27 +36,6 @@ Deploy website lên GitHub Pages miễn phí thông qua GitLab CI/CD với dual 
 - ✅ `js/game.js` (mini game engine)
 - ✅ `js/voucher-integration.js` (voucher system)
 
-## 🎯 **Mục Tiêu**
-Đưa website lên GitHub public để sử dụng GitHub Pages miễn phí, nhưng **không bị lộ mã nguồn** gốc.
-
-## 🛡️ **Phương Pháp Bảo Vệ Đã Áp Dụng**
-
-### 1. **Obfuscation (Làm Rối Mã Nguồn)**
-- ✅ File `js/script.js` → `js/script.min.js` (minified)
-- ✅ File `js/admin.js` → `js/admin.min.js` (minified)
-- ✅ Loại bỏ comments và whitespace
-- ✅ Mã hóa thông tin nhạy cảm (admin credentials)
-
-### 2. **Exclusion via .gitignore**
-- ✅ File `js/script.js` (mã nguồn gốc) bị loại trừ
-- ✅ File `js/admin.js` (mã nguồn gốc) bị loại trừ
-- ✅ File `build.js`, `obfuscate.js` bị loại trừ
-- ✅ File credentials và config nhạy cảm bị loại trừ
-
-### 3. **HTML References Updated**
-- ✅ `index.html` sử dụng `script.min.js`
-- ✅ `admin.html` sử dụng `script.min.js` và `admin.min.js`
-
 ## 📋 **Quy Trình Deploy Thực Tế**
 
 ### **Bước 1: Development Local**
@@ -102,47 +81,22 @@ deploy_to_github:
 - **GitLab Source:** `https://gitlab.com/nguyenngocbinh/DACSANTAYBAC`
 - **GitHub Mirror:** `https://github.com/nguyenngocbinh/DACSANTAYBAC`
 
-## 🔒 **HTML References Thực Tế**
+## 🔒 **HTML References THỰC TẾ:**
 
 ### **index.html:**
 ```html
-<script src="js/script.min.js"></script>
+<script src="js/script.js"></script>
 <script src="js/voucher-integration.js"></script>
 ```
 
 ### **admin/admin.html:**  
 ```html
-<script src="js/admin.min.js"></script>
+<script src="js/admin.js"></script>
 ```
 
 ### **game.html:**
 ```html
 <script src="js/game.js"></script>
-```
-
-**⚠️ LƯU Ý:** HTML references trên là KHÔNG CHÍNH XÁC với thực tế.
-
-### **HTML References THỰC TẾ:**
-
-#### **index.html:**
-```html
-<script src="js/script.min.js"></script>  <!-- File này KHÔNG TỒN TẠI -->
-<script src="js/voucher-integration.js"></script>
-```
-
-#### **admin/admin.html:**  
-```html
-<script src="js/admin.min.js"></script>  <!-- File này KHÔNG TỒN TẠI -->
-```
-
-**Thực tế sử dụng:**
-```html
-<!-- index.html -->
-<script src="js/script.js"></script>  <!-- Source code gốc -->
-<script src="js/voucher-integration.js"></script>
-
-<!-- admin/admin.html -->
-<script src="js/admin.js"></script>  <!-- Source code gốc -->
 ```
 
 ## �️ **Tools Có Sẵn (Chưa Sử Dụng)**
@@ -153,7 +107,7 @@ deploy_to_github:
 - `tools/build.bat` - Windows automation
 - `tools/test-ci-local.ps1` - Local CI testing
 
-### **Để Kích Hoạt Source Protection:**
+### **Để Kích Hoạt Source Protection (Tùy Chọn):**
 ```bash
 # Option 1: Manual build
 node tools/build.js
@@ -165,12 +119,18 @@ tools/build.bat
 # Thêm build step vào .gitlab-ci.yml
 ```
 
-## 🔐 **Mức Độ Bảo Mật Hiện Tại**
+## 🔐 **Trạng Thái Bảo Mật Hiện Tại**
 
 ### **✅ Những Gì ĐƯỢC Bảo Vệ:**
 - ✅ GitLab repository là private (source backup an toàn)
 - ✅ CI/CD tokens được bảo vệ trong GitLab variables
 - ✅ Local development environment an toàn
+
+### **⚠️ Những Gì CHƯA Được Bảo Vệ:**
+- ⚠️ GitHub repository là public (toàn bộ source code visible)
+- ⚠️ Admin credentials trong `js/admin.js` có thể đọc được
+- ⚠️ Business logic và database structure exposed
+- ⚠️ Không có minification hoặc obfuscation
 
 ## 📊 **So Sánh Phương Pháp Deploy**
 
