@@ -1,103 +1,93 @@
 # 🔐 Hướng Dẫn Đổi Mật Khẩu Admin Panel
 
-## 📋 Có 3 Cách Đổi Mật Khẩu:
+## ⚙️ Cơ Chế Xác Thực Hiện Tại
+Admin panel sử dụng **SHA-256 hash + salt** để xác thực mật khẩu. Mật khẩu **không** được lưu dạng plaintext trong code.
 
-### 🚀 **Cách 1: Sửa Trực Tiếp File admin.html (NHANH NHẤT)**
+### Nguyên lý:
+```
+password + "dacsantaybac_salt" → SHA-256 hash → so sánh với hash lưu trong code
+```
 
-#### Bước 1: Mở file admin.html
-- Tìm file `admin.html` trong thư mục project
-- Mở bằng VS Code hoặc text editor
+## 🔄 Cách Đổi Mật Khẩu
 
-#### Bước 2: Tìm và sửa mật khẩu
-Tìm dòng này (khoảng dòng 518):
+### Bước 1: Tạo hash cho mật khẩu mới
+
+Mở trình duyệt, nhấn F12 → Console, chạy lệnh sau:
+
 ```javascript
-if (username === 'admin' && password === 'admin123') {
+async function generateHash(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password + 'dacsantaybac_salt');
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Thay 'MAT_KHAU_MOI' bằng mật khẩu bạn muốn
+generateHash('MAT_KHAU_MOI').then(hash => console.log('Hash:', hash));
 ```
 
-Thay đổi thành mật khẩu mới:
+Copy giá trị hash hiển thị trong console.
+
+### Bước 2: Cập nhật hash trong `js/admin.js`
+
+Mở file `js/admin.js`, tìm đoạn (khoảng dòng 120):
+
 ```javascript
-if (username === 'admin' && password === 'MATKHAUMOI') {
+const validUsers = {
+    'admin': '86574abbdfb97cca59f5ccd35b7506c998a0059bd5cc1f37ca4bebb629edaa87'
+};
 ```
 
-#### Bước 3: Cập nhật placeholder (tùy chọn)
-Tìm dòng này (khoảng dòng 374):
-```html
-<input type="password" id="password" placeholder="admin123" required>
-```
+Thay chuỗi hash cũ bằng hash mới vừa tạo. Nếu muốn đổi cả username, thay `'admin'` thành tên mới.
 
-Thay thành:
-```html
-<input type="password" id="password" placeholder="Nhập mật khẩu" required>
-```
-
-#### Bước 4: Cập nhật thông tin hiển thị (tùy chọn)
-Tìm dòng này (khoảng dòng 381):
-```html
-<i class="fas fa-info-circle"></i> Tài khoản mặc định: admin / admin123
-```
-
-Thay thành:
-```html
-<i class="fas fa-info-circle"></i> Tài khoản: admin / (mật khẩu đã thay đổi)
-```
-
-### 💻 **Cách 2: Sửa Qua Git và Upload (BẢO MẬT HƠNG)**
-
+### Bước 3: Commit & push
 ```bash
-# 1. Sửa file admin.html như cách 1
-# 2. Commit và push
-git add admin.html
-git commit -m "Change admin password for security"
-git push
+git add js/admin.js
+git commit -m "security: update admin password hash"
+git push origin main
 ```
 
-### 🛠️ **Cách 3: Sử Dụng Tool Tự Động**
+### Bước 4: Test đăng nhập
+- Truy cập admin panel
+- Đăng nhập với mật khẩu mới
+- Xóa localStorage cũ nếu đã đăng nhập trước đó (F12 → Application → Clear)
 
-Tôi sẽ tạo tool để đổi mật khẩu tự động!
+## 💡 Ví Dụ Cụ Thể
 
----
+Đổi mật khẩu thành `TayBac@2026`:
 
-## ⚡ **Lưu Ý Quan Trọng:**
+```javascript
+// Chạy trong Console (F12)
+generateHash('TayBac@2026').then(hash => console.log(hash));
+// Kết quả: một chuỗi 64 ký tự hex
+```
 
-### ✅ **Nên làm:**
-- Chọn mật khẩu mạnh (ít nhất 8 ký tự)
-- Bao gồm chữ hoa, chữ thường, số
-- Backup file trước khi sửa
-- Test đăng nhập sau khi đổi
+Sau đó thay giá trị hash trong `js/admin.js`.
 
-### ❌ **Không nên:**
-- Dùng mật khẩu quá đơn giản (123456)
-- Để mật khẩu giống username
-- Quên backup file gốc
-- Share mật khẩu công khai
+## ⚡ Lưu Ý Quan Trọng
 
----
+### ✅ Nên:
+- Chọn mật khẩu mạnh (≥ 8 ký tự, gồm chữ hoa, chữ thường, số, ký tự đặc biệt)
+- Backup file `js/admin.js` trước khi sửa
+- Test đăng nhập ngay sau khi đổi
+- **Không** ghi mật khẩu plaintext vào code, README, hoặc tài liệu
 
-## 🔧 **Ví Dụ Mật Khẩu Mạnh:**
-- `TayBac2024!`
-- `DacSan@123`
-- `Admin$2024`
-- `HaiBeo#789`
+### ❌ Không nên:
+- Dùng mật khẩu quá đơn giản (`123456`, `password`)
+- Đổi salt `dacsantaybac_salt` (sẽ làm mất hết các phiên đăng nhập cũ)
+- Share hash công khai (hash có thể bị brute-force nếu mật khẩu yếu)
 
----
+## 🆘 Quên Mật Khẩu?
 
-## 🆘 **Khắc Phục Khi Quên Mật Khẩu:**
+Nếu quên mật khẩu, không thể khôi phục từ hash. Cần tạo hash mới:
 
-### Nếu quên mật khẩu mới:
-1. Mở file `admin.html`
-2. Tìm dòng chứa mật khẩu
-3. Đổi lại thành `admin123` hoặc mật khẩu khác
-4. Save và test lại
+1. Chạy `generateHash('mat_khau_moi')` trong Console
+2. Thay hash trong `js/admin.js`
+3. Push code lên GitHub
 
-### Nếu file bị lỗi:
-1. Restore từ backup
-2. Hoặc copy từ GitHub về
-3. Hoặc sử dụng Git reset
+## 📞 Cần Hỗ Trợ
+- **Zalo:** 0988040027
 
 ---
-
-## 📞 **Cần Hỗ Trợ:**
-- **Zalo:** 0988040027  
-- **Facebook:** Hải béo
-
-*Cập nhật: ${new Date().toLocaleDateString('vi-VN')}*
+*Cập nhật: 26/02/2026*

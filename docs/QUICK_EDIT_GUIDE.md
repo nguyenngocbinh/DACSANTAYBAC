@@ -1,191 +1,124 @@
-# 🚀 Hướng Dẫn Chỉnh Sửa Nhanh Giá & Ảnh Sản Phẩm
+# 🚀 Hướng Dẫn Chỉnh Sửa Nhanh Giá & Sản Phẩm
 
-## 💰 **CÁCH 1: Admin Panel - Chỉnh Sửa Giá (NHANH NHẤT)**
+## 💰 Cách 1: Admin Panel (Nhanh nhất — không cần code)
 
-### 📍 **Truy Cập Admin Panel:**
-```
-URL: https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html
-Login: admin / admin123
-```
+### Truy cập
+- **Online:** https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html
+- **Local:** Mở `admin/admin.html` trong trình duyệt
+- Đăng nhập với tài khoản admin
 
-### 🔧 **Các Bước Chỉnh Sửa Giá:**
+### Chỉnh giá
+1. Tìm sản phẩm (ô tìm kiếm hoặc lọc danh mục)
+2. Nhập giá mới vào ô input → click 💾
+3. Hoặc click **✏️ Chỉnh sửa** để sửa chi tiết (tên, mô tả, ảnh, emoji)
 
-1. **Đăng Nhập Admin Panel**
-   - Mở link admin panel
-   - Nhập username: `admin`
-   - Nhập password: `admin123`
+### Ưu điểm
+- ⚡ Cập nhật tức thì (lưu localStorage)
+- 📊 Export/Import Excel hàng loạt
+- 🔍 Tìm kiếm & lọc dễ dàng
 
-2. **Tìm Sản Phẩm**
-   - Sử dụng ô tìm kiếm để tìm sản phẩm
-   - Or lọc theo danh mục (Dược liệu, Thực phẩm, Đồ uống, Tinh dầu)
-
-3. **Chỉnh Sửa Giá**
-   - Click nút ✏️ (Edit) bên cạnh sản phẩm
-   - Nhập giá mới trong modal popup
-   - Click "Cập Nhật Giá"
-
-4. **Lưu & Backup**
-   - Thay đổi được lưu tự động vào localStorage
-   - Click "Backup Data" để tải file JSON backup
-   - Website chính sẽ cập nhật giá ngay lập tức
-
-### ✅ **Ưu Điểm Admin Panel:**
-- ⚡ **Cực nhanh** - Không cần code
-- 🔄 **Real-time** - Thay đổi ngay lập tức
-- 💾 **Auto-save** - Lưu tự động
-- 📊 **Dashboard** - Thống kê trực quan
-- 🔍 **Search & Filter** - Tìm kiếm dễ dàng
+### Hạn chế
+- Chỉ lưu trên trình duyệt hiện tại (localStorage)
+- Xóa cache = mất thay đổi
 
 ---
 
-## 🖼️ **CÁCH 2: Chỉnh Sửa Ảnh Sản Phẩm**
+## 📝 Cách 2: Sửa `data/products.json` (Lưu vĩnh viễn)
 
-### 📂 **Hiện Tại: Sử Dụng Emoji Icons**
-```javascript
-// Trong file js/script.js (trên GitLab)
-{ id: 1, name: "Tam thất khô", image: "🌿", ... },
-{ id: 2, name: "Hà thủ ô", image: "🍃", ... },
-{ id: 3, name: "Mật ong rừng", image: "🍯", ... },
-```
+### Chỉnh giá
+Mở `data/products.json`, tìm sản phẩm và sửa field `price`:
 
-### 🔄 **Option A: Thay Đổi Emoji (NHANH)**
-1. **Edit trên GitLab:**
-   - Truy cập: https://gitlab.com/nguyenngocbinh/DACSANTAYBAC
-   - Edit file `js/script.js`
-   - Thay đổi emoji trong property `image`
-
-2. **Emoji Suggestions:**
-   ```javascript
-   // Dược liệu
-   "🌿" "🍃" "🌱" "🌾" "🍄" "🌸" "🌺"
-   // Thực phẩm  
-   "🍯" "🥩" "🌶️" "🎋" "🧀"
-   // Đồ uống
-   "🍵" "🍶" "🌼"
-   // Tinh dầu
-   "🛢️" "🥥" "⭐"
-   ```
-
-### 🖼️ **Option B: Sử Dụng Ảnh Thật (CHUYÊN NGHIỆP)**
-
-#### **Bước 1: Tạo Thư Mục Images**
-```bash
-# Trong GitLab repository
-mkdir images
-```
-
-#### **Bước 2: Upload Ảnh**
-- Upload ảnh vào folder `images/`
-- Định dạng: JPG/PNG, kích thước 300x300px
-- Tên file: `tam-that-kho.jpg`, `ha-thu-o.jpg`, etc.
-
-#### **Bước 3: Cập Nhật Code**
-```javascript
-// Thay đổi trong js/script.js
-{ 
-  id: 1, 
-  name: "Tam thất khô", 
-  image: "images/tam-that-kho.jpg",  // ← Thay emoji bằng đường dẫn ảnh
-  ... 
-},
-```
-
-#### **Bước 4: Update CSS (Nếu Cần)**
-```css
-/* Trong css/style.css */
-.product-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
+```json
+{
+  "id": 1,
+  "name": "Tam Thất Bắc Thái Lat",
+  "category": "herbal",
+  "price": 1300000,       ← Sửa giá ở đây
+  "originalPrice": 1300000,
+  "image": "images/tam-that-bac-thai-lat.jpg",
+  "emoji": "🌿",
+  "description": "Tam thất Bắc Thái Lat cao cấp từ Tây Bắc",
+  "unit": "1kg"
 }
 ```
 
----
+### Thêm sản phẩm mới
+Thêm object vào cuối mảng (trước `]`):
 
-## ⚡ **CÁCH 3: Chỉnh Sửa Trực Tiếp Code**
+```json
+{
+  "id": 25,
+  "name": "Sản Phẩm Mới",
+  "category": "herbal",
+  "price": 100000,
+  "originalPrice": 100000,
+  "image": "",
+  "emoji": "🌿",
+  "description": "Mô tả sản phẩm",
+  "unit": "100g"
+}
+```
 
-### 📝 **Workflow Nhanh:**
+### Danh mục hợp lệ
+| Code | Hiển thị | Ví dụ |
+|------|----------|-------|
+| `herbal` | Dược liệu | Tam thất, Sâm, Nấm linh chi |
+| `food` | Thực phẩm | Mật ong, Thịt khô, Mắc ca |
+| `oil` | Tinh dầu | Tinh dầu quế, Tinh dầu xả |
+| `drink` | Đồ uống | (Chưa có sản phẩm) |
 
-#### **A. Chỉnh Sửa Giá Trong Code:**
-1. **Truy cập GitLab:** https://gitlab.com/nguyenngocbinh/DACSANTAYBAC
-2. **Edit file:** `js/script.js` 
-3. **Tìm sản phẩm:**
-   ```javascript
-   { id: 1, name: "Tam thất khô", price: 120000, ... }
-                                    ↑ Thay đổi giá ở đây
-   ```
-4. **Commit changes**
-5. **Deploy lên GitHub** (theo workflow)
-
-#### **B. Thêm Sản Phẩm Mới:**
-```javascript
-// Thêm vào cuối array products
-{ 
-  id: 22, 
-  name: "Sản phẩm mới", 
-  category: "herbal", 
-  price: 85000, 
-  originalPrice: 85000, 
-  image: "🌿", 
-  description: "Mô tả sản phẩm", 
-  unit: "100g" 
-},
+### Sau khi sửa
+1. Cập nhật mảng `PRODUCTS_FALLBACK` trong `js/script.js` cho khớp
+2. Commit & push:
+```bash
+git add data/products.json js/script.js
+git commit -m "update: thay đổi giá/sản phẩm"
+git push origin main
 ```
 
 ---
 
-## 🏆 **KHUYẾN NGHỊ WORKFLOW**
+## 🖼️ Thêm/Thay Ảnh Sản Phẩm
 
-### 🥇 **Cho Thay Đổi Giá Thường Xuyên:**
-**→ Sử dụng Admin Panel**
-- Nhanh nhất, không cần code
-- Real-time update
-- Backup/restore dễ dàng
+### Bước 1: Đặt tên ảnh (kebab-case)
+```
+✅ tam-that-moi.jpg
+✅ mat-ong-rung.jpg
+❌ tam thất mới.jpg (có dấu cách + tiếng Việt có dấu)
+```
 
-### 🥈 **Cho Thay Đổi Ảnh/Thông Tin:**
-**→ Edit trên GitLab → Deploy GitHub**
-- Professional workflow
-- Version control đầy đủ
-- Bảo mật source code
+### Bước 2: Copy vào thư mục `images/`
 
-### 🥉 **Cho Cập Nhật Lớn:**
-**→ Clone GitLab → Edit Local → Push**
-- IDE support đầy đủ
-- Test kỹ trước khi deploy
-- Bulk changes
+### Bước 3: Cập nhật `data/products.json`
+```json
+{
+  "id": 25,
+  "image": "images/tam-that-moi.jpg",
+  ...
+}
+```
+
+### Bước 4: Cập nhật fallback trong `js/script.js` → Commit & push
 
 ---
 
-## 📋 **Quick Reference**
+## 📊 Cách 3: Import Excel (Hàng loạt)
 
-### **🔗 Admin Panel:**
-```
-URL: https://nguyenngocbinh.github.io/DACSANTAYBAC/admin.html
-Login: admin / admin123
-Chức năng: Chỉnh giá, backup/restore, thống kê
-```
-
-### **🔗 GitLab (Source Code):**
-```
-URL: https://gitlab.com/nguyenngocbinh/DACSANTAYBAC
-File: js/script.js (line ~1-30 for products array)
-Chức năng: Sửa giá, ảnh, thông tin, thêm sản phẩm
-```
-
-### **🔗 GitHub (Production):**
-```
-URL: https://github.com/nguyenngocbinh/DACSANTAYBAC
-Auto-deploy: Sau khi push từ GitLab
-Website: https://nguyenngocbinh.github.io/DACSANTAYBAC/
-```
+1. Vào Admin Panel → click **Xuất Excel** để lấy template
+2. Sửa file `.xlsx` trong Excel/Google Sheets
+3. Quay lại Admin Panel → click **Import Excel** → chọn file
+4. Tất cả sản phẩm được cập nhật
 
 ---
 
-## ⚡ **TÓM TẮT - CÁCH NHANH NHẤT:**
+## 🏆 Khuyến Nghị
 
-### **Chỉnh Giá:** → Admin Panel (2 phút)
-### **Chỉnh Ảnh/Info:** → GitLab edit (5 phút)  
-### **Thêm Sản Phẩm:** → GitLab edit + deploy (10 phút)
+| Tình huống | Phương pháp | Thời gian |
+|-----------|------------|-----------|
+| Sửa giá 1-2 sản phẩm | Admin Panel | 1 phút |
+| Sửa giá hàng loạt | Import Excel | 5 phút |
+| Thêm sản phẩm mới | Sửa `products.json` | 5-10 phút |
+| Thêm/đổi ảnh | Copy ảnh + sửa JSON | 5 phút |
 
-🎯 **Admin Panel là cách nhanh nhất cho việc quản lý giá hàng ngày!**
+---
+*Cập nhật: 26/02/2026*

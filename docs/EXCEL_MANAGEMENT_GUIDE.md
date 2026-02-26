@@ -1,127 +1,91 @@
 # 📊 Hướng Dẫn Quản Lý Sản Phẩm Bằng Excel
 
 ## 🎯 Tổng Quan
-Hệ thống đã được nâng cấp với tính năng quản lý sản phẩm bằng file Excel/CSV, giúp việc cập nhật hàng loạt sản phẩm trở nên dễ dàng và nhanh chóng.
+Admin Panel hỗ trợ xuất/nhập sản phẩm bằng file Excel (.xlsx), giúp cập nhật hàng loạt nhanh chóng.
 
-## ✨ Tính Năng Mới
+> **Thư viện:** Sử dụng [SheetJS (xlsx)](https://sheetjs.com/) phiên bản 0.18.5
 
-### 📤 Xuất Excel
+## ✨ Chức Năng
+
+### 📥 Xuất Excel
 - **Nút:** "Xuất Excel" trong Admin Panel
-- **Chức năng:** Xuất toàn bộ dữ liệu sản phẩm hiện tại ra file CSV
-- **File xuất:** `dacsantaybac_products_YYYY-MM-DD.csv`
+- **File xuất:** `dacsantaybac_products_YYYY-MM-DD.xlsx`
+- **Nội dung:** Tất cả 24 sản phẩm với giá gốc + giá hiện tại
 
-### 📥 Import Excel  
+### 📤 Import Excel
 - **Nút:** "Import Excel" trong Admin Panel
-- **Chức năng:** Nhập dữ liệu từ file CSV để cập nhật sản phẩm
-- **Hỗ trợ:** File CSV với encoding UTF-8
+- **Hỗ trợ:** File `.xlsx`, `.xls`, `.csv`
+- **Tùy chọn:** Ghi đè dữ liệu hiện tại hoặc chỉ cập nhật
 
-### 📋 Tải File Mẫu
-- **Nút:** "File Mẫu" trong Admin Panel  
-- **Chức năng:** Tải file CSV mẫu với cấu trúc đúng
-- **File mẫu:** `template_dacsantaybac_products.csv`
+### 📎 Tải File Mẫu
+- **Nút:** "File Mẫu" trong Admin Panel
+- **File:** `template_dacsantaybac_products.xlsx`
+- **Gồm 2 sheet:** Template mẫu + Hướng dẫn
 
-## 📊 Cấu Trúc File Excel/CSV
+## 📊 Cấu Trúc Cột
 
-### Các Cột Bắt Buộc:
-| Cột | Tên | Mô Tả | Ví Dụ |
-|-----|-----|-------|-------|
-| A | ID | Số thứ tự sản phẩm (duy nhất) | 1, 2, 3... |
-| B | Tên sản phẩm | Tên hiển thị | Tam thất khô |
-| C | Danh mục | Loại sản phẩm | herbal, food, oil, drink |
-| D | Giá gốc | Giá ban đầu (VNĐ) | 120000 |
-| E | Giá hiện tại | Giá bán hiện tại (VNĐ) | 150000 |
-| F | Hình ảnh | Link ảnh hoặc emoji | images/abc.jpg hoặc 🌿 |
-| G | Mô tả | Mô tả chi tiết sản phẩm | Tam thất khô cao cấp... |
-| H | Đơn vị | Đơn vị bán | 100g, 1kg, 500ml |
+| Cột | Tên | Bắt buộc | Ví dụ |
+|-----|-----|----------|-------|
+| A | ID | ✅ | 1, 2, 3... |
+| B | Tên sản phẩm | ✅ | Tam Thất Bắc Thái Lat |
+| C | Danh mục | ✅ | `herbal`, `food`, `oil`, `drink` |
+| D | Giá gốc | ✅ | 1300000 |
+| E | Giá hiện tại | ✅ | 1300000 |
+| F | Hình ảnh | | `images/tam-that.jpg` hoặc emoji `🌿` |
+| G | Mô tả | | Tam thất cao cấp từ Tây Bắc |
+| H | Đơn vị | | 1kg, 100g, 500ml |
 
-### Danh Mục Hợp Lệ:
-- **herbal:** Dược liệu (tam thất, sâm, nấm linh chi...)
-- **food:** Thực phẩm (mật ong, hạt khô, thịt khô...)  
-- **oil:** Tinh dầu (tinh dầu sả, quế, tràm...)
-- **drink:** Đồ uống (trà, chè, rượu cần...)
+### Danh mục hợp lệ
+| Code | Hiển thị |
+|------|----------|
+| `herbal` | 🌿 Dược liệu |
+| `food` | 🍯 Thực phẩm |
+| `oil` | 💧 Tinh dầu |
+| `drink` | 🍵 Đồ uống |
 
-## 🔧 Cách Sử Dụng
+## 🔧 Quy Trình Sử Dụng
 
-### 1. Xuất Dữ Liệu Hiện Tại
-```
-1. Vào Admin Panel
-2. Click "Xuất Excel"
-3. File CSV sẽ được tải về máy
-4. Mở bằng Excel để chỉnh sửa
-```
+### 1. Xuất dữ liệu hiện tại
+1. Vào Admin Panel → đăng nhập
+2. Click **Xuất Excel**
+3. File `.xlsx` tải về máy
+4. Mở bằng Excel / Google Sheets
 
-### 2. Chỉnh Sửa Dữ Liệu
-```
-1. Mở file CSV bằng Excel
-2. Chỉnh sửa giá, tên, mô tả...
-3. Thêm sản phẩm mới (nếu cần)
-4. Lưu file dưới dạng CSV (UTF-8)
-```
+### 2. Chỉnh sửa trong Excel
+- Sửa giá, tên, mô tả trực tiếp trong Excel
+- Thêm dòng mới để thêm sản phẩm
+- **Không** đổi tên cột header
 
-### 3. Import Dữ Liệu
-```
-1. Vào Admin Panel
-2. Click "Import Excel"
-3. Chọn file CSV đã chỉnh sửa
-4. Chọn tùy chọn:
-   - ☐ Chỉ cập nhật sản phẩm có sẵn
-   - ☑ Ghi đè toàn bộ (thêm sản phẩm mới)
-5. Click "Import Dữ Liệu"
-```
+### 3. Import lại
+1. Quay lại Admin Panel
+2. Click **Import Excel**
+3. Chọn file đã sửa
+4. Check "Ghi đè dữ liệu hiện tại" (nếu muốn)
+5. Click **Import**
+6. Hệ thống báo kết quả: thêm mới / cập nhật / lỗi
 
-## ⚠️ Lưu Ý Quan Trọng
+## ⚠️ Lưu Ý
 
-### ✅ Điều Kiện Hợp Lệ:
-- ID phải là số nguyên dương
-- ID không được trùng lặp
-- Giá phải là số (không có dấu phẩy, chấm)
-- Danh mục chỉ chấp nhận: herbal, food, oil, drink
-- File phải có đủ các cột bắt buộc
+### ✅ Điều kiện hợp lệ
+- ID: số nguyên dương, không trùng
+- Giá: số nguyên (không dấu chấm/phẩy ngăn cách hàng nghìn)
+- Danh mục: chỉ 4 giá trị `herbal`, `food`, `oil`, `drink`
+- File phải có đủ 5 cột bắt buộc (ID, Tên, Danh mục, Giá gốc, Giá hiện tại)
 
-### ❌ Những Điều Cần Tránh:
-- Không để trống cột ID, Tên, Danh mục, Giá
-- Không sử dụng ký tự đặc biệt trong ID
-- Không thay đổi tên cột trong file mẫu
-- Không sử dụng danh mục ngoài 4 loại cho phép
+### ❌ Tránh
+- Để trống cột bắt buộc
+- Dùng danh mục ngoài 4 loại cho phép
+- Nhập giá dạng text ("một triệu ba")
 
-### 🔄 Xử Lý Lỗi:
-- Nếu có lỗi, hệ thống sẽ báo số dòng bị lỗi
-- Sản phẩm hợp lệ vẫn được import
-- Kiểm tra console browser để xem chi tiết lỗi
+### 🔄 Xử lý lỗi
+- Dòng hợp lệ vẫn được import
+- Dòng lỗi được đếm và báo tổng
+- Xem F12 → Console để debug chi tiết
 
-## 🎯 Ví Dụ Thực Tế
-
-### File CSV Mẫu:
-```csv
-ID,Tên sản phẩm,Danh mục,Giá gốc,Giá hiện tại,Hình ảnh,Mô tả,Đơn vị
-1,Tam thất khô,herbal,120000,150000,🌿,Tam thất khô cao cấp từ Tây Bắc,100g
-2,Mật ong rừng,food,250000,280000,images/mat-ong.jpg,Mật ong rừng nguyên chất,500ml
-3,Tinh dầu sả,oil,80000,90000,🧴,Tinh dầu sả đuổi muỗi,30ml
-```
-
-### Kết Quả Import:
-- ✅ Sản phẩm ID 1: Cập nhật giá từ 120k → 150k
-- ✅ Sản phẩm ID 2: Cập nhật giá và thông tin
-- ✅ Sản phẩm ID 3: Thêm mới (nếu chọn ghi đè)
-
-## 💡 Mẹo Sử Dụng
-
-### 1. Backup Định Kỳ:
-- Xuất Excel hàng tuần để backup
-- Lưu file với tên có ngày tháng
-
-### 2. Cập Nhật Hàng Loạt:
-- Sử dụng Excel để tính giá theo %
-- Copy formula cho nhiều sản phẩm cùng lúc
-
-### 3. Quản Lý Danh Mục:
-- Sử dụng Data Validation trong Excel
-- Tạo dropdown cho cột Danh mục
-
-### 4. Format Số:
-- Format cột giá thành Number (không có dấu phẩy)
-- Đảm bảo không có ký tự đặc biệt
+## 💡 Mẹo
+- Xuất Excel trước khi import để có template chuẩn
+- Backup bằng cách xuất Excel thường xuyên
+- Dùng tính năng "Reset Tất Cả" nếu import sai
 
 ---
-*📝 Cập nhật: 08/08/2025*
-*🔗 [Quay lại README chính](../README.md)*
+*Cập nhật: 26/02/2026*

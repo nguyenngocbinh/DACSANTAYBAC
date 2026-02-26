@@ -1,289 +1,153 @@
-# � Hướng Dẫn Deploy Website Đặc Sản Tây Bắc
+# 🚀 Hướng Dẫn Deploy Website Đặc Sản Tây Bắc
 
-## 🎯 **Mục Tiêu**
-Deploy website lên GitHub Pages miễn phí thông qua GitLab CI/CD với dual repository strategy.
+## 🎯 Mục Tiêu
+Deploy website lên GitHub Pages miễn phí. Hỗ trợ 2 phương thức:
+- **Trực tiếp**: Push từ local lên GitHub → GitHub Pages tự động deploy
+- **Qua GitLab CI/CD**: Push lên GitLab → CI/CD tự động mirror sang GitHub
 
-## 🏗️ **Kiến Trúc Deploy Hiện Tại**
+## 🏗️ Kiến Trúc Deploy
 
-### **Dual Repository Strategy**
-- **GitLab (Private):** `gitlab.com/nguyenngocbinh/DACSANTAYBAC` - Source backup & CI/CD
-- **GitHub (Public):** `github.com/nguyenngocbinh/DACSANTAYBAC` - Production hosting
+### Phương thức 1: Push trực tiếp lên GitHub (Đang sử dụng)
+```
+👨‍💻 Local Development
+    ↓ git push origin main
+🌍 GitHub Public Repository
+    ↓ GitHub Pages Auto Deploy
+🚀 Live Website (2-5 phút)
+```
 
-### **Auto Mirror Process**
+### Phương thức 2: Qua GitLab CI/CD (Tùy chọn)
 ```
 👨‍💻 Local Development
     ↓ git push gitlab main
-🔒 GitLab Private Repository 
-    ↓ GitLab CI/CD (.gitlab-ci.yml)
-🏗️ Auto Mirror Process
-    ↓ Mirror entire repository
+🔒 GitLab Private Repository
+    ↓ .gitlab-ci.yml → mirror
 🌍 GitHub Public Repository
     ↓ GitHub Pages Auto Deploy
 🚀 Live Website
 ```
 
-## 🔧 **Trạng Thái Bảo Mật Hiện Tại**
+## 🌐 Website URLs
+| Trang | URL |
+|-------|-----|
+| **Website chính** | https://nguyenngocbinh.github.io/DACSANTAYBAC/ |
+| **Admin Panel** | https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html |
+| **Mini Game** | https://nguyenngocbinh.github.io/DACSANTAYBAC/game.html |
+| **GitHub Repo** | https://github.com/nguyenngocbinh/DACSANTAYBAC |
 
-### **⚠️ KHÔNG CÓ Source Protection:**
-- ❌ Không có minification
-- ❌ Không có obfuscation  
-- ❌ Source code được mirror y nguyên từ GitLab → GitHub
-- ❌ Admin credentials hardcode trong client-side
+## 📋 Quy Trình Deploy
 
-### **✅ Files Thực Tế Được Deploy:**
-- ✅ `js/script.js` (source code gốc)
-- ✅ `js/admin.js` (source code gốc)
-- ✅ `js/game.js` (mini game engine)
-- ✅ `js/voucher-integration.js` (voucher system)
-
-## 📋 **Quy Trình Deploy Thực Tế**
-
-### **Bước 1: Development Local**
+### Bước 1: Phát triển trên máy local
 ```bash
-# Làm việc với source code gốc
-cd "e:\project\DACSANMUONGTE"
-# Edit files: index.html, js/script.js, js/admin.js, etc.
-# Test local với browser hoặc live server
+cd E:\project\DACSANTAYBAC
+
+# Test với live-server (cần cài npm dependencies)
+npm install
+npm run dev
+
+# Hoặc mở index.html trực tiếp trong trình duyệt
 ```
 
-### **Bước 2: Push to GitLab**
+### Bước 2: Commit & Push
 ```bash
 git add .
-git commit -m "Update features/content"
+git commit -m "Mô tả thay đổi"
 git push origin main
 ```
 
-### **Bước 3: GitLab CI/CD Auto Deploy**
-File `.gitlab-ci.yml` tự động thực hiện:
+### Bước 3: Kiểm tra deployment
+- GitHub Pages tự động deploy trong 2-5 phút
+- Truy cập https://nguyenngocbinh.github.io/DACSANTAYBAC/ để kiểm tra
+
+## 🔧 Cấu hình GitHub Pages
+1. Vào https://github.com/nguyenngocbinh/DACSANTAYBAC/settings/pages
+2. **Source**: Deploy from a branch
+3. **Branch**: `main` / `/ (root)`
+4. Click **Save**
+
+## 📂 Files được deploy
+| File | Mô tả |
+|------|--------|
+| `index.html` | Trang chủ |
+| `js/script.js` | Logic trang chủ (sản phẩm, giỏ hàng, tìm kiếm) |
+| `js/admin.js` | Logic admin panel (CRUD, Excel, xác thực SHA-256) |
+| `js/voucher-integration.js` | Hệ thống voucher từ game |
+| `js/game.js` | Mini game engine |
+| `css/style.css` | CSS trang chủ + responsive |
+| `css/admin.css` | CSS admin panel |
+| `data/products.json` | Dữ liệu 24 sản phẩm (single source of truth) |
+| `images/` | Hình ảnh sản phẩm (tên kebab-case) |
+
+## 🔐 Bảo mật hiện tại
+| Mục | Trạng thái | Ghi chú |
+|-----|-----------|---------|
+| Password admin | ✅ SHA-256 + salt | Không lưu plaintext trong code |
+| Admin panel SEO | ✅ `noindex, nofollow` | Ẩn khỏi công cụ tìm kiếm |
+| XSS protection | ✅ `escapeHtml()` | Sanitize tất cả đầu vào |
+| Source code | ⚠️ Public | GitHub repo public, JS không minify |
+| HTTPS | ✅ Mặc định | GitHub Pages tự cấp SSL |
+
+## 🔄 Cấu hình GitLab CI/CD (Tùy chọn)
+
+Nếu muốn dùng GitLab làm source backup:
+
+### Thêm GitLab remote:
+```bash
+git remote add gitlab https://gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
+```
+
+### Biến môi trường trên GitLab (Settings > CI/CD > Variables):
+| Variable | Giá trị | Protected | Masked |
+|----------|---------|-----------|--------|
+| `GITHUB_TOKEN` | GitHub Personal Access Token | ✅ | ✅ |
+| `GITLAB_PERSONAL_ACCESS_TOKEN` | GitLab PAT | ✅ | ✅ |
+
+### File `.gitlab-ci.yml` (đã có sẵn trong repo):
 ```yaml
 stages:
   - deploy
 
 deploy_to_github:
   stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache git
   script:
-    - git clone --mirror gitlab-repo
-    - git remote add github github-repo  
+    - git clone --mirror https://oauth2:$GITLAB_PERSONAL_ACCESS_TOKEN@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
+    - cd DACSANTAYBAC.git
+    - git remote add github https://$GITHUB_TOKEN@github.com/nguyenngocbinh/DACSANTAYBAC.git
     - git push --mirror github
   only:
     - main
 ```
 
-### **Bước 4: GitHub Pages Auto Hosting**
-- GitHub tự động detect changes
-- Deploy website từ main branch
-- Live trong 2-5 phút
+## ⚡ Quy Trình Cập Nhật Thường Ngày
 
-## 🌐 **Website URLs Thực Tế**
-- **Website Chính:** `https://nguyenngocbinh.github.io/DACSANTAYBAC/`
-- **Admin Panel:** `https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html`
-- **Mini Game:** `https://nguyenngocbinh.github.io/DACSANTAYBAC/game.html`
-- **GitLab Source:** `https://gitlab.com/nguyenngocbinh/DACSANTAYBAC`
-- **GitHub Mirror:** `https://github.com/nguyenngocbinh/DACSANTAYBAC`
+### Cập nhật giá/sản phẩm (không cần code):
+1. Truy cập Admin Panel → đăng nhập
+2. Chỉnh sửa giá, thông tin, ảnh trực tiếp
+3. Thay đổi lưu vào localStorage (tức thì trên trình duyệt đó)
 
-## 🔒 **HTML References THỰC TẾ:**
+### Cập nhật dữ liệu gốc (cần push code):
+1. Sửa `data/products.json`
+2. Cập nhật mảng `PRODUCTS_FALLBACK` trong `js/script.js` cho tương thích file:// protocol
+3. `git add . && git commit -m "Update products" && git push origin main`
 
-### **index.html:**
-```html
-<script src="js/script.js"></script>
-<script src="js/voucher-integration.js"></script>
-```
-
-### **admin/admin.html:**  
-```html
-<script src="js/admin.js"></script>
-```
-
-### **game.html:**
-```html
-<script src="js/game.js"></script>
-```
-
-## �️ **Tools Có Sẵn (Chưa Sử Dụng)**
-
-### **Build Tools:**
-- `tools/build.js` - Script build production
-- `tools/obfuscate.js` - Code obfuscation  
-- `tools/build.bat` - Windows automation
-- `tools/test-ci-local.ps1` - Local CI testing
-
-### **Để Kích Hoạt Source Protection (Tùy Chọn):**
+### Cập nhật giao diện/tính năng:
 ```bash
-# Option 1: Manual build
-node tools/build.js
-
-# Option 2: Windows batch
-tools/build.bat
-
-# Option 3: Integrate với CI/CD
-# Thêm build step vào .gitlab-ci.yml
-```
-
-## 🔐 **Trạng Thái Bảo Mật Hiện Tại**
-
-### **✅ Những Gì ĐƯỢC Bảo Vệ:**
-- ✅ GitLab repository là private (source backup an toàn)
-- ✅ CI/CD tokens được bảo vệ trong GitLab variables
-- ✅ Local development environment an toàn
-
-### **⚠️ Những Gì CHƯA Được Bảo Vệ:**
-- ⚠️ GitHub repository là public (toàn bộ source code visible)
-- ⚠️ Admin credentials trong `js/admin.js` có thể đọc được
-- ⚠️ Business logic và database structure exposed
-- ⚠️ Không có minification hoặc obfuscation
-
-## 📊 **So Sánh Phương Pháp Deploy**
-
-| Phương Pháp | Bảo Mật | Phức Tạp | Chi Phí | Trạng Thái |
-|-------------|---------|----------|---------|------------|
-| **Mirror Toàn Bộ** | ⭐⭐ | ⭐ | Miễn phí | ✅ **Hiện tại** |
-| **Build + Minify** | ⭐⭐⭐ | ⭐⭐ | Miễn phí | 🛠️ Có tools |
-| **Professional Obfuscation** | ⭐⭐⭐⭐ | ⭐⭐⭐ | Trả phí | 💰 Nâng cao |
-| **Server-Side** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | $5-20/tháng | 🏢 Enterprise |
-| **Private Repo** | ⭐⭐⭐⭐⭐ | ⭐ | $4/tháng | 💎 Tối ưu |
-
-## 🎯 **Tính Năng Website Hiện Tại**
-
-### **✅ Features Đã Deploy:**
-- ✅ **E-commerce**: Sản phẩm, giỏ hàng, checkout
-- ✅ **Admin Panel**: Quản lý sản phẩm, giá cả, Excel import/export
-- ✅ **Mini Game**: Flappy Bird Tây Bắc với voucher system
-- ✅ **Voucher Integration**: Tự động áp dụng voucher từ game
-- ✅ **Responsive Design**: Mobile, tablet, desktop
-- ✅ **SEO Optimized**: Meta tags, structured data
-
-### **⚡ Performance:**
-- ✅ **Static Website**: Tốc độ tải nhanh
-- ✅ **GitHub CDN**: Global distribution
-- ✅ **99.9% Uptime**: GitHub Pages reliability
-- ✅ **HTTPS**: Secure by default
-
-## � **Quy Trình Cập Nhật Thường Ngày**
-
-### **Update Nội Dung (Content):**
-```bash
-# 1. Sử dụng Admin Panel (khuyến nghị)
-# Truy cập: admin/admin.html
-# Login: admin / admin123
-# Update giá, sản phẩm trực tiếp
-
-# 2. Hoặc edit Excel và import
-# File: products_config.csv
-```
-
-### **Update Code (Features):**
-```bash
-# Local development
-git pull origin main
-# Edit files: js/script.js, css/style.css, etc.
+# Sửa HTML/CSS/JS → test local → push
 git add .
-git commit -m "Feature: Add new functionality"
+git commit -m "Feature: mô tả thay đổi"
 git push origin main
-# Auto deploy via GitLab CI/CD
+# Website tự cập nhật trong 2-5 phút
 ```
 
-### **Monitor Deployment:**
-```bash
-# Check GitLab CI/CD pipeline
-# URL: gitlab.com/nguyenngocbinh/DACSANTAYBAC/-/pipelines
-
-# Verify website live
-# URL: nguyenngocbinh.github.io/DACSANTAYBAC
-```
-
-## 🎉 **Kết Luận**
-
-### **✅ Trạng Thái Hiện Tại Phù Hợp Cho:**
-- ✅ **Website SME/Personal**: Đủ tính năng và bảo mật cơ bản
-- ✅ **Chi Phí $0**: Hoàn toàn miễn phí hosting và CI/CD
-- ✅ **Dễ Maintenance**: Auto deploy, không cần quản lý server
-- ✅ **High Performance**: Static website + GitHub CDN
-- ✅ **Feature Rich**: E-commerce + Game + Admin panel
-
-### **🔄 Roadmap Nâng Cấp:**
-1. **Ngắn hạn**: Kích hoạt build process để minify code
-2. **Trung hạn**: Implement server-side authentication
-3. **Dài hạn**: Chuyển sang private repository hoặc dedicated hosting
-
-### **📞 Deploy Support:**
-- **GitLab Repository**: `gitlab.com/nguyenngocbinh/DACSANTAYBAC`
-- **GitHub Pages**: `nguyenngocbinh.github.io/DACSANTAYBAC`
-- **Admin Panel**: Login với `admin / admin123`
+## 📊 Hiệu năng
+- ✅ **Static website** — tải nhanh, không server-side rendering
+- ✅ **GitHub CDN** — phân phối toàn cầu
+- ✅ **99.9% uptime** — GitHub Pages reliability
+- ✅ **HTTPS mặc định** — bảo mật kết nối
+- ✅ **Chi phí $0** — hoàn toàn miễn phí
 
 ---
-
-## 🚀 **WEBSITE ĐÃ LIVE VÀ SẴN SÀNG!**
-
-### ✅ **Current Status:**
-- **✅ Repository**: GitLab (Private) + GitHub (Public)
-- **✅ CI/CD**: Auto deploy via `.gitlab-ci.yml`  
-- **✅ Website**: Live trên GitHub Pages
-- **✅ Features**: Full e-commerce + Admin + Game
-- **✅ Mobile**: Responsive design
-- **✅ Performance**: Fast static website
-
-### 🌐 **Access Links:**
-- **🏠 Main Website**: https://nguyenngocbinh.github.io/DACSANTAYBAC/
-- **👨‍💼 Admin Panel**: https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html
-- **🎮 Mini Game**: https://nguyenngocbinh.github.io/DACSANTAYBAC/game.html
-
-### 🔑 **Admin Access:**
-- **Username**: `admin`
-- **Password**: `admin123`
-
-*🌟 Professional e-commerce website với game integration - hosted FREE và AUTO DEPLOY!*
-
-## 📊 **So Sánh Các Phương Pháp**
-
-| Phương Pháp | Độ Bảo Mật | Độ Phức Tạp | Chi Phí | Khuyến Nghị |
-|-------------|-------------|-------------|---------|-------------|
-| **Minification + .gitignore** | ⭐⭐⭐ | ⭐ | Miễn phí | ✅ **Hiện tại** |
-| **Professional Obfuscation** | ⭐⭐⭐⭐ | ⭐⭐ | Trả phí | 💰 Nâng cao |
-| **Server-Side Auth** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Trả phí hosting | 🏢 Thương mại |
-| **Private Repository** | ⭐⭐⭐⭐⭐ | ⭐ | $4/tháng | 💎 Tối ưu |
-
-## 🎉 **Kết Luận**
-
-### **✅ Phương Pháp Hiện Tại Phù Hợp Vì:**
-1. **Miễn phí hoàn toàn** - GitHub Pages free
-2. **Đủ bảo mật** cho website bán hàng cá nhân  
-3. **Dễ maintain** - không cần server phức tạp
-4. **SEO friendly** - static website tốc độ cao
-5. **Reliable** - GitHub uptime 99.9%
-
-### **🔄 Quy Trình Cập Nhật:**
-1. Chỉnh sửa code trong file `.js` gốc (local)
-2. Test kỹ trên local
-3. Copy sang `.min.js` (hoặc chạy build script)
-4. Commit & push chỉ `.min.js` files
-5. GitHub Pages tự động deploy
-
-### **🎯 Khuyến Nghị:**
-- ✅ **Sử dụng phương pháp hiện tại** cho website cá nhân/SME
-- ✅ **Backup source code** thường xuyên offline
-- ✅ **Monitor GitHub Pages** uptime và performance
-- ✅ **Nâng cấp lên private repo** nếu traffic cao hoặc yêu cầu bảo mật tuyệt đối
-
-## 🎉 **HOÀN THÀNH! Website Đã Sẵn Sàng**
-
-### ✅ Deploy Status: READY
-- **Repository:** https://github.com/nguyenngocbinh/web_ban_hang ✅
-- **Website Live:** `https://nguyenngocbinh.github.io/web_ban_hang/` 🌐
-- **Admin Panel:** `https://nguyenngocbinh.github.io/web_ban_hang/admin.html` 👨‍💼
-
-### 🔐 Security Applied
-- ✅ Original source code protected (not on GitHub)
-- ✅ Only minified versions (.min.js) available publicly  
-- ✅ Admin credentials encoded
-- ✅ Comments and debugging info removed
-
-### 🚀 Final Step: Enable GitHub Pages
-1. Go to https://github.com/nguyenngocbinh/web_ban_hang/settings/pages
-2. **Source:** Deploy from a branch
-3. **Branch:** main  
-4. **Folder:** / (root)
-5. Click **Save**
-6. Wait 2-5 minutes → Website will be live!
-
----
-*🌟 Professional e-commerce website với admin panel hoàn chỉnh - hosted FREE và SECURE!*
+*Cập nhật: 26/02/2026*

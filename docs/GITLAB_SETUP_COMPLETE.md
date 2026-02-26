@@ -1,116 +1,81 @@
-# 🚀 GitLab CI/CD Setup - Complete Guide
+# 🚀 GitLab CI/CD Setup
 
 ## 🎯 Mục Đích
-**SINGLE WORKFLOW:** Chỉ duy nhất 1 luồng deploy:
-1. **Developer:** Push code lên GitLab (private repository)
-2. **GitLab CI:** Tự động build và minify production code
-3. **GitHub Pages:** Tự động cập nhật website từ CI/CD
+Cấu hình GitLab CI/CD để tự động mirror code từ GitLab (private) sang GitHub (public), giúp GitHub Pages luôn cập nhật.
 
-```
-👨‍💻 Developer
-    ↓ git push gitlab main
-🔒 GitLab (Private Repository)
-    ↓ GitLab CI/CD Pipeline
-🏗️ Auto Build & Minify
-    ↓ Auto Deploy  
-🌍 GitHub Pages (Public Website)
-```
+> **Lưu ý:** Hiện tại dự án đang push trực tiếp lên GitHub. GitLab CI/CD là phương thức phụ/backup.
 
-## ⚡ Workflow Commands
+## ⚡ Workflow
 
-### Cập nhật website (CHỈ CẦN 1 LỆNH):
+### Push trực tiếp (Phương thức chính):
 ```bash
-git add .
-git commit -m "Update content"
-git push gitlab main
+git push origin main       # origin = GitHub
 ```
 
-**Tất cả sẽ tự động:**
-- ✅ GitLab CI build production code
-- ✅ Minify và obfuscate JavaScript  
-- ✅ Deploy lên GitHub Pages
-- ✅ Website live trong 2-3 phút
-
-## 🔧 Cấu Hình Biến Môi Trường
-
-### Trên GitLab (Settings > CI/CD > Variables):
-
-#### 1. GITHUB_TOKEN
-- **Type:** Variable
-- **Key:** `GITHUB_TOKEN`
-- **Value:** GitHub Personal Access Token
-- **Protected:** ✅ Yes
-- **Masked:** ✅ Yes
-
-#### 2. GITHUB_REPO
-- **Type:** Variable  
-- **Key:** `GITHUB_REPO`
-- **Value:** `nguyenngocbinh/DACSANTAYBAC`
-- **Protected:** ✅ Yes
-
-## 🔐 Authentication Setup
-
-### ⚠️ Vấn Đề: Authentication Failed
-
-GitLab không còn hỗ trợ password authentication. Bạn cần sử dụng **Personal Access Token**.
-
-### 🚀 Giải Pháp: Tạo GitLab Personal Access Token
-
-#### Bước 1: Tạo Personal Access Token
-
-1. **Truy cập GitLab:** https://gitlab.com/-/profile/personal_access_tokens
-2. **Điền thông tin:**
-   - **Token name:** `DACSANTAYBAC-deploy`
-   - **Expiration date:** `2025-12-31` (hoặc không set)
-   - **Scopes:** ✅ Chọn `read_repository`, `write_repository`
-
-3. **Click "Create personal access token"**
-4. **Copy token** (chỉ hiển thị 1 lần duy nhất!)
-
-#### Bước 2: Cấu Hình Git Credentials
-
+### Push qua GitLab (Tùy chọn):
 ```bash
-# Xóa credential cũ
-git config --global --unset credential.helper
+git push gitlab main       # Trigger CI/CD → auto mirror sang GitHub
+```
 
-# Cấu hình mới với token
-git remote set-url origin https://[YOUR_USERNAME]:[YOUR_TOKEN]@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
+## 🔧 Cấu Hình
 
-# Test
-git push origin main
+### 1. Thêm GitLab remote (nếu chưa có):
+```bash
+git remote add gitlab https://gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
+```
+
+### 2. Tạo GitLab Personal Access Token
+1. Truy cập: https://gitlab.com/-/user_settings/personal_access_tokens
+2. **Token name:** `DACSANTAYBAC-deploy`
+3. **Scopes:** ✅ `read_repository`, ✅ `write_repository`
+4. Click **Create** → copy token
+
+### 3. Tạo GitHub Personal Access Token
+1. Truy cập: https://github.com/settings/tokens
+2. **Scopes:** ✅ `repo`
+3. Click **Generate** → copy token
+
+### 4. Cấu hình biến môi trường trên GitLab
+Vào **Settings > CI/CD > Variables** trên GitLab repo:
+
+| Variable | Giá trị | Protected | Masked |
+|----------|---------|-----------|--------|
+| `GITHUB_TOKEN` | GitHub PAT | ✅ | ✅ |
+| `GITLAB_PERSONAL_ACCESS_TOKEN` | GitLab PAT | ✅ | ✅ |
+
+### 5. File `.gitlab-ci.yml` (đã có sẵn):
+```yaml
+stages:
+  - deploy
+
+deploy_to_github:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache git
+  script:
+    - git config --global http.postBuffer 524288000
+    - git config --global user.email "nguyenngocbinhneu@gmail.com"
+    - git config --global user.name "Nguyen Ngoc Binh"
+    - git clone --mirror https://oauth2:$GITLAB_PERSONAL_ACCESS_TOKEN@gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
+    - cd DACSANTAYBAC.git
+    - git remote add github https://$GITHUB_TOKEN@github.com/nguyenngocbinh/DACSANTAYBAC.git
+    - git push --mirror github
+  only:
+    - main
 ```
 
 ## 📊 Dual Repository Strategy
 
-### 🔒 GitLab (PRIVATE) - Source Code Backup
-- **URL:** https://gitlab.com/nguyenngocbinh/DACSANTAYBAC  
-- **Chứa:** Toàn bộ mã nguồn gốc, không minified
-- **Mục đích:** Backup an toàn, development
-- **Quyền truy cập:** Private, chỉ owner
+| Repository | Quyền truy cập | Mục đích |
+|-----------|----------------|----------|
+| **GitLab** `gitlab.com/nguyenngocbinh/DACSANTAYBAC` | Private | Source backup, CI/CD trigger |
+| **GitHub** `github.com/nguyenngocbinh/DACSANTAYBAC` | Public | GitHub Pages hosting, production |
 
-### 🌐 GitHub (PUBLIC) - Production Deployment  
-- **URL:** https://github.com/nguyenngocbinh/DACSANTAYBAC
-- **Chứa:** Mã nguồn đã minified, production ready
-- **Mục đích:** GitHub Pages hosting
-- **Quyền truy cập:** Public, SEO friendly
-
-## 🚀 Commands để Push lên GitLab
-
-```bash
-# First time setup
-git remote add gitlab https://gitlab.com/nguyenngocbinh/DACSANTAYBAC.git
-
-# Push to GitLab (sẽ trigger CI/CD)
-git push gitlab main
-```
-
-## 🛡️ Security Features
-
-- All user data is stored locally in browser localStorage
-- JavaScript files are minified and obfuscated
-- Original source code is not included in public repository
-- Admin credentials are encoded
-- No personal information is transmitted to external servers
+## 🛡️ Bảo Mật
+- CI/CD tokens được lưu trong GitLab Variables (encrypted)
+- GitLab repo private — chỉ owner truy cập
+- GitHub repo public — code hiển thị, mật khẩu admin đã hash SHA-256
 
 ---
-*Last updated: 08/08/2025*
+*Cập nhật: 26/02/2026*

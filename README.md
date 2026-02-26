@@ -33,11 +33,10 @@ Website thương mại điện tử chuyên bán các sản phẩm đặc sản 
 - Responsive CSS Grid + Flexbox
 - localStorage API
 
-## 📦 Sản Phẩm
-- **Dược liệu:** Tam thất khô, Hà thủ ô, Đông trùng hạ thảo, Sâm ngọc linh...
-- **Thực phẩm:** Mật ong rừng, Thịt trâu gác bếp, Mắc khén...
-- **Đồ uống:** Trà shan tuyết, Rượu cần, Trà hoa cúc...
-- **Tinh dầu:** Dầu tràm, Tinh dầu sả chanh, Dầu dừa...
+## 📦 Sản Phẩm (24 sản phẩm)
+- **Dược liệu:** Tam Thất, Hà Thủ Ô, Sâm Ngọc Linh, Đông Trùng Hạ Thảo, Nấm Linh Chi, Trinh Nữ Hoàng Cung...
+- **Thực phẩm:** Mật Ong Rừng, Mắc Ca Khô, Thịt Trâu/Lợn/Bò Khô, Măng Rói, Ngô Tím Cay...
+- **Tinh dầu:** Tinh Dầu Quế Nguyên Chất, Tinh Dầu Xả
 
 ## 📞 Liên Hệ
 - **Zalo:** 0988040027
@@ -74,6 +73,7 @@ MIT License - Sử dụng tự do cho mục đích cá nhân và thương mại.
 │   ├── ADMIN_GUIDE.md
 │   ├── QUICK_EDIT_GUIDE.md
 │   ├── PASSWORD_CHANGE_GUIDE.md
+│   ├── EXCEL_MANAGEMENT_GUIDE.md
 │   ├── DEPLOY_GUIDE.md
 │   └── GITLAB_SETUP_COMPLETE.md
 └── tools/                  # Build tools và scripts
