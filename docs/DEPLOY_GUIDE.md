@@ -32,7 +32,7 @@ Deploy website lên GitHub Pages miễn phí. Hỗ trợ 2 phương thức:
 |-------|-----|
 | **Website chính** | https://nguyenngocbinh.github.io/DACSANTAYBAC/ |
 | **Admin Panel** | https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html |
-| **Mini Game** | https://nguyenngocbinh.github.io/DACSANTAYBAC/game.html |
+| **Mini Game** | https://nguyenngocbinh.github.io/DACSANTAYBAC/games.html |
 | **GitHub Repo** | https://github.com/nguyenngocbinh/DACSANTAYBAC |
 
 ## 📋 Quy Trình Deploy

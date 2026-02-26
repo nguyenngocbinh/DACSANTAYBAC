@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Chơi - Đặc Sản Tây Bắc</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a5e2a 0%, #2d8f4e 30%, #f5a623 70%, #e8912d 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .page-header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .page-header .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-header .back-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .page-header h1 {
+            color: white;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header .spacer { width: 140px; }
+
+        .games-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .intro-section h2 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-section p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card-banner {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card-banner .banner-icon {
+            font-size: 80px;
+            color: white;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .game-card-banner .banner-bg-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.15;
+            background-image:
+                radial-gradient(circle at 20% 30%, white 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, white 3px, transparent 3px),
+                radial-gradient(circle at 50% 50%, white 1.5px, transparent 1.5px);
+            background-size: 60px 60px, 80px 80px, 40px 40px;
+        }
+
+        .banner-flappy { background: linear-gradient(135deg, #43cea2, #185a9d); }
+        .banner-pikachu { background: linear-gradient(135deg, #f7971e, #ffd200); }
+        .banner-coming-soon { background: linear-gradient(135deg, #667eea, #764ba2); }
+
+        .game-card-body {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card-body h3 {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-card-body h3 .badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .badge-new { background: #e74c3c; }
+        .badge-popular { background: #f39c12; }
+        .badge-soon { background: #95a5a6; }
+
+        .game-card-body p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .game-card-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background: #f0f4f8;
+            color: #555;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .play-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .play-btn-flappy { background: linear-gradient(135deg, #43cea2, #185a9d); }
+        .play-btn-pikachu { background: linear-gradient(135deg, #f7971e, #ffd200); color: #5a3e00; }
+        .play-btn-disabled { background: #bdc3c7; cursor: not-allowed; pointer-events: none; }
+
+        .voucher-info {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .voucher-info h3 {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .voucher-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .voucher-tier {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 18px 20px;
+            text-align: center;
+            color: white;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .voucher-tier:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .voucher-tier .tier-points { font-size: 28px; font-weight: 800; display: block; margin-bottom: 5px; }
+        .voucher-tier .tier-reward { font-size: 14px; opacity: 0.9; }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+            .page-header h1 { font-size: 18px; order: -1; width: 100%; text-align: center; }
+            .page-header .spacer { display: none; }
+            .intro-section h2 { font-size: 26px; }
+            .intro-section p { font-size: 15px; }
+            .games-grid { grid-template-columns: 1fr; }
+            .game-card-banner { height: 160px; }
+            .game-card-banner .banner-icon { font-size: 60px; }
+            .voucher-tiers { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .games-container { padding: 20px 12px 40px; }
+            .voucher-tiers { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="page-header">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Trang chính
+        </a>
+        <h1><i class="fas fa-gamepad"></i> Khu Vui Chơi Tây Bắc</h1>
+        <div class="spacer"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="games-container">
+        <div class="intro-section">
+            <h2>🎮 Chọn trò chơi yêu thích</h2>
+            <p>Chơi game vui nhộn về đặc sản Tây Bắc. Thu thập điểm để nhận voucher giảm giá khi mua hàng!</p>
+        </div>
+
+        <div class="games-grid">
+            <!-- Flappy Bird Game -->
+            <div class="game-card">
+                <div class="game-card-banner banner-flappy">
+                    <div class="banner-bg-pattern"></div>
+                    <i class="fas fa-kiwi-bird banner-icon"></i>
+                </div>
+                <div class="game-card-body">
+                    <h3>
+                        Chim Tây Bắc
+                        <span class="badge badge-popular">Phổ biến</span>
+                    </h3>
+                    <p>
+                        Điều khiển chú chim mặc trang phục dân tộc bay qua núi non Tây Bắc, 
+                        thu thập đặc sản trên đường bay. Tránh va chạm cây cối và địa hình để 
+                        đạt điểm cao nhất!
+                    </p>
+                    <div class="game-card-features">
+                        <span class="feature-tag"><i class="fas fa-mountain"></i> Phong cảnh Tây Bắc</span>
+                        <span class="feature-tag"><i class="fas fa-leaf"></i> Thu thập đặc sản</span>
+                        <span class="feature-tag"><i class="fas fa-gift"></i> Nhận voucher</span>
+                        <span class="feature-tag"><i class="fas fa-mobile-alt"></i> Mobile</span>
+                    </div>
+                    <a href="flappybird.html" class="play-btn play-btn-flappy">
+                        <i class="fas fa-play"></i> Chơi ngay
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pikachu Game -->
+            <div class="game-card">
+                <div class="game-card-banner banner-pikachu">
+                    <div class="banner-bg-pattern"></div>
+                    <i class="fas fa-puzzle-piece banner-icon"></i>
+                </div>
+                <div class="game-card-body">
+                    <h3>
+                        Pikachu Đặc Sản
+                        <span class="badge badge-new">Mới</span>
+                    </h3>
+                    <p>
+                        Nối các cặp đặc sản Tây Bắc giống nhau để ghi điểm. Tìm và ghép cặp 
+                        thật nhanh trước khi hết thời gian. Rèn luyện trí nhớ và khả năng quan sát!
+                    </p>
+                    <div class="game-card-features">
+                        <span class="feature-tag"><i class="fas fa-brain"></i> Rèn trí nhớ</span>
+                        <span class="feature-tag"><i class="fas fa-clock"></i> Giới hạn thời gian</span>
+                        <span class="feature-tag"><i class="fas fa-gift"></i> Nhận voucher</span>
+                        <span class="feature-tag"><i class="fas fa-th"></i> Nhiều độ khó</span>
+                    </div>
+                    <a href="pikachu.html" class="play-btn play-btn-pikachu">
+                        <i class="fas fa-play"></i> Chơi ngay
+                    </a>
+                </div>
+            </div>
+
+            <!-- Coming Soon -->
+            <div class="game-card" style="opacity: 0.75;">
+                <div class="game-card-banner banner-coming-soon">
+                    <div class="banner-bg-pattern"></div>
+                    <i class="fas fa-dice banner-icon"></i>
+                </div>
+                <div class="game-card-body">
+                    <h3>
+                        Sắp ra mắt...
+                        <span class="badge badge-soon">Coming Soon</span>
+                    </h3>
+                    <p>
+                        Nhiều trò chơi thú vị hơn đang được phát triển! 
+                        Hãy quay lại thường xuyên để khám phá những trò chơi mới 
+                        với chủ đề đặc sản Tây Bắc.
+                    </p>
+                    <div class="game-card-features">
+                        <span class="feature-tag"><i class="fas fa-star"></i> Đang phát triển</span>
+                        <span class="feature-tag"><i class="fas fa-bell"></i> Sắp có</span>
+                    </div>
+                    <button class="play-btn play-btn-disabled" disabled>
+                        <i class="fas fa-hourglass-half"></i> Sắp ra mắt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voucher Info -->
+        <div class="voucher-info">
+            <h3><i class="fas fa-ticket-alt"></i> Hệ thống Voucher giảm giá</h3>
+            <div class="voucher-tiers">
+                <div class="voucher-tier">
+                    <span class="tier-points">500+</span>
+                    <span class="tier-reward">🎫 Giảm 10%</span>
+                </div>
+                <div class="voucher-tier">
+                    <span class="tier-points">800+</span>
+                    <span class="tier-reward">🎫 Giảm 15%</span>
+                </div>
+                <div class="voucher-tier">
+                    <span class="tier-points">1200+</span>
+                    <span class="tier-reward">🎫 Giảm 20%</span>
+                </div>
+                <div class="voucher-tier">
+                    <span class="tier-points">1800+</span>
+                    <span class="tier-reward">🎫 Giảm 25%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

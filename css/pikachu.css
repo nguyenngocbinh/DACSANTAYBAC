@@ -110,17 +110,14 @@ body {
 
 /* Game Tiles */
 .game-tile {
-    width: 50px;
-    height: 50px;
     background: linear-gradient(135deg, #ffffff, #f0f0f0);
     border: 2px solid #ddd;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     position: relative;
     user-select: none;
 }
@@ -139,21 +136,19 @@ body {
 }
 
 .game-tile.match-success {
-    background: linear-gradient(135deg, #4CAF50, #2E7D32) !important;
-    border-color: #1B5E20 !important;
-    color: white !important;
-    animation: matchSuccess 0.5s ease;
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    border-color: #1B5E20;
+    color: white;
+    transform: scale(1.15);
 }
 
 .game-tile.matched {
-    animation: tileDisappear 0.5s ease forwards;
-}
-
-.game-tile.empty {
-    background: transparent;
-    border: none;
-    cursor: default;
+    opacity: 0;
+    transform: scale(0);
     pointer-events: none;
+    border-color: transparent;
+    background: transparent;
+    cursor: default;
 }
 
 .game-tile.hint {
@@ -493,40 +488,9 @@ body {
 }
 
 /* Animations */
-@keyframes matchSuccess {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); background: linear-gradient(135deg, #FFD700, #FFA000); }
-    100% { transform: scale(1); }
-}
-
-@keyframes tileDisappear {
-    0% { 
-        opacity: 1; 
-        transform: scale(1); 
-    }
-    50% { 
-        opacity: 0.5; 
-        transform: scale(1.1);
-    }
-    100% { 
-        opacity: 0; 
-        transform: scale(0);
-        background: transparent !important;
-        border: none !important;
-        color: transparent !important;
-        pointer-events: none !important;
-    }
-}
-
 @keyframes pulse {
-    0%, 100% { transform: scale(1.1); }
-    50% { transform: scale(1.15); }
-}
-
-@keyframes matchSuccess {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); background: linear-gradient(135deg, #FFD700, #FFA000); }
-    100% { transform: scale(1); }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
 }
 
 @keyframes hintBlink {
@@ -563,8 +527,6 @@ body {
     }
     
     .game-tile {
-        width: 35px;
-        height: 35px;
         font-size: 18px;
     }
     
@@ -612,8 +574,6 @@ body {
 
 @media (max-width: 480px) {
     .game-tile {
-        width: 30px;
-        height: 30px;
         font-size: 16px;
     }
     

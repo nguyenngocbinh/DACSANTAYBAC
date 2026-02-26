@@ -11,9 +11,9 @@
     <div class="game-container">
         <!-- Header -->
         <header class="game-header">
-            <button class="back-btn" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> Về trang chủ
-            </button>
+            <a href="games.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Chọn game khác
+            </a>
             <h1><i class="fas fa-puzzle-piece"></i> Pikachu Đặc Sản Tây Bắc</h1>
             <div class="header-info">
                 <div class="score-display">
@@ -62,16 +62,16 @@
                     <h3>Chọn độ khó:</h3>
                     <div class="difficulty-buttons">
                         <button class="difficulty-btn" data-difficulty="easy">
-                            <i class="fas fa-leaf"></i> Dễ<br>6×8 - 5 phút
+                            <i class="fas fa-leaf"></i> Dễ<br>4×6 - 5 phút
                         </button>
                         <button class="difficulty-btn active" data-difficulty="medium">
-                            <i class="fas fa-mountain"></i> Trung bình<br>8×10 - 4 phút
+                            <i class="fas fa-mountain"></i> Trung bình<br>6×8 - 4 phút
                         </button>
                         <button class="difficulty-btn" data-difficulty="hard">
-                            <i class="fas fa-fire"></i> Khó<br>10×12 - 3 phút
+                            <i class="fas fa-fire"></i> Khó<br>6×10 - 3 phút
                         </button>
                         <button class="difficulty-btn" data-difficulty="expert">
-                            <i class="fas fa-crown"></i> Chuyên gia<br>12×14 - 2.5 phút
+                            <i class="fas fa-crown"></i> Chuyên gia<br>8×10 - 2.5 phút
                         </button>
                     </div>
                 </div>
@@ -79,8 +79,8 @@
                 <button class="start-btn">
                     <i class="fas fa-play"></i> Bắt đầu chơi
                 </button>
-                <a href="game.html" class="other-game-link">
-                    🐦 Thử trò khác: Chim Tây Bắc — Thu thập đặc sản trên đường bay!
+                <a href="games.html" class="other-game-link">
+                    🎮 Xem tất cả trò chơi
                 </a>
             </div>
         </div>
@@ -164,11 +164,6 @@
     </div>
 
     <!-- Game Scripts -->
-    <script>
-        function goBack() {
-            window.location.href = 'index.html';
-        }
-    </script>
     <script src="js/pikachu.js"></script>
 </body>
 </html>

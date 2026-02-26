@@ -1,79 +1,74 @@
-// Pikachu Matching Game - Đặc Sản Tây Bắc Theme
+// Pikachu Matching Game - Đặc Sản Tây Bắc Theme (Complete Rewrite)
 class PikachuGame {
     constructor() {
         this.gameState = 'start';
         this.score = 0;
         this.timeLeft = 0;
-        this.selectedTiles = [];
+        this.selectedTile = null;
         this.board = [];
+        this.rows = 0;
+        this.cols = 0;
         this.difficulty = 'medium';
         this.gameTimer = null;
-        this.pathDisplay = null;
         this.hintsLeft = 3;
         this.matchedPairs = 0;
-        
+        this.totalPairs = 0;
+        this.isProcessing = false;
+
         // Đặc sản Tây Bắc items
         this.gameItems = [
-            '🐄', '🐐', '🐟', '🌾', '🍯', '🌿', '🥔', '🌽',
-            '🫒', '🍄', '🥜', '🌰', '🌶️', '🥒', '🍅', '🧄',
-            '🥬', '🫛', '🥕', '🫘'
+            '🍯', '🌿', '🥔', '🌽', '🍄', '🥜', '🌰', '🌶️',
+            '🥒', '🍅', '🧄', '🥬', '🥕', '🐄', '🐐', '🐟',
+            '🌾', '🫒', '🫛', '🫘'
         ];
-        
-        // Difficulty settings
+
+        // Board sizes fill completely (no empty tiles), pairs = rows*cols/2
         this.difficultySettings = {
-            easy: { rows: 6, cols: 8, time: 300, pairs: 12 },
-            medium: { rows: 8, cols: 10, time: 240, pairs: 20 },
-            hard: { rows: 10, cols: 12, time: 180, pairs: 30 },
-            expert: { rows: 12, cols: 14, time: 150, pairs: 42 }
+            easy:   { rows: 4, cols: 6,  time: 300 },
+            medium: { rows: 6, cols: 8,  time: 240 },
+            hard:   { rows: 6, cols: 10, time: 180 },
+            expert: { rows: 8, cols: 10, time: 150 }
         };
-        
-        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
         this.init();
     }
 
     init() {
         this.bindEvents();
         this.updateDisplay();
-        this.showStartScreen();
     }
 
     bindEvents() {
-        // Back button
-        document.querySelector('.back-btn').addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-
         // Difficulty selection
         document.querySelectorAll('.difficulty-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', () => {
                 document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.difficulty = e.target.dataset.difficulty;
+                btn.classList.add('active');
+                this.difficulty = btn.dataset.difficulty;
             });
         });
 
-        // Game buttons
+        // Start button
         document.querySelector('.start-btn').addEventListener('click', () => this.startGame());
-        
-        // Resume, restart, home buttons
-        const resumeBtn = document.querySelector('.resume-btn');
-        const restartBtns = document.querySelectorAll('.restart-btn');
-        const homeBtns = document.querySelectorAll('.home-btn');
-        
-        if (resumeBtn) resumeBtn.addEventListener('click', () => this.resumeGame());
-        
-        restartBtns.forEach(btn => {
-            btn.addEventListener('click', () => this.restartGame());
-        });
-        
-        homeBtns.forEach(btn => {
-            btn.addEventListener('click', () => this.showStartScreen());
-        });
-        
-        // Control buttons
+
+        // Game controls
         document.querySelector('.pause-btn').addEventListener('click', () => this.pauseGame());
         document.querySelector('.hint-btn').addEventListener('click', () => this.useHint());
         document.querySelector('.shuffle-btn').addEventListener('click', () => this.shuffleBoard());
+
+        // Resume
+        const resumeBtn = document.querySelector('.resume-btn');
+        if (resumeBtn) resumeBtn.addEventListener('click', () => this.resumeGame());
+
+        // Restart buttons
+        document.querySelectorAll('.restart-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.restartGame());
+        });
+
+        // Home buttons
+        document.querySelectorAll('.home-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.goHome());
+        });
 
         // Shop buttons
         document.querySelectorAll('.shop-btn').forEach(btn => {
@@ -82,39 +77,23 @@ class PikachuGame {
             });
         });
 
-        // Copy voucher codes
+        // Copy voucher (event delegation)
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('copy-voucher')) {
-                const code = e.target.previousElementSibling.textContent;
-                navigator.clipboard.writeText(code).then(() => {
-                    e.target.textContent = '✓ Đã sao chép!';
-                    e.target.style.background = '#4CAF50';
-                    setTimeout(() => {
-                        e.target.textContent = '📋 Sao chép';
-                        e.target.style.background = '#4CAF50';
-                    }, 2000);
-                });
+                const code = e.target.previousElementSibling?.textContent;
+                if (code) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        e.target.textContent = '✓ Đã sao chép!';
+                        setTimeout(() => { e.target.textContent = '📋 Sao chép'; }, 2000);
+                    });
+                }
             }
         });
-
-        // Touch events for mobile
-        if (this.isMobile) {
-            document.addEventListener('touchstart', this.handleTouch.bind(this));
-            document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
-        }
     }
 
-    handleTouch(e) {
-        if (this.gameState !== 'playing') return;
-        
-        const touch = e.touches[0];
-        const element = document.elementFromPoint(touch.clientX, touch.clientY);
-        
-        if (element && element.classList.contains('game-tile')) {
-            e.preventDefault();
-            this.selectTile(element);
-        }
-    }
+    // ═══════════════════════════════════════
+    //  Display
+    // ═══════════════════════════════════════
 
     updateDisplay() {
         document.getElementById('score').textContent = this.score;
@@ -122,438 +101,527 @@ class PikachuGame {
         document.getElementById('hints').textContent = this.hintsLeft;
     }
 
-    updateProgress() {
-        const settings = this.difficultySettings[this.difficulty];
-        const totalPairs = Math.min(settings.pairs, Math.floor((settings.rows * settings.cols) / 2));
-        const progressPercent = (this.matchedPairs / totalPairs) * 100;
-        
-        // Update progress bar
-        const progressFill = document.querySelector('.progress-fill');
-        if (progressFill) {
-            progressFill.style.width = `${progressPercent}%`;
-        }
-        
-        // Update progress text
-        const currentPairsElement = document.getElementById('current-pairs');
-        const totalPairsElement = document.getElementById('total-pairs');
-        
-        if (currentPairsElement) currentPairsElement.textContent = this.matchedPairs;
-        if (totalPairsElement) totalPairsElement.textContent = totalPairs;
+    formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${m}:${sec.toString().padStart(2, '0')}`;
     }
 
-    formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
-    }
-
-    showScreen(screenId) {
-        document.querySelectorAll('.overlay-screen').forEach(screen => {
-            screen.classList.add('hidden');
-        });
-        document.getElementById(screenId).classList.remove('hidden');
-    }
-
-    showStartScreen() {
-        this.gameState = 'start';
-        this.showScreen('start-screen');
-        this.clearBoard();
-    }
-
-    startGame() {
-        const settings = this.difficultySettings[this.difficulty];
-        this.gameState = 'playing';
-        this.score = 0;
-        this.timeLeft = settings.time;
-        this.selectedTiles = [];
-        this.matchedPairs = 0;
-        this.hintsLeft = 3;
-        
-        this.hideAllScreens();
-        this.generateBoard();
-        this.startTimer();
-        this.updateDisplay();
-        this.updateProgress();
+    showScreen(id) {
+        document.querySelectorAll('.overlay-screen').forEach(s => s.classList.add('hidden'));
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('hidden');
     }
 
     hideAllScreens() {
-        document.querySelectorAll('.overlay-screen').forEach(screen => {
-            screen.classList.add('hidden');
-        });
+        document.querySelectorAll('.overlay-screen').forEach(s => s.classList.add('hidden'));
     }
 
-    generateBoard() {
+    showMessage(text) {
+        document.querySelectorAll('.hint-display').forEach(el => el.remove());
+        const msg = document.createElement('div');
+        msg.className = 'hint-display';
+        msg.textContent = text;
+        document.querySelector('.game-main').appendChild(msg);
+        setTimeout(() => { if (msg.parentNode) msg.remove(); }, 2500);
+    }
+
+    // ═══════════════════════════════════════
+    //  Game Flow
+    // ═══════════════════════════════════════
+
+    startGame() {
         const settings = this.difficultySettings[this.difficulty];
-        const gameBoard = document.querySelector('.game-board');
-        
-        // Set grid layout
-        gameBoard.style.gridTemplateColumns = `repeat(${settings.cols}, 1fr)`;
-        gameBoard.style.gridTemplateRows = `repeat(${settings.rows}, 1fr)`;
-        
-        // Generate pairs
-        const totalTiles = settings.rows * settings.cols;
-        const availablePairs = Math.floor(totalTiles / 2);
-        const pairsToUse = Math.min(settings.pairs, availablePairs);
-        
-        // Create tile data
-        this.board = [];
-        const items = this.shuffleArray([...this.gameItems]).slice(0, pairsToUse);
-        
-        // Add pairs
-        for (let i = 0; i < pairsToUse; i++) {
-            this.board.push({ id: i * 2, item: items[i], matched: false });
-            this.board.push({ id: i * 2 + 1, item: items[i], matched: false });
-        }
-        
-        // Fill remaining tiles with empty
-        while (this.board.length < totalTiles) {
-            this.board.push({ id: this.board.length, item: '', matched: false, empty: true });
-        }
-        
-        // Shuffle board
-        this.board = this.shuffleArray(this.board);
-        
-        // Render board
+        this.rows = settings.rows;
+        this.cols = settings.cols;
+        this.totalPairs = (this.rows * this.cols) / 2;
+        this.score = 0;
+        this.timeLeft = settings.time;
+        this.matchedPairs = 0;
+        this.hintsLeft = 3;
+        this.selectedTile = null;
+        this.isProcessing = false;
+        this.gameState = 'playing';
+
+        this.hideAllScreens();
+        this.generateBoard();
         this.renderBoard();
+        this.startTimer();
+        this.updateDisplay();
+    }
+
+    restartGame() {
+        this.clearTimer();
+        this.gameState = 'start';
+        this.clearBoard();
+        this.showScreen('start-screen');
+    }
+
+    goHome() {
+        this.clearTimer();
+        this.gameState = 'start';
+        this.clearBoard();
+        this.showScreen('start-screen');
+    }
+
+    clearTimer() {
+        if (this.gameTimer) {
+            clearInterval(this.gameTimer);
+            this.gameTimer = null;
+        }
+    }
+
+    startTimer() {
+        this.clearTimer();
+        this.gameTimer = setInterval(() => {
+            this.timeLeft--;
+            this.updateDisplay();
+            if (this.timeLeft <= 0) this.gameOver(false);
+        }, 1000);
+    }
+
+    pauseGame() {
+        if (this.gameState !== 'playing') return;
+        this.gameState = 'paused';
+        this.clearTimer();
+        document.getElementById('pause-score').textContent = this.score;
+        document.getElementById('pause-time').textContent = this.formatTime(this.timeLeft);
+        document.getElementById('pause-pairs').textContent = this.matchedPairs;
+        this.showScreen('pause-screen');
+    }
+
+    resumeGame() {
+        if (this.gameState !== 'paused') return;
+        this.gameState = 'playing';
+        this.hideAllScreens();
+        this.startTimer();
+    }
+
+    gameOver(isWin) {
+        this.gameState = 'finished';
+        this.clearTimer();
+
+        const timeBonus = isWin ? this.timeLeft * 10 : 0;
+        const mult = { easy: 1, medium: 1.5, hard: 2, expert: 3 }[this.difficulty] || 1;
+        const finalScore = Math.floor((this.score + timeBonus) * mult);
+
+        document.getElementById('final-score').textContent = finalScore;
+        document.getElementById('final-pairs').textContent = this.matchedPairs;
+        document.getElementById('final-time').textContent = this.formatTime(
+            this.difficultySettings[this.difficulty].time - this.timeLeft
+        );
+
+        const h2 = document.querySelector('#game-over-screen h2');
+        if (isWin) {
+            h2.innerHTML = '<i class="fas fa-trophy"></i> Chúc mừng! Bạn đã thắng!';
+            h2.style.color = '';
+        } else {
+            h2.innerHTML = '<i class="fas fa-clock"></i> Hết thời gian!';
+            h2.style.color = '#FFD700';
+        }
+
+        const vc = document.getElementById('voucher-container');
+        if (finalScore >= 500) {
+            const voucher = this.generateVoucher(finalScore);
+            vc.innerHTML = `
+                <div class="voucher-reward">
+                    <h3>🎁 Phần thưởng!</h3>
+                    <p>Mã giảm giá đặc sản Tây Bắc:</p>
+                    <div class="voucher-code">
+                        <span>${voucher.code}</span>
+                        <button class="copy-voucher">📋 Sao chép</button>
+                    </div>
+                    <p><strong>Giảm ${voucher.discount}%</strong> đơn từ ${voucher.minOrder.toLocaleString()}đ</p>
+                    <p><em>Hiệu lực đến ${voucher.expiry}</em></p>
+                </div>`;
+            this.saveVoucher(voucher);
+        } else {
+            vc.innerHTML = `
+                <div style="background:rgba(255,255,255,0.1);padding:1rem;border-radius:10px;margin:1rem 0;">
+                    <p>💡 Đạt 500+ điểm để nhận mã giảm giá! (${finalScore}/500)</p>
+                </div>`;
+        }
+
+        this.showScreen('game-over-screen');
+    }
+
+    // ═══════════════════════════════════════
+    //  Board Generation & Rendering
+    // ═══════════════════════════════════════
+
+    generateBoard() {
+        // Create item pairs - reuse items cyclically if needed
+        const items = [];
+        for (let i = 0; i < this.totalPairs; i++) {
+            items.push(this.gameItems[i % this.gameItems.length]);
+        }
+
+        // Each item appears exactly twice
+        let tiles = [];
+        items.forEach(item => {
+            tiles.push({ item, matched: false });
+            tiles.push({ item, matched: false });
+        });
+
+        // Shuffle tiles
+        tiles = this.shuffleArray(tiles);
+
+        // Fill 2D board
+        this.board = [];
+        let idx = 0;
+        for (let r = 0; r < this.rows; r++) {
+            this.board[r] = [];
+            for (let c = 0; c < this.cols; c++) {
+                this.board[r][c] = tiles[idx++];
+            }
+        }
+
+        // Ensure at least one matchable pair exists
+        if (!this.findAnyMatch()) {
+            this.generateBoard();
+        }
     }
 
     renderBoard() {
         const gameBoard = document.querySelector('.game-board');
         gameBoard.innerHTML = '';
-        
-        this.board.forEach((tile, index) => {
-            const tileElement = document.createElement('div');
-            tileElement.className = 'game-tile';
-            tileElement.dataset.index = index;
-            
-            if (tile.empty) {
-                tileElement.classList.add('empty');
-            } else {
-                tileElement.textContent = tile.item;
-                tileElement.addEventListener('click', () => this.selectTile(tileElement));
+
+        // Calculate responsive tile size
+        const container = document.querySelector('.game-board-container');
+        const availW = container.clientWidth - 30;
+        const availH = container.clientHeight - 30;
+        const gap = 3;
+        const tileW = Math.floor((availW - (this.cols + 1) * gap) / this.cols);
+        const tileH = Math.floor((availH - (this.rows + 1) * gap) / this.rows);
+        const tileSize = Math.max(28, Math.min(tileW, tileH, 55));
+        const fontSize = Math.max(14, Math.min(Math.floor(tileSize * 0.55), 26));
+
+        gameBoard.style.gridTemplateColumns = `repeat(${this.cols}, ${tileSize}px)`;
+        gameBoard.style.gridTemplateRows = `repeat(${this.rows}, ${tileSize}px)`;
+        gameBoard.style.gap = `${gap}px`;
+
+        for (let r = 0; r < this.rows; r++) {
+            for (let c = 0; c < this.cols; c++) {
+                const tile = this.board[r][c];
+                const el = document.createElement('div');
+                el.className = 'game-tile';
+                el.dataset.row = r;
+                el.dataset.col = c;
+                el.style.fontSize = `${fontSize}px`;
+
+                if (tile.matched) {
+                    el.classList.add('matched');
+                } else {
+                    el.textContent = tile.item;
+                    el.addEventListener('click', () => this.onTileClick(r, c, el));
+                }
+
+                gameBoard.appendChild(el);
             }
-            
-            if (tile.matched) {
-                tileElement.classList.add('matched');
+        }
+    }
+
+    clearBoard() {
+        document.querySelector('.game-board').innerHTML = '';
+        const svg = document.querySelector('.path-svg');
+        if (svg) svg.remove();
+    }
+
+    getTileEl(r, c) {
+        return document.querySelector(`.game-tile[data-row="${r}"][data-col="${c}"]`);
+    }
+
+    // ═══════════════════════════════════════
+    //  Tile Selection & Matching
+    // ═══════════════════════════════════════
+
+    onTileClick(r, c, el) {
+        if (this.gameState !== 'playing' || this.isProcessing) return;
+        if (this.board[r][c].matched) return;
+
+        // Clear any hint highlights
+        this.clearHints();
+
+        if (!this.selectedTile) {
+            // First tile selected
+            this.selectedTile = { r, c, el };
+            el.classList.add('selected');
+        } else if (this.selectedTile.r === r && this.selectedTile.c === c) {
+            // Clicked same tile → deselect
+            el.classList.remove('selected');
+            this.selectedTile = null;
+        } else {
+            // Second tile selected
+            el.classList.add('selected');
+            this.isProcessing = true;
+
+            const { r: r1, c: c1, el: el1 } = this.selectedTile;
+            const r2 = r, c2 = c, el2 = el;
+
+            if (this.board[r1][c1].item === this.board[r2][c2].item) {
+                const path = this.findPath(r1, c1, r2, c2);
+                if (path) {
+                    this.handleMatch(r1, c1, r2, c2, el1, el2, path);
+                    return;
+                }
             }
-            
-            gameBoard.appendChild(tileElement);
+
+            // No match or no valid path → deselect both
+            setTimeout(() => {
+                el1.classList.remove('selected');
+                el2.classList.remove('selected');
+                this.selectedTile = null;
+                this.isProcessing = false;
+            }, 300);
+        }
+    }
+
+    handleMatch(r1, c1, r2, c2, el1, el2, path) {
+        // Draw the connecting path, then animate match
+        this.drawPath(path, () => {
+            el1.classList.remove('selected');
+            el2.classList.remove('selected');
+            el1.classList.add('match-success');
+            el2.classList.add('match-success');
+
+            setTimeout(() => {
+                // Mark matched in data
+                this.board[r1][c1].matched = true;
+                this.board[r2][c2].matched = true;
+
+                // Visual: hide tiles
+                el1.classList.remove('match-success');
+                el2.classList.remove('match-success');
+                el1.classList.add('matched');
+                el2.classList.add('matched');
+                el1.textContent = '';
+                el2.textContent = '';
+
+                // Update score
+                this.matchedPairs++;
+                this.score += 100;
+                this.updateDisplay();
+
+                // Reset selection
+                this.selectedTile = null;
+                this.isProcessing = false;
+
+                // Check win or deadlock
+                if (this.matchedPairs >= this.totalPairs) {
+                    this.gameOver(true);
+                } else if (!this.findAnyMatch()) {
+                    this.autoShuffle();
+                }
+            }, 350);
         });
     }
 
-    selectTile(tileElement) {
-        if (this.gameState !== 'playing') return;
-        if (tileElement.classList.contains('matched') || tileElement.classList.contains('empty')) return;
-        if (tileElement.style.opacity === '0') return; // Don't select disappeared tiles
-        if (this.selectedTiles.includes(tileElement)) return;
-        if (this.selectedTiles.length >= 2) return;
-        
-        tileElement.classList.add('selected');
-        this.selectedTiles.push(tileElement);
-        
-        if (this.selectedTiles.length === 2) {
-            setTimeout(() => this.checkMatch(), 300);
-        }
+    // ═══════════════════════════════════════
+    //  Path Finding (Pikachu/Shisen-Sho: max 2 bends)
+    //
+    //  Uses virtual border: row -1, row=rows, col -1, col=cols
+    //  are always passable, allowing paths to route around the board.
+    // ═══════════════════════════════════════
+
+    isPassable(r, c) {
+        // Outside the board = always passable (virtual border)
+        if (r < 0 || r >= this.rows || c < 0 || c >= this.cols) return true;
+        return this.board[r][c].matched;
     }
 
-    checkMatch() {
-        const [tile1, tile2] = this.selectedTiles;
-        const index1 = parseInt(tile1.dataset.index);
-        const index2 = parseInt(tile2.dataset.index);
-        
-        if (this.board[index1].item === this.board[index2].item) {
-            // Match found
-            this.handleMatch(tile1, tile2, index1, index2);
-        } else {
-            // No match
-            this.handleNoMatch(tile1, tile2);
-        }
-        
-        this.selectedTiles = [];
-    }
-
-    handleMatch(tile1, tile2, index1, index2) {
-        // Check if tiles can connect
-        const path = this.findPath(index1, index2);
-        
-        if (path) {
-            // Valid match
-            tile1.classList.remove('selected');
-            tile2.classList.remove('selected');
-            
-            // Add success animation
-            tile1.classList.add('match-success');
-            tile2.classList.add('match-success');
-            
-            // Show path first
-            this.showPath(path);
-            
-            // After a short delay, make tiles disappear
-            setTimeout(() => {
-                tile1.classList.add('matched');
-                tile2.classList.add('matched');
-                
-                // Update board state
-                this.board[index1].matched = true;
-                this.board[index2].matched = true;
-                
-                this.matchedPairs++;
-                this.score += 100;
-                
-                // Bonus points for quick matches
-                if (this.timeLeft > this.difficultySettings[this.difficulty].time * 0.8) {
-                    this.score += 50;
-                }
-                
-                this.updateDisplay();
-                this.updateProgress();
-                this.checkWin();
-            }, 500);
-            
-        } else {
-            // No valid path
-            this.handleNoMatch(tile1, tile2);
-        }
-    }
-
-    handleNoMatch(tile1, tile2) {
-        setTimeout(() => {
-            tile1.classList.remove('selected');
-            tile2.classList.remove('selected');
-        }, 500);
-    }
-
-    findPath(start, end) {
-        const settings = this.difficultySettings[this.difficulty];
-        const startRow = Math.floor(start / settings.cols);
-        const startCol = start % settings.cols;
-        const endRow = Math.floor(end / settings.cols);
-        const endCol = end % settings.cols;
-        
-        // Try direct connection
-        if (this.canConnectDirect(startRow, startCol, endRow, endCol)) {
-            return this.createPath(startRow, startCol, endRow, endCol, 'direct');
-        }
-        
-        // Try one-turn connection
-        const oneTurnPath = this.canConnectOneTurn(startRow, startCol, endRow, endCol);
-        if (oneTurnPath) {
-            return oneTurnPath;
-        }
-        
-        // Try two-turn connection
-        const twoTurnPath = this.canConnectTwoTurn(startRow, startCol, endRow, endCol);
-        if (twoTurnPath) {
-            return twoTurnPath;
-        }
-        
-        return null;
-    }
-
-    canConnectDirect(startRow, startCol, endRow, endCol) {
-        const settings = this.difficultySettings[this.difficulty];
-        
-        // Same row
-        if (startRow === endRow) {
-            const minCol = Math.min(startCol, endCol);
-            const maxCol = Math.max(startCol, endCol);
-            for (let col = minCol + 1; col < maxCol; col++) {
-                const index = startRow * settings.cols + col;
-                if (!this.board[index].empty && !this.board[index].matched) {
-                    return false;
-                }
+    /**
+     * Check if there's a clear straight line between two points
+     * on the same row or same column. Does NOT check endpoints themselves.
+     */
+    canStraightLine(r1, c1, r2, c2) {
+        if (r1 === r2) {
+            const min = Math.min(c1, c2);
+            const max = Math.max(c1, c2);
+            for (let c = min + 1; c < max; c++) {
+                if (!this.isPassable(r1, c)) return false;
             }
             return true;
         }
-        
-        // Same column
-        if (startCol === endCol) {
-            const minRow = Math.min(startRow, endRow);
-            const maxRow = Math.max(startRow, endRow);
-            for (let row = minRow + 1; row < maxRow; row++) {
-                const index = row * settings.cols + startCol;
-                if (!this.board[index].empty && !this.board[index].matched) {
-                    return false;
-                }
+        if (c1 === c2) {
+            const min = Math.min(r1, r2);
+            const max = Math.max(r1, r2);
+            for (let r = min + 1; r < max; r++) {
+                if (!this.isPassable(r, c1)) return false;
             }
             return true;
         }
-        
         return false;
     }
 
-    canConnectOneTurn(startRow, startCol, endRow, endCol) {
-        const settings = this.difficultySettings[this.difficulty];
-        
-        // Try corner at (startRow, endCol)
-        const corner1Index = startRow * settings.cols + endCol;
-        if (this.board[corner1Index].empty || this.board[corner1Index].matched) {
-            if (this.canConnectDirect(startRow, startCol, startRow, endCol) &&
-                this.canConnectDirect(startRow, endCol, endRow, endCol)) {
-                return this.createPath(startRow, startCol, endRow, endCol, 'one-turn', [startRow, endCol]);
+    /**
+     * Find a path between (r1,c1) and (r2,c2) with at most 2 bends.
+     * Returns array of [row,col] waypoints, or null if no path exists.
+     */
+    findPath(r1, c1, r2, c2) {
+        if (r1 === r2 && c1 === c2) return null;
+
+        // ── 0 bends: direct straight line ──
+        if ((r1 === r2 || c1 === c2) && this.canStraightLine(r1, c1, r2, c2)) {
+            return [[r1, c1], [r2, c2]];
+        }
+
+        // ── 1 bend: via one corner ──
+        // Corner at (r1, c2)
+        if (this.isPassable(r1, c2) &&
+            this.canStraightLine(r1, c1, r1, c2) &&
+            this.canStraightLine(r1, c2, r2, c2)) {
+            return [[r1, c1], [r1, c2], [r2, c2]];
+        }
+        // Corner at (r2, c1)
+        if (this.isPassable(r2, c1) &&
+            this.canStraightLine(r1, c1, r2, c1) &&
+            this.canStraightLine(r2, c1, r2, c2)) {
+            return [[r1, c1], [r2, c1], [r2, c2]];
+        }
+
+        // ── 2 bends: scan rows (path goes vertical → horizontal → vertical) ──
+        for (let r = -1; r <= this.rows; r++) {
+            if (r === r1 || r === r2) continue;
+            if (this.isPassable(r, c1) && this.isPassable(r, c2) &&
+                this.canStraightLine(r1, c1, r, c1) &&
+                this.canStraightLine(r, c1, r, c2) &&
+                this.canStraightLine(r, c2, r2, c2)) {
+                return [[r1, c1], [r, c1], [r, c2], [r2, c2]];
             }
         }
-        
-        // Try corner at (endRow, startCol)
-        const corner2Index = endRow * settings.cols + startCol;
-        if (this.board[corner2Index].empty || this.board[corner2Index].matched) {
-            if (this.canConnectDirect(startRow, startCol, endRow, startCol) &&
-                this.canConnectDirect(endRow, startCol, endRow, endCol)) {
-                return this.createPath(startRow, startCol, endRow, endCol, 'one-turn', [endRow, startCol]);
+
+        // ── 2 bends: scan cols (path goes horizontal → vertical → horizontal) ──
+        for (let c = -1; c <= this.cols; c++) {
+            if (c === c1 || c === c2) continue;
+            if (this.isPassable(r1, c) && this.isPassable(r2, c) &&
+                this.canStraightLine(r1, c1, r1, c) &&
+                this.canStraightLine(r1, c, r2, c) &&
+                this.canStraightLine(r2, c, r2, c2)) {
+                return [[r1, c1], [r1, c], [r2, c], [r2, c2]];
             }
         }
-        
+
         return null;
     }
 
-    canConnectTwoTurn(startRow, startCol, endRow, endCol) {
-        const settings = this.difficultySettings[this.difficulty];
-        
-        // Try extending in all directions
-        const directions = [
-            [-1, 0], [1, 0], [0, -1], [0, 1] // up, down, left, right
-        ];
-        
-        for (const [dRow, dCol] of directions) {
-            for (let step = 1; step < Math.max(settings.rows, settings.cols); step++) {
-                const midRow = startRow + dRow * step;
-                const midCol = startCol + dCol * step;
-                
-                // Check bounds
-                if (midRow < -1 || midRow >= settings.rows + 1 || 
-                    midCol < -1 || midCol >= settings.cols + 1) break;
-                
-                // Check if position is valid (empty or outside board)
-                if (midRow >= 0 && midRow < settings.rows && 
-                    midCol >= 0 && midCol < settings.cols) {
-                    const midIndex = midRow * settings.cols + midCol;
-                    if (!this.board[midIndex].empty && !this.board[midIndex].matched) break;
-                }
-                
-                // Try to connect from this point to end
-                const oneTurnPath = this.canConnectOneTurn(midRow, midCol, endRow, endCol);
-                if (oneTurnPath && this.canConnectDirect(startRow, startCol, midRow, midCol)) {
-                    return this.createPath(startRow, startCol, endRow, endCol, 'two-turn', [midRow, midCol]);
-                }
-            }
-        }
-        
-        return null;
-    }
+    // ═══════════════════════════════════════
+    //  Path Drawing (SVG overlay)
+    // ═══════════════════════════════════════
 
-    createPath(startRow, startCol, endRow, endCol, type, corners = []) {
-        return {
-            start: [startRow, startCol],
-            end: [endRow, endCol],
-            type: type,
-            corners: corners
+    drawPath(path, callback) {
+        const container = document.querySelector('.game-board-container');
+        const containerRect = container.getBoundingClientRect();
+        const boardEl = document.querySelector('.game-board');
+        const boardRect = boardEl.getBoundingClientRect();
+
+        // Remove old SVG
+        const oldSvg = container.querySelector('.path-svg');
+        if (oldSvg) oldSvg.remove();
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('path-svg');
+        svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20;overflow:visible;';
+        container.appendChild(svg);
+
+        const getPos = (r, c) => {
+            // Clamp to board range for DOM lookup
+            const clampR = Math.max(0, Math.min(r, this.rows - 1));
+            const clampC = Math.max(0, Math.min(c, this.cols - 1));
+            const el = this.getTileEl(clampR, clampC);
+            if (!el) return { x: 0, y: 0 };
+            const rect = el.getBoundingClientRect();
+
+            let x = rect.left + rect.width / 2 - containerRect.left;
+            let y = rect.top + rect.height / 2 - containerRect.top;
+
+            // Adjust for virtual border points (outside board)
+            if (r < 0) y = boardRect.top - containerRect.top - 10;
+            if (r >= this.rows) y = boardRect.bottom - containerRect.top + 10;
+            if (c < 0) x = boardRect.left - containerRect.left - 10;
+            if (c >= this.cols) x = boardRect.right - containerRect.left + 10;
+
+            return { x, y };
         };
-    }
 
-    showPath(path) {
-        // Clear existing paths
-        document.querySelectorAll('.path-line').forEach(line => line.remove());
-        
-        const gameBoard = document.querySelector('.game-board');
-        const tileSize = 54; // 50px + 4px gap
-        
+        // Draw polyline
+        const pts = path.map(([r, c]) => {
+            const p = getPos(r, c);
+            return `${p.x},${p.y}`;
+        }).join(' ');
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        line.setAttribute('points', pts);
+        line.setAttribute('fill', 'none');
+        line.setAttribute('stroke', '#FF6B35');
+        line.setAttribute('stroke-width', '3');
+        line.setAttribute('stroke-linecap', 'round');
+        line.setAttribute('stroke-linejoin', 'round');
+        line.style.filter = 'drop-shadow(0 0 6px rgba(255,107,53,0.5))';
+        svg.appendChild(line);
+
+        // Draw dots at waypoints
+        path.forEach(([r, c]) => {
+            const p = getPos(r, c);
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', p.x);
+            circle.setAttribute('cy', p.y);
+            circle.setAttribute('r', '4');
+            circle.setAttribute('fill', '#FF6B35');
+            svg.appendChild(circle);
+        });
+
+        // Remove path after delay, then callback
         setTimeout(() => {
-            // Draw path based on type
-            if (path.type === 'direct') {
-                this.drawDirectPath(path.start, path.end, tileSize);
-            } else if (path.type === 'one-turn') {
-                this.drawOneTurnPath(path.start, path.end, path.corners[0], tileSize);
-            } else if (path.type === 'two-turn') {
-                this.drawTwoTurnPath(path.start, path.end, path.corners[0], tileSize);
-            }
-            
-            // Remove path after animation
-            setTimeout(() => {
-                document.querySelectorAll('.path-line').forEach(line => line.remove());
-            }, 1000);
-        }, 100);
+            svg.remove();
+            if (callback) callback();
+        }, 350);
     }
 
-    drawDirectPath(start, end, tileSize) {
-        const gameBoard = document.querySelector('.game-board');
-        const line = document.createElement('div');
-        line.className = 'path-line';
-        
-        if (start[0] === end[0]) {
-            // Horizontal line
-            line.classList.add('horizontal');
-            const minCol = Math.min(start[1], end[1]);
-            const maxCol = Math.max(start[1], end[1]);
-            line.style.left = `${(minCol + 0.5) * tileSize}px`;
-            line.style.top = `${(start[0] + 0.5) * tileSize}px`;
-            line.style.width = `${(maxCol - minCol) * tileSize}px`;
-        } else {
-            // Vertical line
-            line.classList.add('vertical');
-            const minRow = Math.min(start[0], end[0]);
-            const maxRow = Math.max(start[0], end[0]);
-            line.style.left = `${(start[1] + 0.5) * tileSize}px`;
-            line.style.top = `${(minRow + 0.5) * tileSize}px`;
-            line.style.height = `${(maxRow - minRow) * tileSize}px`;
-        }
-        
-        gameBoard.appendChild(line);
-    }
+    // ═══════════════════════════════════════
+    //  Hint System
+    // ═══════════════════════════════════════
 
-    drawOneTurnPath(start, end, corner, tileSize) {
-        // Draw two lines: start to corner, corner to end
-        this.drawDirectPath(start, corner, tileSize);
-        this.drawDirectPath(corner, end, tileSize);
-    }
-
-    drawTwoTurnPath(start, end, midPoint, tileSize) {
-        // Two-turn path: draw start→midPoint and midPoint→end as two direct lines via a corner
-        this.drawDirectPath(start, midPoint, tileSize);
-        this.drawDirectPath(midPoint, end, tileSize);
+    clearHints() {
+        document.querySelectorAll('.game-tile.hint').forEach(el => el.classList.remove('hint'));
     }
 
     useHint() {
-        if (this.hintsLeft <= 0 || this.gameState !== 'playing') return;
-        
-        // Find a possible match
-        const possibleMatch = this.findPossibleMatch();
-        
-        if (possibleMatch) {
+        if (this.hintsLeft <= 0 || this.gameState !== 'playing' || this.isProcessing) return;
+
+        const match = this.findAnyMatch();
+        if (match) {
             this.hintsLeft--;
             this.updateDisplay();
-            
-            // Highlight tiles
-            const settings = this.difficultySettings[this.difficulty];
-            const tiles = document.querySelectorAll('.game-tile');
-            const tile1 = tiles[possibleMatch.index1];
-            const tile2 = tiles[possibleMatch.index2];
-            
-            tile1.classList.add('hint');
-            tile2.classList.add('hint');
-            
-            // Show hint message
-            this.showHintMessage('Hai ô được làm nổi bật có thể kết nối!');
-            
-            setTimeout(() => {
-                tile1.classList.remove('hint');
-                tile2.classList.remove('hint');
-            }, 3000);
+
+            const el1 = this.getTileEl(match.r1, match.c1);
+            const el2 = this.getTileEl(match.r2, match.c2);
+            if (el1) el1.classList.add('hint');
+            if (el2) el2.classList.add('hint');
+
+            setTimeout(() => this.clearHints(), 3000);
         } else {
-            this.showHintMessage('Không có nước đi khả thi! Hãy xáo trộn.');
+            this.showMessage('Không có nước đi! Đang xáo trộn...');
+            this.autoShuffle();
         }
     }
 
-    findPossibleMatch() {
-        for (let i = 0; i < this.board.length; i++) {
-            if (this.board[i].matched || this.board[i].empty) continue;
-            
-            for (let j = i + 1; j < this.board.length; j++) {
-                if (this.board[j].matched || this.board[j].empty) continue;
-                
-                if (this.board[i].item === this.board[j].item) {
-                    const path = this.findPath(i, j);
-                    if (path) {
-                        return { index1: i, index2: j, path: path };
+    /**
+     * Find any pair of unmatched tiles with the same item that can be connected.
+     * Returns { r1, c1, r2, c2 } or null.
+     */
+    findAnyMatch() {
+        for (let r1 = 0; r1 < this.rows; r1++) {
+            for (let c1 = 0; c1 < this.cols; c1++) {
+                if (this.board[r1][c1].matched) continue;
+                for (let r2 = r1; r2 < this.rows; r2++) {
+                    const startC = (r2 === r1) ? c1 + 1 : 0;
+                    for (let c2 = startC; c2 < this.cols; c2++) {
+                        if (this.board[r2][c2].matched) continue;
+                        if (this.board[r1][c1].item === this.board[r2][c2].item) {
+                            if (this.findPath(r1, c1, r2, c2)) {
+                                return { r1, c1, r2, c2 };
+                            }
+                        }
                     }
                 }
             }
@@ -561,198 +629,89 @@ class PikachuGame {
         return null;
     }
 
-    showHintMessage(message) {
-        const hintDisplay = document.createElement('div');
-        hintDisplay.className = 'hint-display';
-        hintDisplay.textContent = message;
-        
-        document.querySelector('.game-main').appendChild(hintDisplay);
-        
-        setTimeout(() => {
-            hintDisplay.classList.add('hidden');
-            setTimeout(() => hintDisplay.remove(), 500);
-        }, 2000);
-    }
+    // ═══════════════════════════════════════
+    //  Shuffle
+    // ═══════════════════════════════════════
 
     shuffleBoard() {
-        if (this.gameState !== 'playing') return;
-        
-        // Get all unmatched items
-        const unmatchedItems = [];
-        this.board.forEach((tile, index) => {
-            if (!tile.matched && !tile.empty) {
-                unmatchedItems.push(tile.item);
-            }
-        });
-        
-        // Shuffle items
-        const shuffledItems = this.shuffleArray([...unmatchedItems]);
-        
-        // Reassign items to unmatched tiles
-        let itemIndex = 0;
-        this.board.forEach((tile, index) => {
-            if (!tile.matched && !tile.empty) {
-                tile.item = shuffledItems[itemIndex++];
-            }
-        });
-        
-        this.renderBoard();
-        this.score = Math.max(0, this.score - 50); // Penalty for shuffle
+        if (this.gameState !== 'playing' || this.isProcessing) return;
+        this.score = Math.max(0, this.score - 50);
         this.updateDisplay();
+        this.doShuffle();
     }
 
-    shuffleArray(array) {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
+    autoShuffle() {
+        this.showMessage('Không còn nước đi! Xáo trộn...');
+        setTimeout(() => this.doShuffle(), 800);
     }
 
-    startTimer() {
-        this.gameTimer = setInterval(() => {
-            this.timeLeft--;
-            this.updateDisplay();
-            
-            if (this.timeLeft <= 0) {
-                this.gameOver();
+    doShuffle(attempt = 0) {
+        if (attempt > 50) return; // Safety limit
+
+        // Collect all unmatched items
+        const items = [];
+        for (let r = 0; r < this.rows; r++) {
+            for (let c = 0; c < this.cols; c++) {
+                if (!this.board[r][c].matched) {
+                    items.push(this.board[r][c].item);
+                }
             }
-        }, 1000);
-    }
+        }
 
-    pauseGame() {
-        if (this.gameState !== 'playing') return;
-        
-        this.gameState = 'paused';
-        clearInterval(this.gameTimer);
-        this.showPauseScreen();
-    }
+        // Shuffle and reassign
+        const shuffled = this.shuffleArray(items);
+        let i = 0;
+        for (let r = 0; r < this.rows; r++) {
+            for (let c = 0; c < this.cols; c++) {
+                if (!this.board[r][c].matched) {
+                    this.board[r][c].item = shuffled[i++];
+                }
+            }
+        }
 
-    resumeGame() {
-        this.gameState = 'playing';
-        this.hideAllScreens();
-        this.startTimer();
-    }
+        // Reset selection and re-render
+        this.selectedTile = null;
+        this.renderBoard();
 
-    restartGame() {
-        this.gameState = 'start';
-        clearInterval(this.gameTimer);
-        this.showStartScreen();
-    }
-
-    showPauseScreen() {
-        document.getElementById('pause-score').textContent = this.score;
-        document.getElementById('pause-time').textContent = this.formatTime(this.timeLeft);
-        document.getElementById('pause-pairs').textContent = this.matchedPairs;
-        this.showScreen('pause-screen');
-    }
-
-    checkWin() {
-        const settings = this.difficultySettings[this.difficulty];
-        const totalPairs = Math.min(settings.pairs, Math.floor((settings.rows * settings.cols) / 2));
-        
-        if (this.matchedPairs >= totalPairs) {
-            this.gameWin();
+        // If still no match, try again
+        if (!this.findAnyMatch() && this.matchedPairs < this.totalPairs) {
+            this.doShuffle(attempt + 1);
         }
     }
 
-    gameWin() {
-        this.gameState = 'finished';
-        clearInterval(this.gameTimer);
-        
-        // Calculate final score with time bonus
-        const timeBonus = this.timeLeft * 10;
-        const difficultyMultiplier = {
-            easy: 1, medium: 1.5, hard: 2, expert: 3
-        };
-        const finalScore = Math.floor((this.score + timeBonus) * difficultyMultiplier[this.difficulty]);
-        
-        this.showGameOverScreen(true, finalScore);
-    }
+    // ═══════════════════════════════════════
+    //  Utility
+    // ═══════════════════════════════════════
 
-    gameOver() {
-        this.gameState = 'finished';
-        clearInterval(this.gameTimer);
-        this.showGameOverScreen(false, this.score);
-    }
-
-    showGameOverScreen(isWin, finalScore) {
-        // Update final stats
-        document.getElementById('final-score').textContent = finalScore;
-        document.getElementById('final-pairs').textContent = this.matchedPairs;
-        document.getElementById('final-time').textContent = this.formatTime(
-            this.difficultySettings[this.difficulty].time - this.timeLeft
-        );
-        
-        // Show appropriate message
-        const messageElement = document.querySelector('#game-over-screen h2');
-        if (isWin) {
-            messageElement.textContent = '🎉 Chúc mừng! Bạn đã thắng!';
-            messageElement.style.color = '#4CAF50';
-        } else {
-            messageElement.textContent = '⏰ Hết thời gian!';
-            messageElement.style.color = '#FF5722';
+    shuffleArray(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
         }
-        
-        // Generate voucher if score is high enough
-        const voucherContainer = document.getElementById('voucher-container');
-        if (finalScore >= 500) {
-            const voucher = this.generateVoucher(finalScore);
-            voucherContainer.innerHTML = `
-                <div class="voucher-reward">
-                    <h3>🎁 Phần thưởng đặc biệt!</h3>
-                    <p>Bạn đã nhận được mã giảm giá cho các đặc sản Tây Bắc:</p>
-                    <div class="voucher-code">
-                        <span>${voucher.code}</span>
-                        <button class="copy-voucher">📋 Sao chép</button>
-                    </div>
-                    <p><strong>Giảm ${voucher.discount}%</strong> cho đơn hàng từ ${voucher.minOrder.toLocaleString()}đ</p>
-                    <p><em>Có hiệu lực đến ${voucher.expiry}</em></p>
-                </div>
-            `;
-            
-            // Save voucher to localStorage
-            this.saveVoucher(voucher);
-        } else {
-            voucherContainer.innerHTML = `
-                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
-                    <p>💡 <strong>Mẹo:</strong> Đạt 500 điểm trở lên để nhận mã giảm giá!</p>
-                    <p>Điểm của bạn: ${finalScore}/500</p>
-                </div>
-            `;
-        }
-        
-        this.showScreen('game-over-screen');
+        return a;
     }
 
     generateVoucher(score) {
-        const voucherTypes = [
-            { discount: 10, minOrder: 200000, scoreRequired: 500 },
-            { discount: 15, minOrder: 300000, scoreRequired: 800 },
-            { discount: 20, minOrder: 500000, scoreRequired: 1200 },
-            { discount: 25, minOrder: 1000000, scoreRequired: 1800 }
+        const types = [
+            { discount: 10, minOrder: 200000, req: 500 },
+            { discount: 15, minOrder: 300000, req: 800 },
+            { discount: 20, minOrder: 500000, req: 1200 },
+            { discount: 25, minOrder: 1000000, req: 1800 }
         ];
-        
-        // Find appropriate voucher type based on score
-        let voucherType = voucherTypes[0];
-        for (const type of voucherTypes) {
-            if (score >= type.scoreRequired) {
-                voucherType = type;
-            }
+        let type = types[0];
+        for (const t of types) {
+            if (score >= t.req) type = t;
         }
-        
-        // Generate voucher code
-        const code = `PIKACHU${voucherType.discount}${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-        
-        // Set expiry date (30 days from now)
+
+        const code = `PIKACHU${type.discount}${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
         const expiry = new Date();
         expiry.setDate(expiry.getDate() + 30);
-        
+
         return {
-            code: code,
-            discount: voucherType.discount,
-            minOrder: voucherType.minOrder,
+            code,
+            discount: type.discount,
+            minOrder: type.minOrder,
             expiry: expiry.toLocaleDateString('vi-VN'),
             type: 'pikachu-game',
             generated: new Date().toISOString()
@@ -760,7 +719,6 @@ class PikachuGame {
     }
 
     saveVoucher(voucher) {
-        // Use same key as voucher-integration.js for shop integration
         let vouchers = JSON.parse(localStorage.getItem('tayBacVouchers') || '[]');
         vouchers.push({
             code: voucher.code,
@@ -768,23 +726,17 @@ class PikachuGame {
             date: new Date().toLocaleDateString('vi-VN'),
             used: false
         });
-        
-        // Keep only last 10 vouchers
-        if (vouchers.length > 10) {
-            vouchers = vouchers.slice(-10);
-        }
-        
+        if (vouchers.length > 10) vouchers = vouchers.slice(-10);
         localStorage.setItem('tayBacVouchers', JSON.stringify(vouchers));
-    }
-
-    clearBoard() {
-        const gameBoard = document.querySelector('.game-board');
-        gameBoard.innerHTML = '';
-        clearInterval(this.gameTimer);
     }
 }
 
-// Initialize game when DOM is loaded
+// Global function for HTML onclick
+function goBack() {
+    window.location.href = 'index.html';
+}
+
+// Initialize game
 document.addEventListener('DOMContentLoaded', () => {
     new PikachuGame();
 });

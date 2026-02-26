@@ -717,7 +717,7 @@ class TayBacBirdGame {
 
 // Utility functions
 function goBack() {
-    window.location.href = 'index.html';
+    window.location.href = 'games.html';
 }
 
 function goToShop() {

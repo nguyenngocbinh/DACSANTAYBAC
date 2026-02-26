@@ -49,8 +49,9 @@ MIT License - Sử dụng tự do cho mục đích cá nhân và thương mại.
 ## 📁 Cấu trúc dự án
 ```
 ├── index.html              # Trang chủ website
-├── game.html               # Mini game tích voucher
-├── pikachu.html             # Game Pikachu
+├── games.html              # Trang chọn game
+├── flappybird.html         # Game Chim Tây Bắc (Flappy Bird)
+├── pikachu.html            # Game Pikachu nối đặc sản
 ├── data/
 │   └── products.json       # Nguồn dữ liệu sản phẩm (single source of truth)
 ├── css/

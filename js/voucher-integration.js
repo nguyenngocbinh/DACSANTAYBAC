@@ -58,7 +58,7 @@ class VoucherManager {
             gameVoucherList.innerHTML = `
                 <div class="no-vouchers">
                     <p><i class="fas fa-gamepad"></i> Chơi mini game để nhận voucher giảm giá!</p>
-                    <a href="game.html" class="play-game-btn">
+                    <a href="games.html" class="play-game-btn">
                         <i class="fas fa-play"></i> Chơi ngay
                     </a>
                 </div>

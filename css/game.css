@@ -11,18 +11,21 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
     color: #333;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Game Container */
 .game-container {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
     position: relative;
+    padding-top: 70px;
+    padding-bottom: 20px;
+    gap: 20px;
 }
 
 /* Game Header */
@@ -143,6 +146,8 @@ body {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
 }
 
 .screen-content h2 {
@@ -164,11 +169,18 @@ body {
     border-radius: 10px;
     margin: 1rem 0;
     text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .instructions p {
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.instructions p:last-child {
+    margin-bottom: 0;
 }
 
 .instructions i {
@@ -300,12 +312,15 @@ body {
 
 /* Game Info */
 .game-info {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 900px;
+    padding: 0 20px;
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     justify-content: center;
     flex-wrap: wrap;
 }
@@ -318,6 +333,8 @@ body {
     backdrop-filter: blur(10px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     min-width: 200px;
+    flex: 1;
+    max-width: 300px;
 }
 
 .info-section h3 {
@@ -412,10 +429,9 @@ body {
     }
     
     .canvas-container {
-        margin: 1rem;
+        margin: 0.5rem 1rem;
         border-radius: 10px;
         max-width: calc(100vw - 2rem);
-        max-height: calc(100vh - 250px);
     }
     
     #gameCanvas {
@@ -441,16 +457,17 @@ body {
     }
     
     .game-info {
-        position: relative;
-        bottom: auto;
-        margin-top: 1rem;
         padding: 0 1rem;
+        flex-direction: column;
+        align-items: center;
     }
     
     .info-section {
         min-width: 150px;
+        width: 100%;
+        max-width: 400px;
         padding: 0.8rem;
-        margin: 0.5rem 0;
+        margin: 0 0;
     }
     
     .game-actions {
@@ -543,7 +560,7 @@ body {
     
     .canvas-container {
         flex: 1;
-        max-height: calc(100vh - 1rem);
+        max-height: calc(100vh - 3rem);
         margin: 0.5rem;
     }
     
@@ -629,16 +646,15 @@ body {
     min-width: 44px;
 }
 
-/* Prevent bounce scrolling on iOS */
+/* iOS scrolling */
 body {
-    position: fixed;
-    overflow: hidden;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    -webkit-overflow-scrolling: touch;
 }
 
 .game-container {
-    overflow: hidden;
+    overflow: visible;
     -webkit-overflow-scrolling: touch;
 }
 

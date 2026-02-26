@@ -93,9 +93,13 @@ Game được tối ưu cho:
 
 ### Files cần thiết
 ```
-game.html           # Trang game chính
-css/game.css        # Styles cho game
-js/game.js          # Game engine
+games.html          # Trang chọn game
+flappybird.html     # Game Chim Tây Bắc (Flappy Bird)
+pikachu.html        # Game Pikachu nối đặc sản
+css/game.css        # Styles cho game Flappy Bird
+css/pikachu.css     # Styles cho game Pikachu
+js/game.js          # Game engine Flappy Bird
+js/pikachu.js       # Game engine Pikachu
 js/voucher-integration.js  # Tích hợp voucher
 ```
 
