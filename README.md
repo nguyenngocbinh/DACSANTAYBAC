@@ -13,21 +13,25 @@ Website thương mại điện tử chuyên bán các sản phẩm đặc sản 
 - **🌐 Website Chính:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/](https://nguyenngocbinh.github.io/DACSANTAYBAC/)
 - **👨‍💼 Admin Panel:** [https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html](https://nguyenngocbinh.github.io/DACSANTAYBAC/admin/admin.html)
 
-**Admin Login:** admin / admin123
-
 ## ✨ Tính Năng
-- 🛒 Giỏ hàng thông minh
-- 📱 Responsive design
-- 🔍 Tìm kiếm và lọc sản phẩm
-- 📞 Form liên hệ
-- 💰 Admin quản lý giá
-- 💾 Lưu trữ localStorage
+- 🛒 Giỏ hàng thông minh với localStorage
+- 📱 Responsive design + hamburger menu
+- 🔍 Tìm kiếm realtime và lọc theo danh mục
+- 📞 Liên hệ & đặt hàng qua Zalo
+- 💰 Admin quản lý sản phẩm (giá, mô tả, ảnh)
+- 📊 Export/Import Excel sản phẩm
+- 🎮 Mini game tích voucher giảm giá
+- 🔒 Xác thực admin SHA-256
+- 🌐 SEO tối ưu (Open Graph, JSON-LD, meta tags)
+- 🖼️ Hình ảnh lazy loading
 
 ## 🛠️ Công Nghệ
-- HTML5, CSS3, JavaScript ES6+
+- HTML5, CSS3, JavaScript ES6+ (Vanilla, không framework)
 - Font Awesome 6.0.0
-- Responsive Grid Layout
-- Local Storage API
+- SheetJS (xlsx) cho Excel import/export
+- Web Crypto API (SHA-256 password hashing)
+- Responsive CSS Grid + Flexbox
+- localStorage API
 
 ## 📦 Sản Phẩm
 - **Dược liệu:** Tam thất khô, Hà thủ ô, Đông trùng hạ thảo, Sâm ngọc linh...
@@ -46,22 +50,35 @@ MIT License - Sử dụng tự do cho mục đích cá nhân và thương mại.
 ## 📁 Cấu trúc dự án
 ```
 ├── index.html              # Trang chủ website
-├── css/                   # File CSS
-├── js/                    # File JavaScript  
-├── images/                # Hình ảnh
-├── admin/                 # Admin panel và tools
-│   ├── admin.html         # Trang quản trị chính
+├── game.html               # Mini game tích voucher
+├── pikachu.html             # Game Pikachu
+├── data/
+│   └── products.json       # Nguồn dữ liệu sản phẩm (single source of truth)
+├── css/
+│   ├── style.css           # CSS trang chủ
+│   ├── admin.css           # CSS admin panel
+│   ├── game.css            # CSS mini game
+│   └── pikachu.css         # CSS game Pikachu
+├── js/
+│   ├── script.js           # Logic trang chủ (sản phẩm, giỏ hàng, tìm kiếm)
+│   ├── admin.js            # Logic admin panel (CRUD, Excel, xác thực)
+│   ├── voucher-integration.js  # Hệ thống voucher từ game
+│   ├── game.js             # Logic mini game
+│   └── pikachu.js          # Logic game Pikachu
+├── images/                 # Hình ảnh sản phẩm (kebab-case)
+├── admin/
+│   ├── admin.html          # Trang quản trị sản phẩm
 │   ├── password-changer.html
 │   └── gitlab-token-setup.html
-├── docs/                  # Tài liệu và hướng dẫn (đã tối ưu)
-│   ├── ADMIN_GUIDE.md     # Hướng dẫn admin
-│   ├── QUICK_EDIT_GUIDE.md # Chỉnh sửa nhanh
+├── docs/                   # Tài liệu và hướng dẫn
+│   ├── ADMIN_GUIDE.md
+│   ├── QUICK_EDIT_GUIDE.md
 │   ├── PASSWORD_CHANGE_GUIDE.md
-│   ├── DEPLOY_GUIDE.md    # Deploy an toàn
-│   └── GITLAB_SETUP_COMPLETE.md # Setup CI/CD
-└── tools/                 # Build tools và scripts
+│   ├── DEPLOY_GUIDE.md
+│   └── GITLAB_SETUP_COMPLETE.md
+└── tools/                  # Build tools và scripts
     ├── build.js
-    ├── obfuscate.js
+    ├── build.bat
     └── test-ci-local.ps1
 ```
 

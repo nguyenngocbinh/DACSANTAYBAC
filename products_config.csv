@@ -1,25 +1,5 @@
-ID,Tên sản phẩm,Danh mục,Giá gốc,Giá hiện tại,Hình ảnh,Mô tả,Đơn vị
-1,Tam thất Bắc Thái Lat,herbal,1300000,1300000,images/tam that bac thai lat 1tr3 1kg.jpg,Tam thất Bắc Thái Lat cao cấp từ Tây Bắc,1kg
-2,Hà thủ ô,herbal,80000,80000,🍃,Hà thủ ô tự nhiên,100g
-3,Mật ong rừng U Minh,food,150000,150000,🍯,Mật ong rừng nguyên chất,500ml
-4,Thảo quả,herbal,95000,95000,🌰,Thảo quả khô Tây Bắc,100g
-5,Đông trùng hạ thảo,herbal,350000,350000,🍄,Đông trùng hạ thảo tự nhiên,10g
-6,Nấm linh chi đỏ,herbal,200000,200000,🍄,Nấm linh chi đỏ Tây Bắc,100g
-7,Sâm Ngọc Linh,herbal,5500000,5500000,🌿,Sâm Ngọc Linh chính gốc quý hiếm và tốt cho sức khỏe,1 củ
-8,Tam Thất Hoang,herbal,3800000,3800000,🌱,Tam thất hoang tự nhiên giá trị dinh dưỡng cao,1kg
-9,Mắc Ca Khô,food,320000,320000,images/mac ca kho 320k 1 kg.jpg,Mắc ca khô tự nhiên giàu dinh dưỡng và chất béo tốt,1kg
-10,Quả Sim Rừng,food,280000,280000,🫐,Quả sim rừng tươi hương vị đặc trưng vùng cao,1kg
-11,Nấm Lim Xanh,herbal,2200000,2200000,🍄,Nấm lim xanh rừng quý hiếm tăng cường miễn dịch,100g
-12,Thịt Trâu Khô,food,750000,750000,🥩,Thịt trâu khô thơm ngon không chất bảo quản,500g
-13,Thịt Lợn Khô,food,620000,620000,🥩,Thịt lợn khô truyền thống đậm đà hương vị,500g
-14,Thịt Bò Khô,food,890000,890000,🥩,Thịt bò khô cao cấp giàu protein,500g
-15,Hạt Kỳ Tử Đỏ,herbal,380000,380000,🔴,Hạt kỳ tử đỏ Ninh Hạ tốt cho mắt và gan,500g
-16,Nhung Hươu Ngâm Mật Ong,herbal,4200000,4200000,🦌,Nhung hươu ngâm mật ong tự nhiên bổ dương tráng thận,100g
-17,Sâm Cau,herbal,130000,130000,images/sam cau 130k 1kg.jpg,Sâm cau rừng tự nhiên tăng cường sinh lực,1kg
-18,Tinh Dầu Quế Nguyên Chất,oil,375000,375000,images/tinh dau que nguyen chat 375k 1 chai.jpg,Tinh dầu quế nguyên chất kháng khuẩn tự nhiên,1 chai
-19,Tinh Dầu Xả,oil,350000,350000,🧴,Tinh dầu xả thơm mát đuổi muỗi hiệu quả,30ml
-20,Ngô Tím Cay,food,180000,180000,🌽,Ngô tím cay đặc sản Tây Bắc vị ngọt tự nhiên,1kg
-21,Trinh Nữ Hoàng Cung,herbal,2800000,2800000,🌸,Trinh nữ hoàng cung quý hiếm dưỡng nhan sắc phụ nữ,100g
-22,La Lam Đường Hoặc,herbal,450000,450000,images/la lam duong hoac 450k 1kg.jpg,La lam đường hoặc tự nhiên từ vùng cao Tây Bắc,1kg
-23,Măng Rói,food,185000,185000,images/mang roi 185k 1kg.jpg,Măng rói khô đặc sản Tây Bắc vị ngọt tự nhiên,1kg
-24,Sâm Tố Nữ,herbal,650000,650000,images/sam to nua 650k 1 kg.jpg,Sâm tố nữ quý hiếm tốt cho phụ nữ,1kg
+# ============================================
+# FILE NÀY ĐÃ DEPRECATED
+# Nguồn dữ liệu chính: data/products.json
+# File CSV này chỉ giữ để tham khảo
+# ============================================

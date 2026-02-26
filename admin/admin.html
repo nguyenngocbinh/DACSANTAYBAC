@@ -3,533 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌿 Admin Panel - Đặc Sản Tây Bắc (Enhanced)</title>
+    <title>Admin Panel - Đặc Sản Tây Bắc</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+    <link rel="stylesheet" href="../css/admin.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        
-        .admin-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Login Modal */
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .login-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .login-header h2 {
-            color: #27ae60;
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 600;
-        }
-        
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e8ed;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: #27ae60;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 12px;
-            background: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .btn:hover {
-            background: #219a52;
-        }
-        
-        .btn-danger {
-            background: #dc3545;
-        }
-        
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        
-        .btn-primary {
-            background: #007bff;
-        }
-        
-        .btn-primary:hover {
-            background: #0056b3;
-        }
-        
-        .btn-success {
-            background: #28a745;
-        }
-        
-        .btn-success:hover {
-            background: #1e7e34;
-        }
-        
-        .btn-info {
-            background: #17a2b8;
-        }
-        
-        .btn-info:hover {
-            background: #117a8b;
-        }
-        
-        .btn-secondary {
-            background: #6c757d;
-        }
-        
-        .btn-secondary:hover {
-            background: #545b62;
-        }
-        }
-        
-        .btn-primary:hover {
-            background: #0056b3;
-        }
-        
-        .btn-warning {
-            background: #ffc107;
-            color: #212529;
-        }
-        
-        .btn-warning:hover {
-            background: #e0a800;
-        }
-        
-        /* Dashboard */
-        .dashboard {
-            display: none;
-        }
-        
-        .dashboard.active {
-            display: block;
-        }
-        
-        .dashboard-header {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .dashboard-header h1 {
-            color: #27ae60;
-            margin-bottom: 1rem;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .stat-card i {
-            font-size: 2rem;
-            color: #27ae60;
-            margin-bottom: 1rem;
-        }
-        
-        .stat-card h3 {
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-card p {
-            color: #666;
-            font-size: 1.2rem;
-        }
-        
-        /* Products Section */
-        .products-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .search-filter {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .search-filter input, .search-filter select {
-            padding: 10px;
-            border: 2px solid #e1e8ed;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .product-card {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
-            transition: transform 0.2s;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .product-header h4 {
-            color: #333;
-            font-size: 1.1rem;
-        }
-        
-        .product-emoji {
-            font-size: 2rem;
-        }
-        
-        .product-image-section {
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .product-image-preview {
-            width: 80px;
-            height: 80px;
-            background: #e9ecef;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 2.5rem;
-            transition: transform 0.2s;
-        }
-        
-        .product-image-preview:hover {
-            transform: scale(1.1);
-        }
-        
-        .image-url-display {
-            font-size: 0.8rem;
-            color: #666;
-            word-break: break-all;
-            max-height: 40px;
-            overflow: hidden;
-        }
-        
-        .product-info {
-            margin-bottom: 1rem;
-        }
-        
-        .product-info p {
-            color: #666;
-            margin: 0.25rem 0;
-            font-size: 0.9rem;
-        }
-        
-        .price-section {
-            background: #e8f5e8;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-        
-        .price-display {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-        
-        .price-display span {
-            font-weight: bold;
-        }
-        
-        .original-price {
-            color: #666;
-            text-decoration: line-through;
-        }
-        
-        .current-price {
-            color: #27ae60;
-            font-size: 1.1rem;
-        }
-        
-        .price-edit {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .price-input {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .product-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .product-actions-full {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 0.5rem;
-        }
-        
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .btn-edit {
-            background: #17a2b8;
-            color: white;
-        }
-        
-        .btn-edit:hover {
-            background: #138496;
-        }
-        
-        .btn-reset {
-            background: #ffc107;
-            color: #212529;
-        }
-        
-        .btn-reset:hover {
-            background: #e0a800;
-        }
-        
-        .btn-image {
-            background: #6f42c1;
-            color: white;
-        }
-        
-        .btn-image:hover {
-            background: #5a32a3;
-        }
-        
-        /* Edit Modal */
-        .edit-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
-        
-        .edit-modal.active {
-            display: flex;
-        }
-        
-        .edit-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 500px;
-            max-width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-        
-        .edit-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .edit-header h3 {
-            color: #27ae60;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
-        
-        .close-btn:hover {
-            color: #333;
-        }
-        
-        .emoji-picker {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 0.5rem;
-            margin: 1rem 0;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 1rem;
-            border: 2px solid #e1e8ed;
-            border-radius: 8px;
-        }
-        
-        .emoji-option {
-            padding: 0.5rem;
-            border: none;
-            background: #f8f9fa;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: background 0.2s;
-        }
-        
-        .emoji-option:hover {
-            background: #e9ecef;
-        }
-        
-        .emoji-option.selected {
-            background: #27ae60;
-            color: white;
-        }
-        
-        /* Status Messages */
-        .status-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            z-index: 1002;
-            transform: translateX(400px);
-            transition: transform 0.3s;
-            max-width: 300px;
-        }
-        
-        .status-message.show {
-            transform: translateX(0);
-        }
-        
-        .status-message.success {
-            background: #28a745;
-        }
-        
-        .status-message.error {
-            background: #dc3545;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .admin-container {
-                padding: 10px;
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .search-filter {
-                flex-direction: column;
-            }
-            
-            .product-actions {
-                grid-template-columns: 1fr;
-            }
-            
-            .product-actions-full {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="admin-container">
@@ -543,19 +21,16 @@
                 <form id="loginForm">
                     <div class="form-group">
                         <label><i class="fas fa-user"></i> Tên đăng nhập:</label>
-                        <input type="text" id="username" placeholder="admin" required>
+                        <input type="text" id="username" placeholder="Tên đăng nhập" required>
                     </div>
                     <div class="form-group">
                         <label><i class="fas fa-lock"></i> Mật khẩu:</label>
-                        <input type="password" id="password" placeholder="admin123" required>
+                        <input type="password" id="password" placeholder="Mật khẩu" required>
                     </div>
                     <button type="submit" class="btn">
                         <i class="fas fa-sign-in-alt"></i> Đăng Nhập
                     </button>
                 </form>
-                <div style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
-                    <i class="fas fa-info-circle"></i> Tài khoản mặc định: admin / admin123
-                </div>
             </div>
         </div>
 
@@ -563,20 +38,20 @@
         <div id="dashboard" class="dashboard">
             <div class="dashboard-header">
                 <h1><i class="fas fa-leaf"></i> Admin Panel - Đặc Sản Tây Bắc</h1>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-                    <a href="https://nguyenngocbinh.github.io/DACSANTAYBAC/" target="_blank" class="btn btn-primary" style="display: inline-block; text-decoration: none; text-align: center; width: auto;">
+                <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;">
+                    <a href="https://nguyenngocbinh.github.io/DACSANTAYBAC/" target="_blank" class="btn btn-primary" style="display:inline-block;text-decoration:none;text-align:center;width:auto;">
                         <i class="fas fa-external-link-alt"></i> Xem Website
                     </a>
-                    <button class="btn btn-success" onclick="exportToExcel()" title="Xuất file Excel">
+                    <button class="btn btn-success" onclick="exportToExcel()" style="width:auto;padding:10px 20px;">
                         <i class="fas fa-file-excel"></i> Xuất Excel
                     </button>
-                    <button class="btn btn-info" onclick="openImportModal()" title="Import từ file Excel/CSV">
+                    <button class="btn btn-info" onclick="openImportModal()" style="width:auto;padding:10px 20px;">
                         <i class="fas fa-file-upload"></i> Import Excel
                     </button>
-                    <button class="btn btn-secondary" onclick="downloadTemplate()" title="Tải file mẫu Excel">
+                    <button class="btn btn-secondary" onclick="downloadTemplate()" style="width:auto;padding:10px 20px;">
                         <i class="fas fa-download"></i> File Mẫu
                     </button>
-                    <button class="btn btn-danger" onclick="logout()">
+                    <button class="btn btn-danger" onclick="logout()" style="width:auto;padding:10px 20px;">
                         <i class="fas fa-sign-out-alt"></i> Đăng Xuất
                     </button>
                 </div>
@@ -587,7 +62,7 @@
                 <div class="stat-card">
                     <i class="fas fa-boxes"></i>
                     <h3>Tổng Sản Phẩm</h3>
-                    <p id="totalProducts">21</p>
+                    <p id="totalProducts">0</p>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-dollar-sign"></i>
@@ -596,7 +71,7 @@
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-image"></i>
-                    <h3>Đã Sửa Ảnh</h3>
+                    <h3>Đã Sửa Thông Tin</h3>
                     <p id="modifiedImages">0</p>
                 </div>
                 <div class="stat-card">
@@ -611,7 +86,6 @@
                 <div class="section-header">
                     <h2><i class="fas fa-shopping-basket"></i> Quản Lý Sản Phẩm</h2>
                 </div>
-
                 <div class="search-filter">
                     <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm sản phẩm..." onkeyup="filterProducts()">
                     <select id="categoryFilter" onchange="filterProducts()">
@@ -621,17 +95,14 @@
                         <option value="Đồ uống">🍵 Đồ uống</option>
                         <option value="Tinh dầu">💧 Tinh dầu</option>
                     </select>
-                    <button class="btn btn-warning" onclick="resetAllData()" style="width: auto; padding: 10px 20px;">
+                    <button class="btn btn-warning" onclick="resetAllData()" style="width:auto;padding:10px 20px;">
                         <i class="fas fa-undo"></i> Reset Tất Cả
                     </button>
                 </div>
-
-                <div id="productsGrid" class="products-grid">
-                    <!-- Products will be generated by JavaScript -->
-                </div>
+                <div id="productsGrid" class="products-grid"></div>
             </div>
         </div>
-        
+
         <!-- Edit Product Modal -->
         <div id="editModal" class="edit-modal">
             <div class="edit-content">
@@ -639,13 +110,11 @@
                     <h3 id="editTitle">Chỉnh Sửa Sản Phẩm</h3>
                     <button class="close-btn" onclick="closeEditModal()">&times;</button>
                 </div>
-                
                 <form id="editForm">
                     <div class="form-group">
                         <label>📦 Tên sản phẩm:</label>
                         <input type="text" id="editName" required>
                     </div>
-                    
                     <div class="form-group">
                         <label>🏷️ Danh mục:</label>
                         <select id="editCategory" required>
@@ -655,74 +124,64 @@
                             <option value="Tinh dầu">💧 Tinh dầu</option>
                         </select>
                     </div>
-                    
                     <div class="form-group">
                         <label>💰 Giá sản phẩm (VNĐ):</label>
                         <input type="number" id="editPrice" required min="1000">
                     </div>
-                    
                     <div class="form-group">
                         <label>📝 Mô tả:</label>
                         <textarea id="editDescription" rows="3" required></textarea>
                     </div>
-                    
                     <div class="form-group">
                         <label>😊 Chọn emoji:</label>
-                        <div class="emoji-picker" id="emojiPicker">
-                            <!-- Emojis will be generated by JavaScript -->
-                        </div>
+                        <div class="emoji-picker" id="emojiPicker"></div>
                         <input type="hidden" id="editEmoji" required>
                     </div>
-                    
                     <div class="form-group">
-                        <label>🖼️ URL ảnh (tùy chọn):</label>
-                        <input type="url" id="editImageUrl" placeholder="https://example.com/image.jpg">
-                        <small style="color: #666;">Để trống nếu chỉ sử dụng emoji</small>
+                        <label>🖼️ Đường dẫn ảnh (tùy chọn):</label>
+                        <input type="text" id="editImageUrl" placeholder="images/ten-anh.jpg">
+                        <small style="color:#666;">Để trống nếu chỉ sử dụng emoji</small>
                     </div>
-                    
-                    <div style="display: flex; gap: 1rem;">
-                        <button type="submit" class="btn" style="flex: 1;">
-                            <i class="fas fa-save"></i> Lưu Thay Đổi
+                    <div style="display:flex;gap:1rem;">
+                        <button type="submit" class="btn" style="flex:1;">
+                            <i class="fas fa-save"></i> Lưu
                         </button>
-                        <button type="button" class="btn btn-danger" onclick="closeEditModal()" style="flex: 1;">
+                        <button type="button" class="btn btn-danger" onclick="closeEditModal()" style="flex:1;">
                             <i class="fas fa-times"></i> Hủy
                         </button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
 
-    <!-- Import Excel Modal -->
-    <div id="importModal" class="login-modal" style="display: none;">
-        <div class="login-content" style="width: 500px;">
-            <div class="login-header">
-                <h2><i class="fas fa-file-upload"></i> Import Dữ Liệu Excel/CSV</h2>
-                <button class="close-btn" onclick="closeImportModal()" style="position: absolute; top: 15px; right: 15px;">×</button>
-            </div>
-            
-            <div class="form-group">
-                <label for="importFile">Chọn file Excel (.xlsx) hoặc CSV (.csv):</label>
-                <input type="file" id="importFile" accept=".xlsx,.xls,.csv" class="form-control">
-                <small style="color: #666; margin-top: 5px; display: block;">
-                    File phải có cấu trúc: ID, Tên sản phẩm, Danh mục, Giá gốc, Giá hiện tại, Hình ảnh, Mô tả, Đơn vị
-                </small>
-            </div>
-            
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="overwriteData" style="width: auto; margin-right: 10px;">
-                    Ghi đè dữ liệu hiện tại (nếu không chọn sẽ chỉ cập nhật các sản phẩm có sẵn)
-                </label>
-            </div>
-            
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-success" onclick="processImportFile()" style="flex: 1;">
-                    <i class="fas fa-upload"></i> Import Dữ Liệu
-                </button>
-                <button class="btn btn-secondary" onclick="closeImportModal()" style="flex: 1;">
-                    <i class="fas fa-times"></i> Hủy
-                </button>
+        <!-- Import Excel Modal -->
+        <div id="importModal" class="login-modal" style="display:none;">
+            <div class="login-content" style="width:500px;">
+                <div class="login-header">
+                    <h2><i class="fas fa-file-upload"></i> Import Excel/CSV</h2>
+                    <button class="close-btn" onclick="closeImportModal()" style="position:absolute;top:15px;right:15px;">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label for="importFile">Chọn file Excel (.xlsx) hoặc CSV (.csv):</label>
+                    <input type="file" id="importFile" accept=".xlsx,.xls,.csv">
+                    <small style="color:#666;display:block;margin-top:5px;">
+                        Cấu trúc: ID, Tên sản phẩm, Danh mục, Giá gốc, Giá hiện tại, Hình ảnh, Mô tả, Đơn vị
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="overwriteData" style="width:auto;margin-right:10px;">
+                        Ghi đè dữ liệu hiện tại
+                    </label>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <button class="btn btn-success" onclick="processImportFile()" style="flex:1;">
+                        <i class="fas fa-upload"></i> Import
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeImportModal()" style="flex:1;">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -730,653 +189,8 @@
     <!-- Status Message -->
     <div id="statusMessage" class="status-message"></div>
 
-    <!-- Include SheetJS for Excel processing -->
+    <!-- External Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <script>
-        // Products data
-        const products = [
-            { id: 1, name: "Tam thất khô", price: 120000, category: "Dược liệu", emoji: "🌿", description: "Tam thất khô chất lượng cao từ núi rừng Tây Bắc", imageUrl: "" },
-            { id: 2, name: "Mật ong rừng", price: 250000, category: "Thực phẩm", emoji: "🍯", description: "Mật ong rừng nguyên chất, không pha trộn", imageUrl: "" },
-            { id: 3, name: "Hạt dẻ nướng", price: 80000, category: "Thực phẩm", emoji: "🌰", description: "Hạt dẻ nướng thơm ngon, giòn tan", imageUrl: "" },
-            { id: 4, name: "Chè shan tuyết", price: 300000, category: "Đồ uống", emoji: "🍵", description: "Chè shan tuyết cổ thù, hương vị đặc biệt", imageUrl: "" },
-            { id: 5, name: "Nấm linh chi", price: 180000, category: "Dược liệu", emoji: "🍄", description: "Nấm linh chi rừng, bổ dương tăng sức khỏe", imageUrl: "" },
-            { id: 6, name: "Sâm Ngọc Linh", price: 450000, category: "Dược liệu", emoji: "🌱", description: "Sâm Ngọc Linh quý hiếm từ đỉnh núi cao", imageUrl: "" },
-            { id: 7, name: "Mèo vạc mật", price: 95000, category: "Thực phẩm", emoji: "🥜", description: "Hạt mèo vạc mật thơm ngon, bùi béo", imageUrl: "" },
-            { id: 8, name: "Trà hoa vàng", price: 85000, category: "Đồ uống", emoji: "🌼", description: "Trà hoa vàng thanh mát, giải nhiệt", imageUrl: "" },
-            { id: 9, name: "Mật ong cao su", price: 320000, category: "Thực phẩm", emoji: "🍯", description: "Mật ong cao su nguyên chất, vị ngọt đậm đà", imageUrl: "" },
-            { id: 10, name: "Củ mài táo mèo", price: 75000, category: "Dược liệu", emoji: "🥔", description: "Củ mài táo mèo chữa đau dạ dày", imageUrl: "" },
-            { id: 11, name: "Tinh dầu sả", price: 110000, category: "Tinh dầu", emoji: "💧", description: "Tinh dầu sả nguyên chất, đuổi muỗi hiệu quả", imageUrl: "" },
-            { id: 12, name: "Nấm rơm rừng", price: 65000, category: "Thực phẩm", emoji: "🍄", description: "Nấm rơm rừng tươi ngon, giàu dinh dưỡng", imageUrl: "" },
-            { id: 13, name: "Chè tâm sen", price: 140000, category: "Đồ uống", emoji: "🍵", description: "Chè tâm sen thanh đạm, dễ uống", imageUrl: "" },
-            { id: 14, name: "Tinh dầu bạc hà", price: 90000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu bạc hà mát lạnh, thơm dịu", imageUrl: "" },
-            { id: 15, name: "Nấm đông cô", price: 220000, category: "Thực phẩm", emoji: "🍄", description: "Nấm đông cô khô cao cấp, thơm ngon", imageUrl: "" },
-            { id: 16, name: "Đậu cô ve", price: 55000, category: "Thực phẩm", emoji: "🫘", description: "Đậu cô ve rang giòn, bổ dưỡng", imageUrl: "" },
-            { id: 17, name: "Trà ướp hoa sen", price: 160000, category: "Đồ uống", emoji: "🪷", description: "Trà ướp hoa sen thơm nức, cao cấp", imageUrl: "" },
-            { id: 18, name: "Tinh dầu quế", price: 130000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu quế ấm áp, kháng khuẩn tốt", imageUrl: "" },
-            { id: 19, name: "Mộc nhĩ rừng", price: 45000, category: "Thực phẩm", emoji: "🍄", description: "Mộc nhĩ rừng tự nhiên, giòn ngon", imageUrl: "" },
-            { id: 20, name: "Chè búp non", price: 185000, category: "Đồ uống", emoji: "🍃", description: "Chè búp non cao cấp, vị thanh ngọt", imageUrl: "" },
-            { id: 21, name: "Tinh dầu tràm", price: 100000, category: "Tinh dầu", emoji: "🌿", description: "Tinh dầu tràm chữa cảm lạnh hiệu quả", imageUrl: "" }
-        ];
-
-        // Available emojis for products
-        const availableEmojis = [
-            '🌿', '🍯', '🌰', '🍵', '🍄', '🌱', '🥜', '🌼', '🥔', '💧', '🫘', '🪷', '🍃',
-            '🌸', '🌺', '🌻', '🌷', '🌹', '🥀', '🌾', '🌿', '🍀', '🍁', '🍂', '🍃',
-            '🥥', '🥑', '🍊', '🍋', '🍌', '🍍', '🥭', '🍎', '🍏', '🍐', '🍑', '🍒',
-            '🍓', '🫐', '🍇', '🍈', '🍉', '🍅', '🫒', '🌶️', '🫑', '🥒', '🥬', '🥦',
-            '🍆', '🥕', '🌽', '🫘', '🥔', '🍠', '🫜', '🍛', '🍜', '🍝', '🍞', '🥨'
-        ];
-
-        let currentProducts = [...products];
-        let isLoggedIn = false;
-        let currentEditingId = null;
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Enhanced Admin Panel Loading...');
-            initializeAdmin();
-        });
-
-        function initializeAdmin() {
-            setupEventListeners();
-            generateEmojiPicker();
-            checkLoginStatus();
-        }
-
-        function setupEventListeners() {
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', handleLogin);
-            }
-            
-            const editForm = document.getElementById('editForm');
-            if (editForm) {
-                editForm.addEventListener('submit', handleEditSubmit);
-            }
-        }
-
-        function generateEmojiPicker() {
-            const emojiPicker = document.getElementById('emojiPicker');
-            emojiPicker.innerHTML = '';
-            
-            availableEmojis.forEach(emoji => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'emoji-option';
-                button.textContent = emoji;
-                button.onclick = () => selectEmoji(emoji, button);
-                emojiPicker.appendChild(button);
-            });
-        }
-
-        function selectEmoji(emoji, button) {
-            // Remove previous selection
-            document.querySelectorAll('.emoji-option').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            
-            // Select current emoji
-            button.classList.add('selected');
-            document.getElementById('editEmoji').value = emoji;
-        }
-
-        function checkLoginStatus() {
-            const savedLogin = localStorage.getItem('adminLoggedIn');
-            if (savedLogin === 'true') {
-                showDashboard();
-            } else {
-                showLogin();
-            }
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            console.log('Login attempt:', username, password.length);
-            
-            if (username === 'admin' && password === 'admin123') {
-                localStorage.setItem('adminLoggedIn', 'true');
-                showStatusMessage('✅ Đăng nhập thành công!', 'success');
-                setTimeout(() => {
-                    showDashboard();
-                }, 1000);
-            } else {
-                showStatusMessage('❌ Sai tên đăng nhập hoặc mật khẩu!', 'error');
-            }
-        }
-
-        function showLogin() {
-            document.getElementById('loginModal').style.display = 'flex';
-            document.getElementById('dashboard').classList.remove('active');
-            isLoggedIn = false;
-        }
-
-        function showDashboard() {
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('dashboard').classList.add('active');
-            isLoggedIn = true;
-            loadProducts();
-            updateStatistics();
-        }
-
-        function logout() {
-            localStorage.removeItem('adminLoggedIn');
-            showStatusMessage('👋 Đã đăng xuất!', 'success');
-            setTimeout(() => {
-                showLogin();
-                document.getElementById('loginForm').reset();
-            }, 1000);
-        }
-
-        function loadProducts() {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = '';
-            
-            currentProducts.forEach(product => {
-                const currentPrice = getCurrentPrice(product.id);
-                const currentData = getCurrentProductData(product.id);
-                const hasChangedPrice = currentPrice !== product.price;
-                const hasChangedImage = currentData.emoji !== product.emoji || currentData.imageUrl !== product.imageUrl;
-                const hasChangedInfo = currentData.name !== product.name || currentData.description !== product.description;
-                
-                const displayEmoji = currentData.emoji || product.emoji;
-                const displayImageUrl = currentData.imageUrl || product.imageUrl;
-                
-                const productCard = `
-                    <div class="product-card" data-category="${currentData.category || product.category}" data-name="${(currentData.name || product.name).toLowerCase()}">
-                        <div class="product-header">
-                            <h4>${currentData.name || product.name}</h4>
-                            <span class="product-emoji">${displayEmoji}</span>
-                        </div>
-                        
-                        <div class="product-image-section">
-                            <div class="product-image-preview">
-                                ${displayImageUrl ? `<img src="${displayImageUrl}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <span style="display: none; font-size: 2.5rem;">${displayEmoji}</span>` : displayEmoji}
-                            </div>
-                            ${displayImageUrl ? `<div class="image-url-display">${displayImageUrl}</div>` : '<div class="image-url-display">Chỉ sử dụng emoji</div>'}
-                        </div>
-                        
-                        <div class="product-info">
-                            <p><strong>Danh mục:</strong> ${currentData.category || product.category}</p>
-                            <p><strong>Mô tả:</strong> ${currentData.description || product.description}</p>
-                        </div>
-                        
-                        <div class="price-section">
-                            <div class="price-display">
-                                <span class="original-price">Giá gốc: ${formatPrice(product.price)}</span>
-                                <span class="current-price">Hiện tại: ${formatPrice(currentPrice)}</span>
-                            </div>
-                            ${hasChangedPrice ? '<small style="color: #28a745; font-weight: bold;">💰 Giá đã thay đổi</small>' : ''}
-                            ${hasChangedImage ? '<small style="color: #6f42c1; font-weight: bold;">🖼️ Ảnh đã thay đổi</small>' : ''}
-                            ${hasChangedInfo ? '<small style="color: #fd7e14; font-weight: bold;">📝 Thông tin đã thay đổi</small>' : ''}
-                        </div>
-                        
-                        <div class="price-edit">
-                            <input type="number" class="price-input" id="price${product.id}" placeholder="${currentPrice}" value="${currentPrice}">
-                            <button class="btn-sm btn-edit" onclick="updatePrice(${product.id})">
-                                <i class="fas fa-save"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="product-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal(${product.id})">
-                                <i class="fas fa-edit"></i> Chỉnh sửa
-                            </button>
-                            <button class="btn-sm btn-reset" onclick="resetProduct(${product.id})">
-                                <i class="fas fa-undo"></i> Reset
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                grid.innerHTML += productCard;
-            });
-        }
-
-        function getCurrentPrice(productId) {
-            const savedPrice = localStorage.getItem(`product_${productId}_price`);
-            if (savedPrice) {
-                return parseInt(savedPrice);
-            }
-            const product = products.find(p => p.id === productId);
-            return product ? product.price : 0;
-        }
-
-        function getCurrentProductData(productId) {
-            const savedData = localStorage.getItem(`product_${productId}_data`);
-            if (savedData) {
-                return JSON.parse(savedData);
-            }
-            const product = products.find(p => p.id === productId);
-            return product ? { ...product } : {};
-        }
-
-        function updatePrice(productId) {
-            const input = document.getElementById(`price${productId}`);
-            const newPrice = parseInt(input.value);
-            
-            if (isNaN(newPrice) || newPrice <= 0) {
-                showStatusMessage('❌ Vui lòng nhập giá hợp lệ!', 'error');
-                return;
-            }
-            
-            localStorage.setItem(`product_${productId}_price`, newPrice);
-            
-            const product = products.find(p => p.id === productId);
-            showStatusMessage(`✅ Đã cập nhật giá ${product.name} thành ${formatPrice(newPrice)}`, 'success');
-            
-            loadProducts();
-            updateStatistics();
-        }
-
-        function openEditModal(productId) {
-            currentEditingId = productId;
-            const product = products.find(p => p.id === productId);
-            const currentData = getCurrentProductData(productId);
-            
-            document.getElementById('editTitle').textContent = `Chỉnh sửa: ${product.name}`;
-            document.getElementById('editName').value = currentData.name || product.name;
-            document.getElementById('editCategory').value = currentData.category || product.category;
-            document.getElementById('editPrice').value = getCurrentPrice(productId);
-            document.getElementById('editDescription').value = currentData.description || product.description;
-            document.getElementById('editEmoji').value = currentData.emoji || product.emoji;
-            document.getElementById('editImageUrl').value = currentData.imageUrl || product.imageUrl || '';
-            
-            // Select current emoji in picker
-            document.querySelectorAll('.emoji-option').forEach(btn => {
-                btn.classList.remove('selected');
-                if (btn.textContent === (currentData.emoji || product.emoji)) {
-                    btn.classList.add('selected');
-                }
-            });
-            
-            document.getElementById('editModal').classList.add('active');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-            currentEditingId = null;
-        }
-
-        function handleEditSubmit(e) {
-            e.preventDefault();
-            
-            if (!currentEditingId) return;
-            
-            const newData = {
-                name: document.getElementById('editName').value,
-                category: document.getElementById('editCategory').value,
-                description: document.getElementById('editDescription').value,
-                emoji: document.getElementById('editEmoji').value,
-                imageUrl: document.getElementById('editImageUrl').value
-            };
-            
-            const newPrice = parseInt(document.getElementById('editPrice').value);
-            
-            // Save product data
-            localStorage.setItem(`product_${currentEditingId}_data`, JSON.stringify(newData));
-            
-            // Save price
-            localStorage.setItem(`product_${currentEditingId}_price`, newPrice);
-            
-            const originalProduct = products.find(p => p.id === currentEditingId);
-            showStatusMessage(`✅ Đã cập nhật thông tin ${originalProduct.name}`, 'success');
-            
-            closeEditModal();
-            loadProducts();
-            updateStatistics();
-        }
-
-        function resetProduct(productId) {
-            if (confirm('Bạn có chắc muốn khôi phục sản phẩm này về trạng thái ban đầu?')) {
-                localStorage.removeItem(`product_${productId}_price`);
-                localStorage.removeItem(`product_${productId}_data`);
-                
-                const product = products.find(p => p.id === productId);
-                showStatusMessage(`🔄 Đã khôi phục "${product.name}" về trạng thái ban đầu`, 'success');
-                
-                loadProducts();
-                updateStatistics();
-            }
-        }
-
-        function resetAllData() {
-            if (confirm('Bạn có chắc muốn khôi phục TẤT CẢ sản phẩm về trạng thái ban đầu?')) {
-                products.forEach(product => {
-                    localStorage.removeItem(`product_${product.id}_price`);
-                    localStorage.removeItem(`product_${product.id}_data`);
-                });
-                
-                showStatusMessage('🔄 Đã khôi phục tất cả sản phẩm về trạng thái ban đầu!', 'success');
-                loadProducts();
-                updateStatistics();
-            }
-        }
-
-        function filterProducts() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            
-            const cards = document.querySelectorAll('.product-card');
-            
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name');
-                const category = card.getAttribute('data-category');
-                
-                const matchesSearch = name.includes(searchTerm);
-                const matchesCategory = !categoryFilter || category === categoryFilter;
-                
-                if (matchesSearch && matchesCategory) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        function updateStatistics() {
-            let modifiedPrices = 0;
-            let modifiedImages = 0;
-            let totalPrice = 0;
-            
-            products.forEach(product => {
-                const currentPrice = getCurrentPrice(product.id);
-                const currentData = getCurrentProductData(product.id);
-                
-                totalPrice += currentPrice;
-                
-                if (currentPrice !== product.price) {
-                    modifiedPrices++;
-                }
-                
-                if (currentData.emoji !== product.emoji || 
-                    currentData.imageUrl !== product.imageUrl ||
-                    currentData.name !== product.name ||
-                    currentData.description !== product.description) {
-                    modifiedImages++;
-                }
-            });
-            
-            document.getElementById('modifiedProducts').textContent = modifiedPrices;
-            document.getElementById('modifiedImages').textContent = modifiedImages;
-            document.getElementById('averagePrice').textContent = formatPrice(Math.round(totalPrice / products.length));
-        }
-
-        function formatPrice(price) {
-            return new Intl.NumberFormat('vi-VN').format(price) + '₫';
-        }
-
-        function showStatusMessage(message, type) {
-            const statusEl = document.getElementById('statusMessage');
-            statusEl.textContent = message;
-            statusEl.className = `status-message ${type} show`;
-            
-            setTimeout(() => {
-                statusEl.classList.remove('show');
-            }, 4000);
-        }
-
-        // Excel Export/Import Functions
-        function exportToExcel() {
-            const exportData = currentProducts.map(product => {
-                const currentPrice = getCurrentPrice(product.id);
-                const currentData = getCurrentProductData(product.id);
-                
-                return {
-                    'ID': product.id,
-                    'Tên sản phẩm': currentData.name || product.name,
-                    'Danh mục': currentData.category || product.category,
-                    'Giá gốc': product.price,
-                    'Giá hiện tại': currentPrice,
-                    'Hình ảnh': currentData.imageUrl || currentData.emoji || product.emoji,
-                    'Mô tả': currentData.description || product.description,
-                    'Đơn vị': product.unit || ''
-                };
-            });
-
-            const ws = XLSX.utils.json_to_sheet(exportData);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Sản phẩm");
-            
-            // Auto adjust column width
-            const colWidths = [];
-            const header = Object.keys(exportData[0]);
-            header.forEach((key, i) => {
-                const maxLength = Math.max(
-                    key.length,
-                    ...exportData.map(row => String(row[key] || '').length)
-                );
-                colWidths[i] = { width: Math.min(maxLength + 2, 50) };
-            });
-            ws['!cols'] = colWidths;
-            
-            const fileName = `dacsantaybac_products_${new Date().toISOString().split('T')[0]}.xlsx`;
-            XLSX.writeFile(wb, fileName);
-            
-            showStatus('Đã xuất file Excel thành công!', 'success');
-        }
-
-        function downloadTemplate() {
-            const templateData = [
-                {
-                    'ID': 1,
-                    'Tên sản phẩm': 'Tam thất khô',
-                    'Danh mục': 'herbal',
-                    'Giá gốc': 120000,
-                    'Giá hiện tại': 120000,
-                    'Hình ảnh': '🌿',
-                    'Mô tả': 'Tam thất khô cao cấp từ Tây Bắc',
-                    'Đơn vị': '100g'
-                },
-                {
-                    'ID': 2,
-                    'Tên sản phẩm': 'Mật ong rừng',
-                    'Danh mục': 'food',
-                    'Giá gốc': 250000,
-                    'Giá hiện tại': 250000,
-                    'Hình ảnh': 'images/mat-ong-rung.jpg',
-                    'Mô tả': 'Mật ong rừng nguyên chất',
-                    'Đơn vị': '500ml'
-                }
-            ];
-
-            const ws = XLSX.utils.json_to_sheet(templateData);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Template");
-            
-            // Add instructions sheet
-            const instructions = [
-                ['HƯỚNG DẪN SỬ DỤNG FILE EXCEL'],
-                [''],
-                ['1. Cột ID: Số thứ tự sản phẩm (bắt buộc)'],
-                ['2. Cột Tên sản phẩm: Tên hiển thị của sản phẩm'],
-                ['3. Cột Danh mục: herbal (dược liệu), food (thực phẩm), oil (tinh dầu), drink (đồ uống)'],
-                ['4. Cột Giá gốc: Giá ban đầu của sản phẩm'],
-                ['5. Cột Giá hiện tại: Giá bán hiện tại'],
-                ['6. Cột Hình ảnh: Link ảnh hoặc emoji (ví dụ: images/abc.jpg hoặc 🌿)'],
-                ['7. Cột Mô tả: Mô tả chi tiết sản phẩm'],
-                ['8. Cột Đơn vị: Đơn vị bán (ví dụ: 100g, 1kg, 500ml)'],
-                [''],
-                ['CHÚ Ý:'],
-                ['- File phải có đúng tên cột như mẫu'],
-                ['- ID phải là số và duy nhất'],
-                ['- Giá phải là số'],
-                ['- Danh mục chỉ chấp nhận: herbal, food, oil, drink']
-            ];
-            
-            const wsInstructions = XLSX.utils.aoa_to_sheet(instructions);
-            XLSX.utils.book_append_sheet(wb, wsInstructions, "Hướng dẫn");
-            
-            XLSX.writeFile(wb, 'template_dacsantaybac_products.xlsx');
-            showStatus('Đã tải file mẫu Excel!', 'info');
-        }
-
-        function openImportModal() {
-            document.getElementById('importModal').style.display = 'flex';
-        }
-
-        function closeImportModal() {
-            document.getElementById('importModal').style.display = 'none';
-            document.getElementById('importFile').value = '';
-            document.getElementById('overwriteData').checked = false;
-        }
-
-        function processImportFile() {
-            const fileInput = document.getElementById('importFile');
-            const file = fileInput.files[0];
-            
-            if (!file) {
-                showStatus('Vui lòng chọn file để import!', 'error');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                    
-                    if (jsonData.length === 0) {
-                        showStatus('File không có dữ liệu!', 'error');
-                        return;
-                    }
-                    
-                    // Validate required columns
-                    const requiredColumns = ['ID', 'Tên sản phẩm', 'Danh mục', 'Giá gốc', 'Giá hiện tại'];
-                    const firstRow = jsonData[0];
-                    const missingColumns = requiredColumns.filter(col => !(col in firstRow));
-                    
-                    if (missingColumns.length > 0) {
-                        showStatus(`File thiếu các cột bắt buộc: ${missingColumns.join(', ')}`, 'error');
-                        return;
-                    }
-                    
-                    importProducts(jsonData);
-                    
-                } catch (error) {
-                    console.error('Error reading file:', error);
-                    showStatus('Lỗi đọc file! Vui lòng kiểm tra format file.', 'error');
-                }
-            };
-            
-            reader.readAsArrayBuffer(file);
-        }
-
-        function importProducts(importData) {
-            const overwrite = document.getElementById('overwriteData').checked;
-            let imported = 0;
-            let updated = 0;
-            let errors = 0;
-            
-            importData.forEach(row => {
-                try {
-                    const id = parseInt(row['ID']);
-                    const name = row['Tên sản phẩm']?.toString().trim();
-                    const category = row['Danh mục']?.toString().trim();
-                    const originalPrice = parseInt(row['Giá gốc']);
-                    const currentPrice = parseInt(row['Giá hiện tại']);
-                    const image = row['Hình ảnh']?.toString().trim() || '';
-                    const description = row['Mô tả']?.toString().trim() || '';
-                    const unit = row['Đơn vị']?.toString().trim() || '';
-                    
-                    // Validate data
-                    if (!id || !name || !category || isNaN(originalPrice) || isNaN(currentPrice)) {
-                        errors++;
-                        return;
-                    }
-                    
-                    // Check valid category
-                    const validCategories = ['herbal', 'food', 'oil', 'drink'];
-                    if (!validCategories.includes(category)) {
-                        errors++;
-                        return;
-                    }
-                    
-                    const existingIndex = currentProducts.findIndex(p => p.id === id);
-                    
-                    if (existingIndex >= 0) {
-                        // Update existing product
-                        if (overwrite) {
-                            currentProducts[existingIndex] = {
-                                id: id,
-                                name: name,
-                                category: category,
-                                price: originalPrice,
-                                emoji: image.startsWith('images/') ? '📦' : image,
-                                description: description,
-                                unit: unit,
-                                imageUrl: image.startsWith('images/') ? image : ''
-                            };
-                        }
-                        
-                        // Update current price and data
-                        localStorage.setItem(`product_${id}_price`, currentPrice.toString());
-                        localStorage.setItem(`product_${id}_data`, JSON.stringify({
-                            name: name,
-                            category: category,
-                            emoji: image.startsWith('images/') ? '📦' : image,
-                            imageUrl: image.startsWith('images/') ? image : '',
-                            description: description
-                        }));
-                        
-                        updated++;
-                    } else if (overwrite) {
-                        // Add new product
-                        const newProduct = {
-                            id: id,
-                            name: name,
-                            category: category,
-                            price: originalPrice,
-                            emoji: image.startsWith('images/') ? '📦' : image,
-                            description: description,
-                            unit: unit,
-                            imageUrl: image.startsWith('images/') ? image : ''
-                        };
-                        
-                        currentProducts.push(newProduct);
-                        
-                        // Set current price
-                        localStorage.setItem(`product_${id}_price`, currentPrice.toString());
-                        localStorage.setItem(`product_${id}_data`, JSON.stringify({
-                            name: name,
-                            category: category,
-                            emoji: image.startsWith('images/') ? '📦' : image,
-                            imageUrl: image.startsWith('images/') ? image : '',
-                            description: description
-                        }));
-                        
-                        imported++;
-                    }
-                    
-                } catch (error) {
-                    console.error('Error processing row:', row, error);
-                    errors++;
-                }
-            });
-            
-            // Save and refresh
-            localStorage.setItem('products', JSON.stringify(currentProducts));
-            loadProducts();
-            updateStatistics();
-            closeImportModal();
-            
-            let message = `Import hoàn thành! `;
-            if (imported > 0) message += `Thêm mới: ${imported} sản phẩm. `;
-            if (updated > 0) message += `Cập nhật: ${updated} sản phẩm. `;
-            if (errors > 0) message += `Lỗi: ${errors} dòng.`;
-            
-            showStatus(message, imported > 0 || updated > 0 ? 'success' : 'warning');
-        }
-
-        console.log('✅ Enhanced Admin Panel with Image Management Ready!');
-    </script>
+    <script src="../js/admin.js"></script>
 </body>
 </html>

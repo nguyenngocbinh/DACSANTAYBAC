@@ -24,9 +24,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nguyenngocbinh/web_ban_hang.git"
+    "url": "https://github.com/nguyenngocbinh/DACSANTAYBAC.git"
   },
-  "homepage": "https://nguyenngocbinh.github.io/web_ban_hang",
+  "homepage": "https://nguyenngocbinh.github.io/DACSANTAYBAC",
   "devDependencies": {
     "live-server": "^1.2.2"
   },
