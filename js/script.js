@@ -393,10 +393,21 @@ function initializeNavigation() {
         // Close menu on link click (mobile)
         navMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
+                // Don't close if it's the dropdown toggle
+                if (link.closest('.nav-dropdown') && link.classList.contains('game-link')) return;
                 navMenu.classList.remove('active');
                 if (menuToggle) menuToggle.classList.remove('active');
             });
         });
+
+        // Mobile dropdown toggle
+        const dropdown = navMenu.querySelector('.nav-dropdown > .game-link');
+        if (dropdown) {
+            dropdown.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.closest('.nav-dropdown').classList.toggle('dropdown-open');
+            });
+        }
     }
 }
 

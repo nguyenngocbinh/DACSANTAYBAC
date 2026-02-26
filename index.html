@@ -39,7 +39,13 @@
                         <li><a href="#home">Trang chủ</a></li>
                         <li><a href="#products">Đặc sản</a></li>
                         <li><a href="#about">Giới thiệu</a></li>
-                        <li><a href="game.html" class="game-link"><i class="fas fa-gamepad"></i> Mini Game</a></li>
+                        <li class="nav-dropdown">
+                            <a href="#" class="game-link" onclick="event.preventDefault()"><i class="fas fa-gamepad"></i> Mini Game ▾</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="game.html"><i class="fas fa-kiwi-bird"></i> Chim Tây Bắc</a></li>
+                                <li><a href="pikachu.html"><i class="fas fa-puzzle-piece"></i> Pikachu Nối Đặc Sản</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#contact">Liên hệ</a></li>
                     </ul>
                 </nav>
@@ -62,7 +68,10 @@
                 <div class="hero-actions">
                     <button class="cta-btn" onclick="scrollToProducts()">Khám phá ngay</button>
                     <a href="game.html" class="game-btn-hero">
-                        <i class="fas fa-gamepad"></i> Chơi Mini Game
+                        <i class="fas fa-kiwi-bird"></i> Chim Tây Bắc
+                    </a>
+                    <a href="pikachu.html" class="game-btn-hero">
+                        <i class="fas fa-puzzle-piece"></i> Pikachu
                     </a>
                 </div>
             </div>

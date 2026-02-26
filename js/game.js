@@ -559,8 +559,12 @@ class TayBacBirdGame {
     }
     
     render() {
-        // Clear canvas
-        this.ctx.fillStyle = 'linear-gradient(to bottom, #87CEEB 0%, #98FB98 60%, #228B22 100%)';
+        // Clear canvas with gradient background
+        const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+        gradient.addColorStop(0, '#87CEEB');
+        gradient.addColorStop(0.6, '#98FB98');
+        gradient.addColorStop(1, '#228B22');
+        this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // Draw background elements

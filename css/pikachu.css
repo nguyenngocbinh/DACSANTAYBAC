@@ -473,6 +473,25 @@ body {
     display: none;
 }
 
+/* Cross-link to other game */
+.other-game-link {
+    display: block;
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, #FFD700, #FFA000);
+    color: #333;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+.other-game-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+}
+
 /* Animations */
 @keyframes matchSuccess {
     0% { transform: scale(1); }

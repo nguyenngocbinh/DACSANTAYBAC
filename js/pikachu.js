@@ -507,9 +507,9 @@ class PikachuGame {
     }
 
     drawTwoTurnPath(start, end, midPoint, tileSize) {
-        // This is a simplified version - for two-turn paths
+        // Two-turn path: draw start→midPoint and midPoint→end as two direct lines via a corner
         this.drawDirectPath(start, midPoint, tileSize);
-        this.drawOneTurnPath(midPoint, end, end, tileSize);
+        this.drawDirectPath(midPoint, end, tileSize);
     }
 
     useHint() {
@@ -760,15 +760,21 @@ class PikachuGame {
     }
 
     saveVoucher(voucher) {
-        let vouchers = JSON.parse(localStorage.getItem('gameVouchers') || '[]');
-        vouchers.push(voucher);
+        // Use same key as voucher-integration.js for shop integration
+        let vouchers = JSON.parse(localStorage.getItem('tayBacVouchers') || '[]');
+        vouchers.push({
+            code: voucher.code,
+            discount: voucher.discount,
+            date: new Date().toLocaleDateString('vi-VN'),
+            used: false
+        });
         
         // Keep only last 10 vouchers
         if (vouchers.length > 10) {
             vouchers = vouchers.slice(-10);
         }
         
-        localStorage.setItem('gameVouchers', JSON.stringify(vouchers));
+        localStorage.setItem('tayBacVouchers', JSON.stringify(vouchers));
     }
 
     clearBoard() {
