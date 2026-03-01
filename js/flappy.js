@@ -70,22 +70,9 @@ class TayBacBirdGame {
     
     optimizeForMobile() {
         // Reduce particle effects for better performance
-        this.maxParticles = 10; // Instead of default 20
+        this.maxParticles = 10;
         
-        // Adjust canvas resolution for mobile
-        const devicePixelRatio = window.devicePixelRatio || 1;
-        const rect = this.canvas.getBoundingClientRect();
-        
-        // Set actual canvas size in memory (scaled up for high DPI)
-        this.canvas.width = rect.width * Math.min(devicePixelRatio, 2);
-        this.canvas.height = rect.height * Math.min(devicePixelRatio, 2);
-        
-        // Scale the drawing context back down
-        this.ctx.scale(Math.min(devicePixelRatio, 2), Math.min(devicePixelRatio, 2));
-        
-        // Set CSS size to original size
-        this.canvas.style.width = rect.width + 'px';
-        this.canvas.style.height = rect.height + 'px';
+        // Canvas resolution is handled by handleResize()
         
         // Show mobile-specific UI hints
         this.showMobileHints();
@@ -194,27 +181,60 @@ class TayBacBirdGame {
     }
     
     handleResize() {
-        // Get current canvas size
         const container = document.querySelector('.canvas-container');
-        const rect = container.getBoundingClientRect();
+        const headerH = document.querySelector('.game-header')?.offsetHeight || 60;
         
-        // Update canvas size for mobile
+        // Available space
+        const availW = window.innerWidth - 20;
+        const availH = window.innerHeight - headerH - 20;
+        
+        // Base canvas dimensions (aspect ratio 8:5)
+        const baseW = 800;
+        const baseH = 500;
+        const aspectRatio = baseW / baseH;
+        
+        let displayW, displayH;
+        
         if (this.isMobile) {
-            const maxWidth = Math.min(window.innerWidth - 20, 500);
-            const maxHeight = Math.min(window.innerHeight - 200, 400);
+            const isLandscape = window.innerWidth > window.innerHeight;
             
-            this.canvas.style.width = maxWidth + 'px';
-            this.canvas.style.height = maxHeight + 'px';
-            
-            // Maintain aspect ratio
-            if (window.orientation !== undefined) {
-                // Landscape mode
-                if (Math.abs(window.orientation) === 90) {
-                    this.canvas.style.width = Math.min(window.innerWidth - 20, 600) + 'px';
-                    this.canvas.style.height = Math.min(window.innerHeight - 150, 350) + 'px';
+            if (isLandscape) {
+                displayH = Math.min(availH - 10, 400);
+                displayW = displayH * aspectRatio;
+                if (displayW > availW) {
+                    displayW = availW;
+                    displayH = displayW / aspectRatio;
+                }
+            } else {
+                // Portrait: fit width, limit height
+                displayW = Math.min(availW, 500);
+                displayH = displayW / aspectRatio;
+                if (displayH > availH * 0.55) {
+                    displayH = availH * 0.55;
+                    displayW = displayH * aspectRatio;
                 }
             }
+        } else {
+            // Desktop / tablet
+            displayW = Math.min(availW * 0.9, 800);
+            displayH = displayW / aspectRatio;
+            if (displayH > availH * 0.7) {
+                displayH = availH * 0.7;
+                displayW = displayH * aspectRatio;
+            }
         }
+        
+        displayW = Math.round(displayW);
+        displayH = Math.round(displayH);
+        
+        this.canvas.style.width = displayW + 'px';
+        this.canvas.style.height = displayH + 'px';
+        
+        // Update internal canvas resolution
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.canvas.width = displayW * dpr;
+        this.canvas.height = displayH * dpr;
+        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     
     createBird() {
